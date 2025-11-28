@@ -11,28 +11,28 @@
   <header class="header">
     <h1>🏫 Ansuaa Ababio Methodist Preparatory School</h1>
     <div class="theme-toggle">
-  <button class="theme-btn" data-theme="blue">🔵 Blue</button>
-  <button class="theme-btn" data-theme="white">⚪ White</button>
-  <button class="theme-btn" data-theme="green">🟢 Green</button>
-</div>
-
+      <button class="theme-btn" data-theme="blue">🔵 Blue</button>
+      <button class="theme-btn" data-theme="white">⚪ White</button>
+      <button class="theme-btn" data-theme="green">🟢 Green</button>
+    </div>
   </header>
 
   <div class="app">
     <aside class="sidebar">
       <div class="sidebar-title">👑 Headteacher Panel</div>
-      <button class="nav-item active">📊 Dashboard</button>
-      <button class="nav-item">👩‍🏫 Teachers</button>
-      <button class="nav-item">📚 Classes</button>
-      <button class="nav-item">📰 News</button>
-      <button class="nav-item">⚙️ Settings</button>
+      <button class="nav-item active" data-target="dashboardSection">📊 Dashboard</button>
+      <button class="nav-item" data-target="teachersSection">👩‍🏫 Teachers</button>
+      <button class="nav-item" data-target="classesSection">📚 Classes</button>
+      <button class="nav-item" data-target="newsSection">📰 News</button>
+      <button class="nav-item" data-target="settingsSection">⚙️ Settings</button>
       <button id="logoutBtn" class="nav-item danger">🚪 Logout</button>
     </aside>
 
     <main class="main">
       <h2 class="welcome">Welcome, Headteacher Gerald 👋</h2>
 
-      <div class="grid">
+      <!-- Dashboard -->
+      <section id="dashboardSection" class="grid">
         <section class="card accent-blue">
           <h3>📢 Announcements</h3>
           <textarea id="announcementInput" placeholder="Write announcement here..."></textarea>
@@ -57,11 +57,29 @@
           <p>View class attendance reports.</p>
           <button class="btn primary">View Attendance</button>
         </section>
-      </div>
+      </section>
 
+      <!-- Teachers -->
+      <section id="teachersSection" class="card hidden">
+        <h3>👩‍🏫 Teachers</h3>
+        <p>Manage teacher accounts here.</p>
+      </section>
+
+      <!-- Classes -->
+      <section id="classesSection" class="card hidden">
+        <h3>📚 Classes</h3>
+        <p>View and manage classes here.</p>
+      </section>
+
+      <!-- News -->
+      <section id="newsSection" class="card hidden">
+        <h3>📰 News</h3>
+        <p>Post and manage school news here.</p>
+      </section>
+
+      <!-- Settings -->
       <section id="settingsSection" class="card hidden">
         <h3>⚙️ Settings</h3>
-
         <label>Profile Picture</label>
         <input type="file" accept="image/*" />
 
@@ -84,4 +102,3 @@
   <div id="toast" class="toast hidden"></div>
 </body>
 </html>
-
