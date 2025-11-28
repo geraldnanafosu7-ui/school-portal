@@ -254,5 +254,22 @@ if (saveTeacherSettingsBtn) {
 const navItems = document.querySelectorAll(".nav-item");
 const sections = document.querySelectorAll("main section");
 
-navItems.forEach(item => {
-  item.addEventListener("click", () => {
+if (navItems.length && sections.length) {
+  navItems.forEach(item => {
+    item.addEventListener("click", () => {
+      // Remove active class from all
+      navItems.forEach(i => i.classList.remove("active"));
+      item.classList.add("active");
+
+      // Hide all sections
+      sections.forEach(sec => sec.classList.add("hidden"));
+
+      // Show the target section
+      const targetId = item.dataset.target;
+      if (targetId) {
+        const targetSection = document.getElementById(targetId);
+        if (targetSection) targetSection.classList.remove("hidden");
+      }
+    });
+  });
+}
