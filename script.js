@@ -23,31 +23,7 @@ document.querySelectorAll(".theme-btn").forEach(btn => {
   });
 });
 
-// Login
-const loginForm = document.getElementById("loginForm");
-if (loginForm) {
-  loginForm.addEventListener("submit", e => {
-    e.preventDefault();
-    const username = document.getElementById("loginUsername").value.trim();
-    const password = document.getElementById("loginPassword").value.trim();
-    const user = JSON.parse(localStorage.getItem("currentUser"));
-
-    if (!user) return toast("No account found. Please sign up first.");
-    if (user.username === username && user.password === password) {
-      if (user.role === "headteacher") {
-        window.location.href = "headteacher.html";
-      } else if (user.role === "teacher") {
-        window.location.href = "teacher.html";
-      } else {
-        toast("Role missing. Please sign up again.");
-      }
-    } else {
-      toast("Invalid login details");
-    }
-  });
-}
-
-// Sign-up
+// Sign-up (store multiple users)
 const signupForm = document.getElementById("signupForm");
 if (signupForm) {
   signupForm.addEventListener("submit", e => {
@@ -62,17 +38,39 @@ if (signupForm) {
     };
 
     if (!user.role) return toast("Please select a role");
-    localStorage.setItem("currentUser", JSON.stringify(user));
 
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    const exists = users.find(u => u.username === user.username);
+    if (exists) return toast("Username already exists");
+
+    users.push(user);
+    localStorage.setItem("users", JSON.stringify(users));
+    toast("Account created successfully! Please log in.");
+  });
+}
+
+// Login (check against all users)
+const loginForm = document.getElementById("loginForm");
+if (loginForm) {
+  loginForm.addEventListener("submit", e => {
+    e.preventDefault();
+    const username = document.getElementById("loginUsername").value.trim();
+    const password = document.getElementById("loginPassword").value.trim();
+
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    const user = users.find(u => u.username === username && u.password === password);
+
+    if (!user) return toast("Invalid login details");
+
+    localStorage.setItem("currentUser", JSON.stringify(user));
     if (user.role === "headteacher") {
       window.location.href = "headteacher.html";
     } else if (user.role === "teacher") {
       window.location.href = "teacher.html";
-    } else {
-      toast("Invalid role selected");
     }
   });
 }
+
 
 // Logout (on dashboards)
 const logoutBtn = document.getElementById("logoutBtn");
@@ -159,4 +157,5 @@ if (saveSettingsBtn) {
     toast("Settings updated");
   });
 }
+
 
