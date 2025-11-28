@@ -9,7 +9,7 @@
 </head>
 <body>
   <header class="header">
-    <h1>Headteacher Dashboard</h1>
+    <h1>🏫 Ansuaa Ababio Methodist Preparatory School</h1>
     <div class="theme-toggle">
       <button class="theme-btn" data-theme="default">🌞</button>
       <button class="theme-btn" data-theme="dark">🌙</button>
@@ -17,22 +17,42 @@
     </div>
   </header>
 
-  <main class="card">
-    <h2>📢 Headteacher Announcements</h2>
-    <textarea id="announcementInput" placeholder="Head Teacher: Write announcement here..."></textarea>
-    <button id="postAnnouncementBtn" class="btn primary">Post Announcement</button>
-    <div id="announcementList"></div>
+  <div class="app">
+    <aside class="sidebar">
+      <button class="nav-item active">📊 Dashboard</button>
+      <button class="nav-item">👩‍🏫 Teachers</button>
+      <button class="nav-item">📚 Classes</button>
+      <button class="nav-item">📰 News</button>
+      <button class="nav-item">⚙️ Settings</button>
+      <button id="logoutBtn" class="nav-item danger">🚪 Logout</button>
+    </aside>
 
-    <h2>📖 Lesson Notes</h2>
-    <button class="btn primary">Accept Notes</button>
+    <main class="main">
+      <section class="card">
+        <h2>📢 Headteacher Announcements</h2>
+        <textarea id="announcementInput" placeholder="Head Teacher: Write announcement here..."></textarea>
+        <button id="postAnnouncementBtn" class="btn primary">Post Announcement</button>
+        <div id="announcementList"></div>
+      </section>
 
-    <h2>👩‍🏫 Teacher Records</h2>
-    <button class="btn danger">Delete Teacher</button>
+      <section class="card">
+        <h2>📖 Lesson Notes</h2>
+        <p>Review and accept submitted lesson notes.</p>
+        <button class="btn primary">Accept Notes</button>
+      </section>
 
-    <h2>📚 Class Attendance</h2>
-    <button class="btn primary">View Attendance</button>
+      <section class="card">
+        <h2>👩‍🏫 Teacher Records</h2>
+        <p>Manage and delete teacher accounts.</p>
+        <button class="btn danger">Delete Teacher</button>
+      </section>
 
-    <button id="logoutBtn" class="btn danger">🚪 Logout</button>
-  </main>
+      <section class="card">
+        <h2>📚 Class Attendance</h2>
+        <p>View class attendance reports.</p>
+        <button class="btn primary">View Attendance</button>
+      </section>
+    </main>
+  </div>
 </body>
 </html>
