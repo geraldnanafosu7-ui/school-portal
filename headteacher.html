@@ -19,6 +19,7 @@
 
   <div class="app">
     <aside class="sidebar">
+      <div class="sidebar-title">👑 Headteacher Panel</div>
       <button class="nav-item active">📊 Dashboard</button>
       <button class="nav-item">👩‍🏫 Teachers</button>
       <button class="nav-item">📚 Classes</button>
@@ -28,30 +29,33 @@
     </aside>
 
     <main class="main">
-      <section class="card">
-        <h2>📢 Headteacher Announcements</h2>
-        <textarea id="announcementInput" placeholder="Head Teacher: Write announcement here..."></textarea>
-        <button id="postAnnouncementBtn" class="btn primary">Post Announcement</button>
-        <div id="announcementList"></div>
-      </section>
+      <h2 class="welcome">Welcome, Headteacher Gerald 👋</h2>
+      <div class="grid">
+        <section class="card accent-blue">
+          <h3>📢 Announcements</h3>
+          <textarea id="announcementInput" placeholder="Write announcement here..."></textarea>
+          <button id="postAnnouncementBtn" class="btn primary">Post Announcement</button>
+          <div id="announcementList"></div>
+        </section>
 
-      <section class="card">
-        <h2>📖 Lesson Notes</h2>
-        <p>Review and accept submitted lesson notes.</p>
-        <button class="btn primary">Accept Notes</button>
-      </section>
+        <section class="card accent-green">
+          <h3>📖 Lesson Notes</h3>
+          <p>Review and accept submitted lesson notes.</p>
+          <button class="btn primary">Accept Notes</button>
+        </section>
 
-      <section class="card">
-        <h2>👩‍🏫 Teacher Records</h2>
-        <p>Manage and delete teacher accounts.</p>
-        <button class="btn danger">Delete Teacher</button>
-      </section>
+        <section class="card accent-orange">
+          <h3>👩‍🏫 Teacher Records</h3>
+          <p>Manage and delete teacher accounts.</p>
+          <button class="btn danger">Delete Teacher</button>
+        </section>
 
-      <section class="card">
-        <h2>📚 Class Attendance</h2>
-        <p>View class attendance reports.</p>
-        <button class="btn primary">View Attendance</button>
-      </section>
+        <section class="card accent-purple">
+          <h3>📚 Class Attendance</h3>
+          <p>View class attendance reports.</p>
+          <button class="btn primary">View Attendance</button>
+        </section>
+      </div>
     </main>
   </div>
 </body>
