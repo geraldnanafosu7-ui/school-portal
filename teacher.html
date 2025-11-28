@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Teacher Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <header class="header">
+    <h1>Teacher Dashboard</h1>
+    <div class="theme-toggle">
+      <button class="theme-btn" data-theme="default">🌞</button>
+      <button class="theme-btn" data-theme="dark">🌙</button>
+      <button class="theme-btn" data-theme="colorful">🎨</button>
+    </div>
+  </header>
+
+  <main class="card">
+    <h2>📖 Teacher Daily Summaries</h2>
+    <textarea id="summaryInput" placeholder="Teacher: Write summary of today’s lesson..."></textarea>
+    <button id="submitSummaryBtn" class="btn primary">Submit Summary</button>
+    <div id="summaryList"></div>
+
+    <h2>📰 Announcements</h2>
+    <div id="teacherAnnouncements"></div>
+
+    <h2>👨‍👩‍👧 Class Numbers</h2>
+    <button class="btn primary">Update Class</button>
+
+    <h2>📝 Lesson Notes</h2>
+    <button class="btn primary">Submit Notes</button>
+
+    <button id="logoutBtn" class="btn danger">🚪 Logout</button>
+  </main>
+</body>
+</html>

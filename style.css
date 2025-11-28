@@ -1,0 +1,51 @@
+body {
+  font-family: system-ui;
+  margin: 0;
+  background: #f7f9ff;
+}
+.hidden { display: none; }
+.header {
+  background: linear-gradient(90deg, #0e2a47, #134b8a);
+  color: #fff;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+}
+.auth-grid {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+.card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  margin: 20px;
+}
+.btn {
+  padding: 10px 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+.btn.primary { background: #0e2a47; color: #fff; }
+.btn.danger { background: #b00020; color: #fff; }
+.toast {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111;
+  color: #fff;
+  padding: 10px;
+  border-radius: 6px;
+}
+body.theme-dark { background: #0b1220; color: #e7ecf5; }
+body.theme-colorful { background: #fff8f3; color: #1b1032; }
+textarea {
+  width: 100%;
+  min-height: 80px;
+  margin-top: 10px;
+}

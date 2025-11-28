@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Headteacher Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <header class="header">
+    <h1>Headteacher Dashboard</h1>
+    <div class="theme-toggle">
+      <button class="theme-btn" data-theme="default">🌞</button>
+      <button class="theme-btn" data-theme="dark">🌙</button>
+      <button class="theme-btn" data-theme="colorful">🎨</button>
+    </div>
+  </header>
+
+  <main class="card">
+    <h2>📢 Headteacher Announcements</h2>
+    <textarea id="announcementInput" placeholder="Head Teacher: Write announcement here..."></textarea>
+    <button id="postAnnouncementBtn" class="btn primary">Post Announcement</button>
+    <div id="announcementList"></div>
+
+    <h2>📖 Lesson Notes</h2>
+    <button class="btn primary">Accept Notes</button>
+
+    <h2>👩‍🏫 Teacher Records</h2>
+    <button class="btn danger">Delete Teacher</button>
+
+    <h2>📚 Class Attendance</h2>
+    <button class="btn primary">View Attendance</button>
+
+    <button id="logoutBtn" class="btn danger">🚪 Logout</button>
+  </main>
+</body>
+</html>
