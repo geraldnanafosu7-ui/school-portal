@@ -1,4 +1,4 @@
-// Utility: toast messages
+// Toast helper
 function toast(msg) {
   const t = document.getElementById("toast");
   if (!t) return alert(msg);
@@ -50,13 +50,13 @@ if (loginForm) {
     const user = users.find(u => u.username.toLowerCase() === username && u.password === password);
 
     if (!user) {
-      return toast("Invalid login details");
+      toast("Invalid login details");
+      return;
     }
 
     localStorage.setItem("currentUser", JSON.stringify(user));
     toast("Login successful!");
 
-    // Redirect by role
     if (user.role === "headteacher") {
       window.location.href = "headteacher.html";
     } else if (user.role === "teacher") {
