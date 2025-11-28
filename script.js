@@ -222,6 +222,109 @@ navItems.forEach(item => {
     }
   });
 });
+// ---------------- TEACHER THEMES ----------------
+document.querySelectorAll(".theme-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.body.className = "theme-" + btn.dataset.theme;
+    localStorage.setItem("theme", btn.dataset.theme);
+  });
+});
+const savedTheme = localStorage.getItem("theme");
+if (savedTheme) document.body.className = "theme-" + savedTheme;
+
+// ---------------- TEACHER LOGOUT ----------------
+const logoutBtn = document.getElementById("logoutBtn");
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", () => {
+    localStorage.removeItem("currentUser");
+    window.location.href = "index.html";
+  });
+}
+
+// ---------------- TEACHER LESSONS ----------------
+const lessonForm = document.getElementById("lessonForm");
+const lessonList = document.getElementById("lessonList");
+
+if (lessonForm) {
+  lessonForm.addEventListener("submit", e => {
+    e.preventDefault();
+    const title = document.getElementById("lessonTitle").value.trim();
+    if (!title) return toast("Lesson title required");
+
+    let lessons = JSON.parse(localStorage.getItem("lessons")) || [];
+    lessons.push(title);
+    localStorage.setItem("lessons", JSON.stringify(lessons));
+
+    const li = document.createElement("li");
+    li.textContent = title;
+    lessonList.appendChild(li);
+
+    lessonForm.reset();
+    toast("Lesson added!");
+  });
+
+  let lessons = JSON.parse(localStorage.getItem("lessons")) || [];
+  lessons.forEach(title => {
+    const li = document.createElement("li");
+    li.textContent = title;
+    lessonList.appendChild(li);
+  });
+}
+
+// ---------------- TEACHER ANNOUNCEMENTS ----------------
+const teacherAnnouncements = document.getElementById("teacherAnnouncements");
+if (teacherAnnouncements) {
+  let announcements = JSON.parse(localStorage.getItem("announcements")) || [];
+  announcements.forEach(text => {
+    const div = document.createElement("div");
+    div.textContent = text;
+    teacherAnnouncements.appendChild(div);
+  });
+}
+
+// ---------------- TEACHER SETTINGS ----------------
+const saveTeacherSettingsBtn = document.getElementById("saveTeacherSettingsBtn");
+if (saveTeacherSettingsBtn) {
+  saveTeacherSettingsBtn.addEventListener("click", () => {
+    let user = JSON.parse(localStorage.getItem("currentUser"));
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    const newPass = document.getElementById("newPassword").value.trim();
+    const confirmPass = document.getElementById("confirmPassword").value.trim();
+
+    if (newPass && newPass !== confirmPass) {
+      return toast("Passwords do not match");
+    }
+
+    if (newPass) user.password = newPass;
+
+    users = users.map(u => u.username === user.username ? user : u);
+    localStorage.setItem("users", JSON.stringify(users));
+    localStorage.setItem("currentUser", JSON.stringify(user));
+
+    toast("Settings updated successfully!");
+  });
+}
+
+// ---------------- TEACHER NAVIGATION ----------------
+const navItems = document.querySelectorAll(".nav-item");
+const sections = document.querySelectorAll("main section");
+
+navItems.forEach(item => {
+  item.addEventListener("click", () => {
+    navItems.forEach(i => i.classList.remove("active"));
+    item.classList.add("active");
+
+    sections.forEach(sec => sec.classList.add("hidden"));
+
+    const targetId = item.dataset.target;
+    if (targetId) {
+      const targetSection = document.getElementById(targetId);
+      if (targetSection) targetSection.classList.remove("hidden");
+    }
+  });
+});
+
 
 
 
