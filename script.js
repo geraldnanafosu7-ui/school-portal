@@ -1,4 +1,4 @@
-// Utility: show toast messages
+// Utility: toast messages
 function toast(msg) {
   const t = document.getElementById("toast");
   if (!t) return alert(msg);
@@ -47,7 +47,7 @@ if (loginForm) {
     const password = document.getElementById("loginPassword").value.trim();
 
     let users = JSON.parse(localStorage.getItem("users")) || [];
-    const user = users.find(u => u.username === username && u.password === password);
+    const user = users.find(u => u.username.toLowerCase() === username && u.password === password);
 
     if (!user) {
       return toast("Invalid login details");
