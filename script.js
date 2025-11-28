@@ -256,9 +256,3 @@ const sections = document.querySelectorAll("main section");
 
 navItems.forEach(item => {
   item.addEventListener("click", () => {
-    navItems.forEach(i => i.classList.remove("active"));
-    item.classList.add("active");
-
-    sections.forEach(sec => sec.classList.add("hidden"));
-
-    const targetId
