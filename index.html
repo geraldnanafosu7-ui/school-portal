@@ -8,6 +8,7 @@
   <script defer src="script.js"></script>
 </head>
 <body>
+  <!-- Header -->
   <header class="header">
     <h1>🏫 Ansuaa Ababio Methodist Preparatory School</h1>
     <div class="theme-toggle">
@@ -17,36 +18,51 @@
     </div>
   </header>
 
+  <!-- Auth Section -->
   <main class="auth-grid">
     <!-- Login -->
     <section class="card">
       <h2>Login</h2>
-      <form id="loginForm">
-        <input id="loginUsername" type="text" placeholder="Username" required />
-        <input id="loginPassword" type="password" placeholder="Password" required />
+      <form id="loginForm" class="form-modern">
+        <label>Username</label>
+        <input id="loginUsername" type="text" placeholder="Enter username" required />
+        <label>Password</label>
+        <input id="loginPassword" type="password" placeholder="Enter password" required />
         <button type="submit" class="btn primary">Login</button>
       </form>
     </section>
 
     <!-- Sign Up -->
     <section class="card">
-      <h2>Sign Up</h2>
-      <form id="signupForm">
-        <input id="suUsername" type="text" placeholder="Username" required />
-        <input id="suFullName" type="text" placeholder="Full name" required />
-        <input id="suPassword" type="password" placeholder="Password" required />
+      <h2>Create Account</h2>
+      <form id="signupForm" class="form-modern">
+        <label>Username</label>
+        <input id="suUsername" type="text" placeholder="Choose a username" required />
+        <label>Full Name</label>
+        <input id="suFullName" type="text" placeholder="Your full name" required />
+        <label>Password</label>
+        <input id="suPassword" type="password" placeholder="Create a password" required />
+        <label>Phone</label>
         <input id="suPhone" type="tel" placeholder="Phone number" required />
+        <label>Email</label>
         <input id="suEmail" type="email" placeholder="Email address" required />
+        <label>Role</label>
         <select id="suRole" required>
           <option value="">Select role</option>
           <option value="headteacher">Headteacher</option>
           <option value="teacher">Teacher</option>
         </select>
-        <button type="submit" class="btn primary">Sign up</button>
+        <button type="submit" class="btn primary">Sign Up</button>
       </form>
     </section>
   </main>
 
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2025 Ansuaa Ababio Methodist Preparatory School | "Knowledge, Discipline, Excellence"</p>
+  </footer>
+
+  <!-- Toast -->
   <div id="toast" class="toast hidden"></div>
 </body>
 </html>
