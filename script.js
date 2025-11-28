@@ -80,3 +80,86 @@ if (loginForm) {
     }
   });
 }
+// ---------------- THEMES ----------------
+document.querySelectorAll(".theme-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.body.className = "theme-" + btn.dataset.theme;
+    localStorage.setItem("theme", btn.dataset.theme);
+  });
+});
+const savedTheme = localStorage.getItem("theme");
+if (savedTheme) document.body.className = "theme-" + savedTheme;
+
+// ---------------- LOGOUT ----------------
+const logoutBtn = document.getElementById("logoutBtn");
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", () => {
+    localStorage.removeItem("currentUser");
+    window.location.href = "index.html"; // back to login page
+  });
+}
+
+// ---------------- ANNOUNCEMENTS ----------------
+const postBtn = document.getElementById("postAnnouncementBtn");
+const announcementInput = document.getElementById("announcementInput");
+const announcementList = document.getElementById("announcementList");
+
+if (postBtn) {
+  postBtn.addEventListener("click", () => {
+    const text = announcementInput.value.trim();
+    if (!text) return toast("Please write an announcement");
+
+    let announcements = JSON.parse(localStorage.getItem("announcements")) || [];
+    announcements.push(text);
+    localStorage.setItem("announcements", JSON.stringify(announcements));
+
+    const div = document.createElement("div");
+    div.textContent = text;
+    announcementList.appendChild(div);
+
+    announcementInput.value = "";
+    toast("Announcement posted!");
+  });
+
+  // Load saved announcements
+  let announcements = JSON.parse(localStorage.getItem("announcements")) || [];
+  announcements.forEach(text => {
+    const div = document.createElement("div");
+    div.textContent = text;
+    announcementList.appendChild(div);
+  });
+}
+
+// ---------------- SETTINGS ----------------
+const saveSettingsBtn = document.getElementById("saveSettingsBtn");
+if (saveSettingsBtn) {
+  saveSettingsBtn.addEventListener("click", () => {
+    let user = JSON.parse(localStorage.getItem("currentUser"));
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    const oldPass = document.getElementById("oldPassword").value.trim();
+    const newPass = document.getElementById("newPassword").value.trim();
+    const confirmPass = document.getElementById("confirmPassword").value.trim();
+    const newEmail = document.getElementById("updateEmail").value.trim();
+    const newPhone = document.getElementById("updatePhone").value.trim();
+
+    if (newPass && newPass !== confirmPass) {
+      return toast("Passwords do not match");
+    }
+    if (oldPass && oldPass !== user.password) {
+      return toast("Old password incorrect");
+    }
+
+    if (newPass) user.password = newPass;
+    if (newEmail) user.email = newEmail;
+    if (newPhone) user.phone = newPhone;
+
+    // Update users array
+    users = users.map(u => u.username === user.username ? user : u);
+    localStorage.setItem("users", JSON.stringify(users));
+    localStorage.setItem("currentUser", JSON.stringify(user));
+
+    toast("Settings updated successfully!");
+  });
+}
+
