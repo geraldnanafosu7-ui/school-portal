@@ -26,7 +26,15 @@ if (signupForm) {
       return toast("Please fill all required fields");
     }
 
-    let users = JSON.parse(localStorage.getItem("users")) || [];
+    // Safe load users
+    let users = [];
+    try {
+      const stored = JSON.parse(localStorage.getItem("users"));
+      if (Array.isArray(stored)) users = stored;
+    } catch (e) {
+      users = [];
+    }
+
     const exists = users.find(u => u.username === user.username);
     if (exists) return toast("Username already exists");
 
@@ -46,7 +54,15 @@ if (loginForm) {
     const username = document.getElementById("loginUsername").value.trim().toLowerCase();
     const password = document.getElementById("loginPassword").value.trim();
 
-    let users = JSON.parse(localStorage.getItem("users")) || [];
+    // Safe load users
+    let users = [];
+    try {
+      const stored = JSON.parse(localStorage.getItem("users"));
+      if (Array.isArray(stored)) users = stored;
+    } catch (e) {
+      users = [];
+    }
+
     const user = users.find(u => u.username.toLowerCase() === username && u.password === password);
 
     if (!user) {
