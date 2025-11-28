@@ -184,5 +184,45 @@ if (saveSettingsBtn) {
     toast("Settings updated successfully!");
   });
 }
+const acceptNotesBtn = document.querySelector(".accent-green .btn");
+if (acceptNotesBtn) {
+  acceptNotesBtn.addEventListener("click", () => {
+    toast("Lesson notes accepted!");
+  });
+}
+const deleteTeacherBtn = document.querySelector(".accent-orange .btn");
+if (deleteTeacherBtn) {
+  deleteTeacherBtn.addEventListener("click", () => {
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    users = users.filter(u => u.role !== "teacher");
+    localStorage.setItem("users", JSON.stringify(users));
+    toast("All teacher accounts deleted!");
+  });
+}
+const viewAttendanceBtn = document.querySelector(".accent-purple .btn");
+if (viewAttendanceBtn) {
+  viewAttendanceBtn.addEventListener("click", () => {
+    toast("Class attendance report loaded!");
+  });
+}
+const navItems = document.querySelectorAll(".nav-item");
+const sections = document.querySelectorAll("main section");
+
+navItems.forEach(item => {
+  item.addEventListener("click", () => {
+    navItems.forEach(i => i.classList.remove("active"));
+    item.classList.add("active");
+
+    sections.forEach(sec => sec.classList.add("hidden"));
+
+    const targetId = item.dataset.target;
+    if (targetId) {
+      const targetSection = document.getElementById(targetId);
+      if (targetSection) targetSection.classList.remove("hidden");
+    }
+  });
+});
+
+
 
 
