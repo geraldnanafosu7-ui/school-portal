@@ -54,15 +54,24 @@ const loginForm = document.getElementById("loginForm");
 if (loginForm) {
   loginForm.addEventListener("submit", e => {
     e.preventDefault();
-    const username = document.getElementById("loginUsername").value.trim();
+    const username = document.getElementById("loginUsername").value.trim().toLowerCase();
     const password = document.getElementById("loginPassword").value.trim();
 
+    // Get all users from localStorage
     let users = JSON.parse(localStorage.getItem("users")) || [];
-    const user = users.find(u => u.username === username && u.password === password);
 
-    if (!user) return toast("Invalid login details");
+    // Match ignoring case for username
+    const user = users.find(u => u.username.toLowerCase() === username && u.password === password);
 
+    if (!user) {
+      toast("Invalid login details");
+      return;
+    }
+
+    // Save logged-in user
     localStorage.setItem("currentUser", JSON.stringify(user));
+
+    // Redirect by role
     if (user.role === "headteacher") {
       window.location.href = "headteacher.html";
     } else if (user.role === "teacher") {
@@ -70,6 +79,7 @@ if (loginForm) {
     }
   });
 }
+
 
 
 // Logout (on dashboards)
@@ -157,5 +167,6 @@ if (saveSettingsBtn) {
     toast("Settings updated");
   });
 }
+
 
 
