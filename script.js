@@ -250,7 +250,8 @@ if (saveTeacherSettingsBtn) {
   });
 }
 
-// ---------------- NAVIGATION ----------------
+
+  // ---------------- NAVIGATION ----------------
 const navItems = document.querySelectorAll(".nav-item");
 const sections = document.querySelectorAll("main section");
 
@@ -273,3 +274,5 @@ if (navItems.length && sections.length) {
     });
   });
 }
+
+
