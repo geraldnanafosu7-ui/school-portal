@@ -9,7 +9,7 @@
 </head>
 <body>
   <header class="header">
-    <h1>Teacher Dashboard</h1>
+    <h1>🏫 Ansuaa Ababio Methodist Preparatory School</h1>
     <div class="theme-toggle">
       <button class="theme-btn" data-theme="default">🌞</button>
       <button class="theme-btn" data-theme="dark">🌙</button>
@@ -17,22 +17,70 @@
     </div>
   </header>
 
-  <main class="card">
-    <h2>📖 Teacher Daily Summaries</h2>
-    <textarea id="summaryInput" placeholder="Teacher: Write summary of today’s lesson..."></textarea>
-    <button id="submitSummaryBtn" class="btn primary">Submit Summary</button>
-    <div id="summaryList"></div>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-title">👩‍🏫 Teacher Panel</div>
+      <button class="nav-item active">📊 Dashboard</button>
+      <button class="nav-item">📝 Summaries</button>
+      <button class="nav-item">📚 Classes</button>
+      <button class="nav-item">📰 Announcements</button>
+      <button class="nav-item">⚙️ Settings</button>
+      <button id="logoutBtn" class="nav-item danger">🚪 Logout</button>
+    </aside>
 
-    <h2>📰 Announcements</h2>
-    <div id="teacherAnnouncements"></div>
+    <main class="main">
+      <h2 class="welcome">Welcome, Teacher 👋</h2>
 
-    <h2>👨‍👩‍👧 Class Numbers</h2>
-    <button class="btn primary">Update Class</button>
+      <!-- Dashboard Grid -->
+      <div class="grid">
+        <section class="card accent-blue">
+          <h3>📖 Daily Summaries</h3>
+          <textarea id="summaryInput" placeholder="Write summary of today’s lesson..."></textarea>
+          <button id="submitSummaryBtn" class="btn primary">Submit Summary</button>
+          <div id="summaryList"></div>
+        </section>
 
-    <h2>📝 Lesson Notes</h2>
-    <button class="btn primary">Submit Notes</button>
+        <section class="card accent-green">
+          <h3>📰 Announcements</h3>
+          <div id="teacherAnnouncements"></div>
+        </section>
 
-    <button id="logoutBtn" class="btn danger">🚪 Logout</button>
-  </main>
+        <section class="card accent-orange">
+          <h3>👨‍👩‍👧 Class Numbers</h3>
+          <p>Update number of boys and girls.</p>
+          <button class="btn primary">Update Class</button>
+        </section>
+
+        <section class="card accent-purple">
+          <h3>📝 Lesson Notes</h3>
+          <p>Submit your lesson notes.</p>
+          <button class="btn primary">Submit Notes</button>
+        </section>
+      </div>
+
+      <!-- Settings Section -->
+      <section id="settingsSection" class="card hidden">
+        <h3>⚙️ Settings</h3>
+
+        <label>Profile Picture</label>
+        <input type="file" accept="image/*" />
+
+        <label>Change Password</label>
+        <input type="password" id="oldPassword" placeholder="Old password" />
+        <input type="password" id="newPassword" placeholder="New password" />
+        <input type="password" id="confirmPassword" placeholder="Confirm new password" />
+
+        <label>Update Email</label>
+        <input type="email" id="updateEmail" placeholder="New email address" />
+
+        <label>Update Phone</label>
+        <input type="tel" id="updatePhone" placeholder="New phone number" />
+
+        <button class="btn primary" id="saveSettingsBtn">Save Changes</button>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
 </body>
 </html>
