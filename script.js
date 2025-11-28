@@ -116,3 +116,47 @@ if (teacherAnnouncements) {
     teacherAnnouncements.appendChild(item);
   });
 }
+// Sidebar navigation
+document.querySelectorAll(".nav-item").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".nav-item").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+
+    const label = btn.textContent.trim();
+    document.querySelectorAll(".grid, #settingsSection").forEach(section => section.classList.add("hidden"));
+
+    if (label.includes("Dashboard")) {
+      document.querySelector(".grid").classList.remove("hidden");
+    } else if (label.includes("Settings")) {
+      document.getElementById("settingsSection").classList.remove("hidden");
+    } else {
+      toast(`${label} section coming soon`);
+    }
+  });
+});
+
+// Save Settings
+const saveSettingsBtn = document.getElementById("saveSettingsBtn");
+if (saveSettingsBtn) {
+  saveSettingsBtn.addEventListener("click", () => {
+    const email = document.getElementById("updateEmail").value.trim();
+    const phone = document.getElementById("updatePhone").value.trim();
+    const oldPass = document.getElementById("oldPassword").value.trim();
+    const newPass = document.getElementById("newPassword").value.trim();
+    const confirmPass = document.getElementById("confirmPassword").value.trim();
+
+    let user = JSON.parse(localStorage.getItem("currentUser"));
+    if (!user) return toast("No user found");
+
+    if (oldPass && oldPass !== user.password) return toast("Old password incorrect");
+    if (newPass && newPass !== confirmPass) return toast("Passwords do not match");
+
+    if (newPass) user.password = newPass;
+    if (email) user.email = email;
+    if (phone) user.phone = phone;
+
+    localStorage.setItem("currentUser", JSON.stringify(user));
+    toast("Settings updated");
+  });
+}
+
