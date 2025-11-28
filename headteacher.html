@@ -30,6 +30,7 @@
 
     <main class="main">
       <h2 class="welcome">Welcome, Headteacher Gerald 👋</h2>
+
       <div class="grid">
         <section class="card accent-blue">
           <h3>📢 Announcements</h3>
@@ -56,7 +57,29 @@
           <button class="btn primary">View Attendance</button>
         </section>
       </div>
+
+      <section id="settingsSection" class="card hidden">
+        <h3>⚙️ Settings</h3>
+
+        <label>Profile Picture</label>
+        <input type="file" accept="image/*" />
+
+        <label>Change Password</label>
+        <input type="password" id="oldPassword" placeholder="Old password" />
+        <input type="password" id="newPassword" placeholder="New password" />
+        <input type="password" id="confirmPassword" placeholder="Confirm new password" />
+
+        <label>Update Email</label>
+        <input type="email" id="updateEmail" placeholder="New email address" />
+
+        <label>Update Phone</label>
+        <input type="tel" id="updatePhone" placeholder="New phone number" />
+
+        <button class="btn primary" id="saveSettingsBtn">Save Changes</button>
+      </section>
     </main>
   </div>
+
+  <div id="toast" class="toast hidden"></div>
 </body>
 </html>
