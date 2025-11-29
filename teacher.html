@@ -49,6 +49,7 @@
           <h3>📖 Daily Summaries</h3>
           <textarea id="summaryInput" placeholder="Write summary of today’s lesson..."></textarea>
           <button id="submitSummaryBtn" class="btn primary">Submit Summary</button>
+          <button id="downloadSummariesBtn" class="btn">⬇️ Download Summaries</button>
           <div id="summaryList"></div>
         </section>
 
@@ -69,6 +70,7 @@
           <h3>📝 Lesson Notes</h3>
           <textarea id="notesInput" placeholder="Submit your lesson notes"></textarea>
           <button id="submitNotesBtn" class="btn primary">Submit Notes</button>
+          <button id="downloadNotesBtn" class="btn">⬇️ Download Notes</button>
           <ul id="notesList"></ul>
         </section>
       </section>
@@ -93,30 +95,37 @@
 
       <!-- Settings -->
       <section id="settingsSection" class="card hidden">
-        <h3>⚙️ Settings</h3>
+        <h3>⚙️ Teacher Settings</h3>
         <form class="form-modern">
-          <label>Display Name</label>
-          <input type="text" placeholder="Teacher Name" />
+          <label>Full Name</label>
+          <input type="text" id="updateFullName" placeholder="Teacher Full Name" />
+
+          <label>Username</label>
+          <input type="text" id="updateUsername" placeholder="Teacher Username" disabled />
+
+          <label>Email Address</label>
+          <input type="email" id="updateEmail" placeholder="teacher@school.edu.gh" />
+
+          <label>Phone Number</label>
+          <input type="tel" id="updatePhone" placeholder="+233 24 000 0000" />
 
           <label>Preferred Theme</label>
-          <select>
+          <select id="updateTheme">
             <option value="blue">Blue</option>
             <option value="white">White</option>
             <option value="green">Green</option>
           </select>
 
-          <label>Notification Email</label>
-          <input type="email" placeholder="teacher@school.edu.gh" />
+          <label>Old Password</label>
+          <input type="password" id="oldPassword" placeholder="Enter old password" />
 
-          <label>Phone Number</label>
-          <input type="tel" placeholder="+233 24 000 0000" />
+          <label>New Password</label>
+          <input type="password" id="newPassword" placeholder="Enter new password" />
 
-          <label>Change Password</label>
-          <input type="password" placeholder="Old password" />
-          <input type="password" placeholder="New password" />
-          <input type="password" placeholder="Confirm new password" />
+          <label>Confirm New Password</label>
+          <input type="password" id="confirmPassword" placeholder="Confirm new password" />
 
-          <button class="btn primary" type="submit">Save Changes</button>
+          <button class="btn primary" id="saveSettingsBtn" type="button">Save Changes</button>
         </form>
       </section>
     </main>
