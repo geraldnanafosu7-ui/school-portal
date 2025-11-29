@@ -129,13 +129,11 @@ const teacherRecords = document.getElementById("teacherRecords");
 if (teacherRecords) {
   let users = JSON.parse(localStorage.getItem("users")) || [];
   teacherRecords.innerHTML = "";
-  users
-    .filter(u => u.role === "teacher")
-    .forEach(t => {
-      const div = document.createElement("div");
-      div.textContent = `${t.fullName} (${t.username}) - ${t.email}`;
-      teacherRecords.appendChild(div);
-    });
+  users.filter(u => u.role === "teacher").forEach(t => {
+    const div = document.createElement("div");
+    div.textContent = `${t.fullName} (${t.username}) - ${t.email}`;
+    teacherRecords.appendChild(div);
+  });
 }
 
 const headNotesList = document.getElementById("headNotesList");
@@ -147,6 +145,29 @@ if (headNotesList) {
     li.textContent = note;
     headNotesList.appendChild(li);
   });
+}
+
+// ---------------- HEADTEACHER SUMMARY STATS ----------------
+const statTeachers = document.getElementById("statTeachers");
+const statNotes = document.getElementById("statNotes");
+const statSummaries = document.getElementById("statSummaries");
+const statClass = document.getElementById("statClass");
+
+if (statTeachers) {
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+  statTeachers.textContent = users.filter(u => u.role === "teacher").length;
+}
+if (statNotes) {
+  let notes = JSON.parse(localStorage.getItem("lessonNotes")) || [];
+  statNotes.textContent = notes.length;
+}
+if (statSummaries) {
+  let summaries = JSON.parse(localStorage.getItem("summaries")) || [];
+  statSummaries.textContent = summaries.length;
+}
+if (statClass) {
+  let classData = JSON.parse(localStorage.getItem("classNumbers"));
+  if (classData) statClass.textContent = `${classData.boys} boys, ${classData.girls} girls`;
 }
 
 // ---------------- TEACHER SUMMARIES ----------------
@@ -191,6 +212,7 @@ if (updateClassBtn) {
     const classData = { boys, girls };
     localStorage.setItem("classNumbers", JSON.stringify(classData));
     classDisplay.textContent = `Boys: ${boys}, Girls: ${girls}`;
+    toast("Class numbers updated!");
     toast("Class numbers updated!");
   });
 
@@ -243,6 +265,24 @@ if (teacherAnnouncements) {
   });
 }
 
+// ---------------- TEACHER SUMMARY STATS ----------------
+const mySummaries = document.getElementById("mySummaries");
+const myNotes = document.getElementById("myNotes");
+const myClass = document.getElementById("myClass");
+
+if (mySummaries) {
+  let summaries = JSON.parse(localStorage.getItem("summaries")) || [];
+  mySummaries.textContent = summaries.length;
+}
+if (myNotes) {
+  let notes = JSON.parse(localStorage.getItem("lessonNotes")) || [];
+  myNotes.textContent = notes.length;
+}
+if (myClass) {
+  let classData = JSON.parse(localStorage.getItem("classNumbers"));
+  if (classData) myClass.textContent = `${classData.boys} boys, ${classData.girls} girls`;
+}
+
 // ---------------- NAVIGATION ----------------
 const navItems = document.querySelectorAll(".nav-item");
 const sections = document.querySelectorAll("main section, .main > .grid");
@@ -260,7 +300,6 @@ if (navItems.length && sections.length) {
         const targetSection = document.getElementById(targetId);
         if (targetSection) targetSection.classList.remove("hidden");
       } else {
-        // If a button has no data-target (older HTML), show the dashboard grid
         const dashboardGrid = document.getElementById("dashboardSection");
         if (dashboardGrid) dashboardGrid.classList.remove("hidden");
       }
