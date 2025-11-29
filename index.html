@@ -17,28 +17,30 @@
       apiKey: "AIzaSyAV2lyXiQKKt-fYM1weyNWXsjiHYbX2imc",
       authDomain: "school-portal-ff2ff.firebaseapp.com",
       projectId: "school-portal-ff2ff",
-      storageBucket: "school-portal-ff2ff.appspot.com",
+      storageBucket: "school-portal-ff2ff.appspot.com",   // ✅ fixed
       messagingSenderId: "518827252304",
       appId: "1:518827252304:web:723250d7c188f3e96ecf55",
       measurementId: "G-7VSS3B0TD7"
     };
 
+    // Initialize Firebase (compat)
     firebase.initializeApp(firebaseConfig);
     window.auth = firebase.auth();
     window.db = firebase.firestore();
   </script>
 
+  <!-- Load your main logic -->
   <script defer src="script.js"></script>
 </head>
 <body>
   <header class="header">
-    <h1 style="font-size: 2rem; text-align: center;">🏫 Ansuaa Ababio Methodist Preparatory School</h1>
+    <h1 style="text-align:center;">🏫 Ansuaa Ababio Methodist Preparatory School</h1>
   </header>
 
-  <main style="display: flex; justify-content: center; padding: 40px;">
-    <section class="card" id="loginCard" style="max-width: 360px; width: 100%;">
-      <img src="logo.png" alt="School Logo" style="width: 100px; margin: 0 auto 20px; display: block;" />
-      <h2 style="text-align: center;">Login</h2>
+  <main style="display:flex;justify-content:center;padding:40px;">
+    <section class="card" id="loginCard" style="max-width:360px;width:100%;">
+      <img src="logo.png" alt="School Logo" style="width:100px;margin:0 auto 20px;display:block;" />
+      <h2 style="text-align:center;">Login</h2>
       <form id="loginForm" class="form-modern">
         <label>Email</label>
         <input id="loginUsername" type="email" placeholder="Enter email" required autocomplete="email" />
@@ -46,19 +48,19 @@
         <input id="loginPassword" type="password" placeholder="Enter password" required autocomplete="current-password" />
         <button type="submit" class="btn primary">Login</button>
       </form>
-      <p style="margin-top: 15px; text-align: center;">
+      <p style="margin-top:15px;text-align:center;">
         Don’t have an account?
         <button onclick="document.getElementById('signupCard').classList.remove('hidden')" 
-                style="background: none; border: none; color: #0077cc; cursor: pointer;">
+                style="background:none;border:none;color:#0077cc;cursor:pointer;">
           Create one
         </button>
       </p>
     </section>
   </main>
 
-  <main style="display: flex; justify-content: center;">
-    <section class="card hidden" id="signupCard" style="max-width: 360px; width: 100%;">
-      <h2 style="text-align: center;">Create Account</h2>
+  <main style="display:flex;justify-content:center;">
+    <section class="card hidden" id="signupCard" style="max-width:360px;width:100%;">
+      <h2 style="text-align:center;">Create Account</h2>
       <form id="signupForm" class="form-modern">
         <label>Username</label>
         <input id="suUsername" type="text" placeholder="Choose a username" required autocomplete="username" />
