@@ -24,11 +24,57 @@ body.theme-green { background: #e8f5e9; color: #1b5e20; }
   background: linear-gradient(90deg, #0e2a47, #134b8a);
   color: #fff;
   padding: 15px;
+  text-align: center;
+}
+.header h1 { font-size: 2rem; }
+
+/* ===== LOGIN PAGE ===== */
+.login-page {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #e6f0ff, #f7f9ff);
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
   align-items: center;
 }
-.header h1 { font-size: 1.2rem; }
+
+.login-card {
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  width: 320px;
+  text-align: center;
+  margin-top: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.login-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+}
+
+.login-logo {
+  width: 100px;
+  margin-bottom: 15px;
+}
+
+.small-text {
+  font-size: 0.85rem;
+  margin-top: 10px;
+}
+.link-btn {
+  background: none;
+  border: none;
+  color: #0077cc;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
 
 /* ===== APP LAYOUT ===== */
 .app { display: flex; }
@@ -76,7 +122,7 @@ body.theme-green { background: #e8f5e9; color: #1b5e20; }
 }
 .card h3 { margin-bottom: 10px; }
 
-/* ===== ACCENTS (Ghana branding) ===== */
+/* ===== ACCENTS ===== */
 .accent-blue { border-left: 6px solid #0077cc; }
 .accent-green { border-left: 6px solid #43a047; }
 .accent-orange { border-left: 6px solid #ff8800; }
@@ -171,8 +217,6 @@ textarea {
   font-size: 0.9rem;
 }
 .attendance-table th, .attendance-table td {
-  border: 1px solid
-  .attendance-table th, .attendance-table td {
   border: 1px solid #ccc;
   padding: 8px;
   text-align: center;
