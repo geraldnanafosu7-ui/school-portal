@@ -88,7 +88,9 @@ if (postBtn) {
     announcementInput.value = "";
     toast("Announcement posted!");
   });
+
   let announcements = JSON.parse(localStorage.getItem("announcements")) || [];
+  announcementList.innerHTML = "";
   announcements.forEach(text => {
     const div = document.createElement("div");
     div.textContent = text;
@@ -107,35 +109,44 @@ if (saveSettingsBtn) {
     const confirmPass = document.getElementById("confirmPassword")?.value.trim();
     const newEmail = document.getElementById("updateEmail")?.value.trim();
     const newPhone = document.getElementById("updatePhone")?.value.trim();
+
     if (newPass && newPass !== confirmPass) return toast("Passwords do not match");
     if (oldPass && oldPass !== user.password) return toast("Old password incorrect");
+
     if (newPass) user.password = newPass;
     if (newEmail) user.email = newEmail;
     if (newPhone) user.phone = newPhone;
-    users = users.map(u => u.username === user.username ? user : u);
+
+    users = users.map(u => (u.username === user.username ? user : u));
     localStorage.setItem("users", JSON.stringify(users));
     localStorage.setItem("currentUser", JSON.stringify(user));
     toast("Settings updated successfully!");
   });
 }
 
-// ---------------- HEADTEACHER DASHBOARD BUTTONS ----------------
-const acceptNotesBtn = document.querySelector(".accent-green .btn");
-if (acceptNotesBtn) {
-  acceptNotesBtn.addEventListener("click", () => toast("Lesson notes accepted!"));
+// ---------------- HEADTEACHER DASHBOARD DATA ----------------
+const teacherRecords = document.getElementById("teacherRecords");
+if (teacherRecords) {
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+  teacherRecords.innerHTML = "";
+  users
+    .filter(u => u.role === "teacher")
+    .forEach(t => {
+      const div = document.createElement("div");
+      div.textContent = `${t.fullName} (${t.username}) - ${t.email}`;
+      teacherRecords.appendChild(div);
+    });
 }
-const deleteTeacherBtn = document.querySelector(".accent-orange .btn");
-if (deleteTeacherBtn) {
-  deleteTeacherBtn.addEventListener("click", () => {
-    let users = JSON.parse(localStorage.getItem("users")) || [];
-    users = users.filter(u => u.role !== "teacher");
-    localStorage.setItem("users", JSON.stringify(users));
-    toast("All teacher accounts deleted!");
+
+const headNotesList = document.getElementById("headNotesList");
+if (headNotesList) {
+  let notes = JSON.parse(localStorage.getItem("lessonNotes")) || [];
+  headNotesList.innerHTML = "";
+  notes.forEach(note => {
+    const li = document.createElement("li");
+    li.textContent = note;
+    headNotesList.appendChild(li);
   });
-}
-const viewAttendanceBtn = document.querySelector(".accent-purple .btn");
-if (viewAttendanceBtn) {
-  viewAttendanceBtn.addEventListener("click", () => toast("Class attendance report loaded!"));
 }
 
 // ---------------- TEACHER SUMMARIES ----------------
@@ -156,7 +167,9 @@ if (submitSummaryBtn) {
     summaryInput.value = "";
     toast("Summary submitted!");
   });
+
   let summaries = JSON.parse(localStorage.getItem("summaries")) || [];
+  summaryList.innerHTML = "";
   summaries.forEach(text => {
     const div = document.createElement("div");
     div.textContent = text;
@@ -172,16 +185,19 @@ const classDisplay = document.getElementById("classDisplay");
 
 if (updateClassBtn) {
   updateClassBtn.addEventListener("click", () => {
-    const boys = parseInt(boysInput.value.trim());
-    const girls = parseInt(girlsInput.value.trim());
+    const boys = parseInt(boysInput.value.trim(), 10);
+    const girls = parseInt(girlsInput.value.trim(), 10);
     if (isNaN(boys) || isNaN(girls)) return toast("Enter valid numbers");
     const classData = { boys, girls };
     localStorage.setItem("classNumbers", JSON.stringify(classData));
     classDisplay.textContent = `Boys: ${boys}, Girls: ${girls}`;
     toast("Class numbers updated!");
   });
+
   const saved = JSON.parse(localStorage.getItem("classNumbers"));
-  if (saved) classDisplay.textContent = `Boys: ${saved.boys}, Girls: ${saved.girls}`;
+  if (saved && classDisplay) {
+    classDisplay.textContent = `Boys: ${saved.boys}, Girls: ${saved.girls}`;
+  }
 }
 
 // ---------------- TEACHER LESSON NOTES ----------------
@@ -207,6 +223,7 @@ if (submitNotesBtn) {
   });
 
   let notes = JSON.parse(localStorage.getItem("lessonNotes")) || [];
+  notesList.innerHTML = "";
   notes.forEach(note => {
     const li = document.createElement("li");
     li.textContent = note;
@@ -214,25 +231,38 @@ if (submitNotesBtn) {
   });
 }
 
+// ---------------- TEACHER ANNOUNCEMENTS (SYNC FROM HEADTEACHER) ----------------
+const teacherAnnouncements = document.getElementById("teacherAnnouncements");
+if (teacherAnnouncements) {
+  let announcements = JSON.parse(localStorage.getItem("announcements")) || [];
+  teacherAnnouncements.innerHTML = "";
+  announcements.forEach(text => {
+    const div = document.createElement("div");
+    div.textContent = text;
+    teacherAnnouncements.appendChild(div);
+  });
+}
+
 // ---------------- NAVIGATION ----------------
 const navItems = document.querySelectorAll(".nav-item");
-const sections = document.querySelectorAll("main section");
+const sections = document.querySelectorAll("main section, .main > .grid");
 
 if (navItems.length && sections.length) {
   navItems.forEach(item => {
     item.addEventListener("click", () => {
-      // Remove active class from all
       navItems.forEach(i => i.classList.remove("active"));
       item.classList.add("active");
 
-      // Hide all sections
       sections.forEach(sec => sec.classList.add("hidden"));
 
-      // Show the target section
       const targetId = item.dataset.target;
       if (targetId) {
         const targetSection = document.getElementById(targetId);
         if (targetSection) targetSection.classList.remove("hidden");
+      } else {
+        // If a button has no data-target (older HTML), show the dashboard grid
+        const dashboardGrid = document.getElementById("dashboardSection");
+        if (dashboardGrid) dashboardGrid.classList.remove("hidden");
       }
     });
   });
