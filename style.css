@@ -171,6 +171,8 @@ textarea {
   font-size: 0.9rem;
 }
 .attendance-table th, .attendance-table td {
+  border: 1px solid
+  .attendance-table th, .attendance-table td {
   border: 1px solid #ccc;
   padding: 8px;
   text-align: center;
