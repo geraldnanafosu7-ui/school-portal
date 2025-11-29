@@ -232,6 +232,7 @@ if (viewAttendanceBtn && attendanceReport) {
     attendanceReport.innerHTML = html;
   });
 }
+
 // ---------------- SETTINGS ----------------
 const saveSettingsBtn = document.getElementById("saveSettingsBtn");
 if (saveSettingsBtn) {
@@ -430,4 +431,3 @@ if (downloadNotesBtn) {
     }
   });
 }
-
