@@ -70,28 +70,21 @@
         </section>
       </section>
 
-      <!-- Teachers -->
-      <section id="teachersSection" class="card hidden">
-        <h3>👩‍🏫 Teachers</h3>
-        <p>Manage teacher accounts here.</p>
-      </section>
-
-      <!-- Classes -->
-      <section id="classesSection" class="card hidden">
-        <h3>📚 Classes</h3>
-        <p>View and manage classes here.</p>
-      </section>
-
-      <!-- News -->
-      <section id="newsSection" class="card hidden">
-        <h3>📰 News</h3>
-        <p>Post and manage school news here.</p>
-      </section>
-
       <!-- Settings -->
       <section id="settingsSection" class="card hidden">
         <h3>⚙️ Settings</h3>
-        <!-- Settings form already good -->
+        <label>Change Password</label>
+        <input type="password" id="oldPassword" placeholder="Old password" />
+        <input type="password" id="newPassword" placeholder="New password" />
+        <input type="password" id="confirmPassword" placeholder="Confirm new password" />
+
+        <label>Update Email</label>
+        <input type="email" id="updateEmail" placeholder="New email address" />
+
+        <label>Update Phone</label>
+        <input type="tel" id="updatePhone" placeholder="New phone number" />
+
+        <button class="btn primary" id="saveSettingsBtn">Save Changes</button>
       </section>
     </main>
   </div>
