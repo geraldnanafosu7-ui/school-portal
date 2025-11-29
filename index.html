@@ -28,14 +28,14 @@
 
   <script defer src="script.js"></script>
 </head>
-<body>
+<body class="login-page">
   <header class="header">
-    <h1>🏫 Ansuaa Ababio Methodist Preparatory School</h1>
+    <h1 style="font-size:2rem;text-align:center;width:100%;">🏫 Ansuaa Ababio Methodist Preparatory School</h1>
   </header>
 
-  <main style="display:flex;justify-content:center;padding:40px;">
-    <section class="card" id="loginCard" style="max-width:360px;width:100%;">
-      <img src="logo.png" alt="School Logo" style="width:100px;margin:0 auto 20px;display:block;" />
+  <main class="login-container">
+    <section class="card" id="loginCard">
+      <img src="logo.png" alt="School Logo" class="login-logo" />
       <h2 style="text-align:center;">Login</h2>
       <form id="loginForm" class="form-modern">
         <label>Email</label>
@@ -43,17 +43,17 @@
         <label>Password</label>
         <input id="loginPassword" type="password" required />
         <button type="submit" class="btn primary">Login</button>
+        <p style="margin-top:10px;text-align:center;">
+          <a href="#" id="forgotPasswordLink">Forgot password?</a>
+        </p>
+        <p style="margin-top:10px;text-align:center;">
+          Don’t have an account? 
+          <button type="button" id="showSignupBtn" class="link-btn">Sign up</button>
+        </p>
       </form>
-      <p style="margin-top:15px;text-align:center;">
-        Don’t have an account?
-        <button onclick="document.getElementById('signupCard').classList.remove('hidden')" 
-                style="background:none;border:none;color:#0077cc;cursor:pointer;">
-          Create one
-        </button>
-      </p>
     </section>
 
-    <section class="card hidden" id="signupCard" style="max-width:360px;width:100%;">
+    <section class="card hidden" id="signupCard">
       <h2 style="text-align:center;">Create Account</h2>
       <form id="signupForm" class="form-modern">
         <label>Username</label>
