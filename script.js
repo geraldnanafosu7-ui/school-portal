@@ -63,6 +63,7 @@ const themeOptions = document.getElementById("themeOptions");
 
 if (themeToggleBtn) {
   themeToggleBtn.addEventListener("click", () => {
+    if (!themeOptions) return;
     themeOptions.classList.toggle("hidden");
   });
 }
@@ -92,7 +93,7 @@ const postBtn = document.getElementById("postAnnouncementBtn");
 const announcementInput = document.getElementById("announcementInput");
 const announcementList = document.getElementById("announcementList");
 
-if (postBtn) {
+if (postBtn && announcementInput && announcementList) {
   postBtn.addEventListener("click", () => {
     const text = announcementInput.value.trim();
     if (!text) return toast("Please write an announcement");
@@ -115,29 +116,43 @@ if (postBtn) {
   });
 }
 
-// ---------------- HEADTEACHER SETTINGS ----------------
+// ---------------- HEADTEACHER SETTINGS (REAL) ----------------
 const saveSettingsBtn = document.getElementById("saveSettingsBtn");
 if (saveSettingsBtn) {
   saveSettingsBtn.addEventListener("click", () => {
     let user = JSON.parse(localStorage.getItem("currentUser"));
     let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    if (!user) return toast("No user logged in");
+
     const oldPass = document.getElementById("oldPassword")?.value.trim();
     const newPass = document.getElementById("newPassword")?.value.trim();
     const confirmPass = document.getElementById("confirmPassword")?.value.trim();
     const newEmail = document.getElementById("updateEmail")?.value.trim();
     const newPhone = document.getElementById("updatePhone")?.value.trim();
+    const newFullName = document.getElementById("updateFullName")?.value.trim();
+    const newTheme = document.getElementById("updateTheme")?.value;
 
     if (newPass && newPass !== confirmPass) return toast("Passwords do not match");
-    if (oldPass && oldPass !== user.password) return toast("Old password incorrect");
+    if (newPass && oldPass !== user.password) return toast("Old password incorrect");
 
     if (newPass) user.password = newPass;
     if (newEmail) user.email = newEmail;
     if (newPhone) user.phone = newPhone;
+    if (newFullName) user.fullName = newFullName;
+    if (newTheme) {
+      document.body.className = "theme-" + newTheme;
+      localStorage.setItem("theme", newTheme);
+    }
 
     users = users.map(u => (u.username === user.username ? user : u));
     localStorage.setItem("users", JSON.stringify(users));
     localStorage.setItem("currentUser", JSON.stringify(user));
     toast("Settings updated successfully!");
+
+    // Refresh greeting if present
+    const nameEl = document.getElementById("userDisplayName");
+    if (nameEl) nameEl.textContent = user.fullName || user.username;
   });
 }
 
@@ -148,7 +163,7 @@ if (teacherRecords) {
   teacherRecords.innerHTML = "";
   users.filter(u => u.role === "teacher").forEach(t => {
     const div = document.createElement("div");
-    div.textContent = `${t.fullName} (${t.username}) - ${t.email}`;
+    div.textContent = `${t.fullName || t.username} (${t.username}) - ${t.email || "no email"}`;
     teacherRecords.appendChild(div);
   });
 }
@@ -184,7 +199,20 @@ if (statSummaries) {
 }
 if (statClass) {
   let classData = JSON.parse(localStorage.getItem("classNumbers"));
-  if (classData) statClass.textContent = `${classData.boys} boys, ${classData.girls} girls`;
+  statClass.textContent = classData ? `${classData.boys} boys, ${classData.girls} girls` : "0 boys, 0 girls";
+}
+
+// ---------------- HEADTEACHER VIEW ATTENDANCE ----------------
+const viewAttendanceBtn = document.getElementById("viewAttendanceBtn");
+const attendanceReport = document.getElementById("attendanceReport");
+
+if (viewAttendanceBtn && attendanceReport) {
+  viewAttendanceBtn.addEventListener("click", () => {
+    let classData = JSON.parse(localStorage.getItem("classNumbers"));
+    attendanceReport.innerHTML = classData
+      ? `<p>📋 Attendance Report</p><p>Boys: ${classData.boys}</p><p>Girls: ${classData.girls}</p>`
+      : "No attendance data available.";
+  });
 }
 
 // ---------------- TEACHER SUMMARIES ----------------
@@ -192,7 +220,7 @@ const summaryInput = document.getElementById("summaryInput");
 const submitSummaryBtn = document.getElementById("submitSummaryBtn");
 const summaryList = document.getElementById("summaryList");
 
-if (submitSummaryBtn) {
+if (submitSummaryBtn && summaryInput && summaryList) {
   submitSummaryBtn.addEventListener("click", () => {
     const text = summaryInput.value.trim();
     if (!text) return toast("Please write a summary");
@@ -221,7 +249,7 @@ const girlsInput = document.getElementById("girlsInput");
 const updateClassBtn = document.getElementById("updateClassBtn");
 const classDisplay = document.getElementById("classDisplay");
 
-if (updateClassBtn) {
+if (updateClassBtn && boysInput && girlsInput && classDisplay) {
   updateClassBtn.addEventListener("click", () => {
     const boys = parseInt(boysInput.value.trim(), 10);
     const girls = parseInt(girlsInput.value.trim(), 10);
@@ -239,9 +267,7 @@ if (updateClassBtn) {
   });
 
   const saved = JSON.parse(localStorage.getItem("classNumbers"));
-  if (saved && classDisplay) {
-    classDisplay.textContent = `Boys: ${saved.boys}, Girls: ${saved.girls}`;
-  }
+  if (saved) classDisplay.textContent = `Boys: ${saved.boys}, Girls: ${saved.girls}`;
 }
 
 // ---------------- TEACHER LESSON NOTES ----------------
@@ -249,7 +275,7 @@ const notesInput = document.getElementById("notesInput");
 const submitNotesBtn = document.getElementById("submitNotesBtn");
 const notesList = document.getElementById("notesList");
 
-if (submitNotesBtn) {
+if (submitNotesBtn && notesInput && notesList) {
   submitNotesBtn.addEventListener("click", () => {
     const note = notesInput.value.trim();
     if (!note) return toast("Please enter your notes");
@@ -306,7 +332,7 @@ if (myNotes) {
 }
 if (myClass) {
   let classData = JSON.parse(localStorage.getItem("classNumbers"));
-  if (classData) myClass.textContent = `${classData.boys} boys, ${classData.girls} girls`;
+  myClass.textContent = classData ? `${classData.boys} boys, ${classData.girls} girls` : "0 boys, 0 girls";
 }
 
 // ---------------- NAVIGATION ----------------
@@ -334,4 +360,8 @@ if (navItems.length && sections.length) {
       }
     });
   });
+
+  // Ensure dashboard visible on initial load
+  const defaultDashboard = document.getElementById("dashboardSection");
+  if (defaultDashboard) defaultDashboard.classList.remove("hidden");
 }
