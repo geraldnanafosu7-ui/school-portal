@@ -22,8 +22,7 @@ if (signupForm) {
     };
     if (!user.username || !user.password || !user.role) return toast("Please fill all required fields");
     let users = JSON.parse(localStorage.getItem("users")) || [];
-    const exists = users.find(u => u.username === user.username);
-    if (exists) return toast("Username already exists");
+    if (users.find(u => u.username === user.username)) return toast("Username already exists");
     users.push(user);
     localStorage.setItem("users", JSON.stringify(users));
     toast("Account created successfully! Please log in.");
@@ -51,11 +50,28 @@ if (loginForm) {
   });
 }
 
+// ---------------- USER GREETING ----------------
+const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+const userDisplay = document.getElementById("userDisplayName");
+if (currentUser && userDisplay) {
+  userDisplay.textContent = currentUser.fullName || currentUser.username;
+}
+
 // ---------------- THEMES ----------------
+const themeToggleBtn = document.getElementById("themeToggleBtn");
+const themeOptions = document.getElementById("themeOptions");
+
+if (themeToggleBtn) {
+  themeToggleBtn.addEventListener("click", () => {
+    themeOptions.classList.toggle("hidden");
+  });
+}
+
 document.querySelectorAll(".theme-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     document.body.className = "theme-" + btn.dataset.theme;
     localStorage.setItem("theme", btn.dataset.theme);
+    toast(`Theme changed to ${btn.dataset.theme}`);
   });
 });
 const savedTheme = localStorage.getItem("theme");
@@ -66,7 +82,8 @@ const logoutBtn = document.getElementById("logoutBtn");
 if (logoutBtn) {
   logoutBtn.addEventListener("click", () => {
     localStorage.removeItem("currentUser");
-    window.location.href = "index.html";
+    toast("Logged out!");
+    setTimeout(() => window.location.href = "index.html", 1500);
   });
 }
 
@@ -209,11 +226,16 @@ if (updateClassBtn) {
     const boys = parseInt(boysInput.value.trim(), 10);
     const girls = parseInt(girlsInput.value.trim(), 10);
     if (isNaN(boys) || isNaN(girls)) return toast("Enter valid numbers");
+
     const classData = { boys, girls };
     localStorage.setItem("classNumbers", JSON.stringify(classData));
+
     classDisplay.textContent = `Boys: ${boys}, Girls: ${girls}`;
     toast("Class numbers updated!");
-    toast("Class numbers updated!");
+
+    // update teacher stats if present
+    const myClass = document.getElementById("myClass");
+    if (myClass) myClass.textContent = `${boys} boys, ${girls} girls`;
   });
 
   const saved = JSON.parse(localStorage.getItem("classNumbers"));
@@ -242,6 +264,10 @@ if (submitNotesBtn) {
 
     notesInput.value = "";
     toast("Lesson notes submitted!");
+
+    // update teacher stats if present
+    const myNotes = document.getElementById("myNotes");
+    if (myNotes) myNotes.textContent = notes.length;
   });
 
   let notes = JSON.parse(localStorage.getItem("lessonNotes")) || [];
@@ -290,11 +316,14 @@ const sections = document.querySelectorAll("main section, .main > .grid");
 if (navItems.length && sections.length) {
   navItems.forEach(item => {
     item.addEventListener("click", () => {
+      // remove active highlight
       navItems.forEach(i => i.classList.remove("active"));
       item.classList.add("active");
 
+      // hide all sections
       sections.forEach(sec => sec.classList.add("hidden"));
 
+      // show target section
       const targetId = item.dataset.target;
       if (targetId) {
         const targetSection = document.getElementById(targetId);
