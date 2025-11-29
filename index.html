@@ -6,30 +6,30 @@
   <title>Ansuaa Ababio Portal Login</title>
   <link rel="stylesheet" href="style.css" />
 
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
+  <!-- ✅ Firebase compat SDKs (for firebase.auth() and firebase.firestore()) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
-  <!-- Your Firebase config and initialization -->
+  <!-- ✅ Firebase config and initialization -->
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyAV2lyXiQKKt-fYM1weyNWXsjiHYbX2imc",
       authDomain: "school-portal-ff2ff.firebaseapp.com",
       projectId: "school-portal-ff2ff",
-      storageBucket: "school-portal-ff2ff.appspot.com", // ✅ corrected here
+      storageBucket: "school-portal-ff2ff.appspot.com",
       messagingSenderId: "518827252304",
       appId: "1:518827252304:web:723250d7c188f3e96ecf55",
       measurementId: "G-7VSS3B0TD7"
     };
 
-    // Initialize Firebase
+    // ✅ Initialize Firebase (compat)
     firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+    window.auth = firebase.auth();
+    window.db = firebase.firestore();
   </script>
 
-  <!-- Your custom script -->
+  <!-- ✅ Your main script -->
   <script defer src="script.js"></script>
 </head>
 <body>
@@ -43,19 +43,15 @@
   <!-- Auth Section -->
   <main style="display: flex; justify-content: center; padding: 40px;">
     <section class="card" id="loginCard" style="max-width: 360px; width: 100%;">
-      <!-- Logo -->
       <img src="logo.png" alt="School Logo" style="width: 100px; margin: 0 auto 20px; display: block;" />
-
       <h2 style="text-align: center;">Login</h2>
       <form id="loginForm" class="form-modern">
-        <label>Username</label>
-        <input id="loginUsername" type="text" placeholder="Enter username" required />
+        <label>Email</label>
+        <input id="loginUsername" type="email" placeholder="Enter email" required autocomplete="email" />
         <label>Password</label>
-        <input id="loginPassword" type="password" placeholder="Enter password" required />
+        <input id="loginPassword" type="password" placeholder="Enter password" required autocomplete="current-password" />
         <button type="submit" class="btn primary">Login</button>
       </form>
-
-      <!-- Toggle Sign Up -->
       <p style="margin-top: 15px; text-align: center;">
         Don’t have an account?
         <button onclick="document.getElementById('signupCard').classList.remove('hidden')" 
@@ -76,11 +72,11 @@
         <label>Full Name</label>
         <input id="suFullName" type="text" placeholder="Your full name" required />
         <label>Password</label>
-        <input id="suPassword" type="password" placeholder="Create a password" required />
+        <input id="suPassword" type="password" placeholder="Create a password" required autocomplete="new-password" />
         <label>Phone</label>
         <input id="suPhone" type="tel" placeholder="Phone number" required />
         <label>Email</label>
-        <input id="suEmail" type="email" placeholder="Email address" required />
+        <input id="suEmail" type="email" placeholder="Email address" required autocomplete="email" />
         <label>Role</label>
         <select id="suRole" required>
           <option value="">Select role</option>
