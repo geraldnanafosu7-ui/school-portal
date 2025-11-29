@@ -26,7 +26,7 @@
       <button class="nav-item active" data-target="dashboardSection">📊 Dashboard</button>
       <button class="nav-item" data-target="teachersSection">👩‍🏫 Teachers</button>
       <button class="nav-item" data-target="classesSection">📚 Classes</button>
-      <button class="nav-item" data-target="newsSection">📰 News</button>
+      <button class="nav-item" data-target="announcementsSection">📰 Announcements</button>
       <button class="nav-item" data-target="settingsSection">⚙️ Settings</button>
       <button id="logoutBtn" class="nav-item danger">🚪 Logout</button>
     </aside>
@@ -70,21 +70,58 @@
         </section>
       </section>
 
+      <!-- Teachers -->
+      <section id="teachersSection" class="card hidden">
+        <h3>👩‍🏫 Teachers</h3>
+        <p>Manage teacher accounts here.</p>
+      </section>
+
+      <!-- Classes -->
+      <section id="classesSection" class="card hidden">
+        <h3>📚 Classes</h3>
+        <p>View and manage classes here.</p>
+      </section>
+
+      <!-- Announcements -->
+      <section id="announcementsSection" class="card hidden">
+        <h3>📰 Announcements</h3>
+        <p>Announcements posted will appear here.</p>
+      </section>
+
       <!-- Settings -->
       <section id="settingsSection" class="card hidden">
-        <h3>⚙️ Settings</h3>
-        <label>Change Password</label>
-        <input type="password" id="oldPassword" placeholder="Old password" />
-        <input type="password" id="newPassword" placeholder="New password" />
-        <input type="password" id="confirmPassword" placeholder="Confirm new password" />
+        <h3>⚙️ Headteacher Settings</h3>
+        <form class="form-modern">
+          <label>Full Name</label>
+          <input type="text" id="updateFullName" placeholder="Headteacher Full Name" />
 
-        <label>Update Email</label>
-        <input type="email" id="updateEmail" placeholder="New email address" />
+          <label>Username</label>
+          <input type="text" id="updateUsername" placeholder="Headteacher Username" disabled />
 
-        <label>Update Phone</label>
-        <input type="tel" id="updatePhone" placeholder="New phone number" />
+          <label>Email Address</label>
+          <input type="email" id="updateEmail" placeholder="headteacher@school.edu.gh" />
 
-        <button class="btn primary" id="saveSettingsBtn">Save Changes</button>
+          <label>Phone Number</label>
+          <input type="tel" id="updatePhone" placeholder="+233 24 000 0000" />
+
+          <label>Preferred Theme</label>
+          <select id="updateTheme">
+            <option value="blue">Blue</option>
+            <option value="white">White</option>
+            <option value="green">Green</option>
+          </select>
+
+          <label>Old Password</label>
+          <input type="password" id="oldPassword" placeholder="Enter old password" />
+
+          <label>New Password</label>
+          <input type="password" id="newPassword" placeholder="Enter new password" />
+
+          <label>Confirm New Password</label>
+          <input type="password" id="confirmPassword" placeholder="Confirm new password" />
+
+          <button class="btn primary" id="saveSettingsBtn" type="button">Save Changes</button>
+        </form>
       </section>
     </main>
   </div>
