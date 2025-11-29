@@ -5,15 +5,10 @@ function toast(msg, type = "info") {
 
   t.textContent = msg;
   t.className = "toast"; // reset
-  t.classList.add(type); // add style class (info/success/error)
-
-  // Show toast with animation
+  t.classList.add(type);
   t.classList.add("show");
 
-  // Hide after 3 seconds
-  setTimeout(() => {
-    t.classList.remove("show");
-  }, 3000);
+  setTimeout(() => t.classList.remove("show"), 3000);
 }
 
 // ---------------- SIGN UP ----------------
@@ -35,11 +30,7 @@ if (signupForm) {
     try {
       const cred = await auth.createUserWithEmailAndPassword(email, password);
       await db.collection("users").doc(cred.user.uid).set({
-        username,
-        fullName,
-        phone,
-        email,
-        role
+        username, fullName, phone, email, role
       });
       toast("✅ Account created successfully! Please log in.", "success");
       signupForm.reset();
@@ -58,9 +49,7 @@ if (loginForm) {
     const email = document.getElementById("loginUsername").value.trim();
     const password = document.getElementById("loginPassword").value.trim();
 
-    if (!email || !password) {
-      return toast("❌ Please enter both email and password", "error");
-    }
+    if (!email || !password) return toast("❌ Enter both email and password", "error");
 
     try {
       const cred = await auth.signInWithEmailAndPassword(email, password);
@@ -77,7 +66,7 @@ if (loginForm) {
         toast("❌ Unknown role. Contact admin.", "error");
       }
     } catch (err) {
-      toast("❌ Incorrect details. Please check your email and password.", "error");
+      toast("❌ " + err.message, "error");
     }
   });
 }
@@ -102,7 +91,7 @@ if (logoutBtn) {
   });
 }
 
-// ---------------- HEADTEACHER ANNOUNCEMENTS ----------------
+// ---------------- ANNOUNCEMENTS ----------------
 const postBtn = document.getElementById("postAnnouncementBtn");
 const announcementInput = document.getElementById("announcementInput");
 const announcementList = document.getElementById("announcementList");
@@ -111,10 +100,7 @@ if (postBtn && announcementInput && announcementList) {
   postBtn.addEventListener("click", async () => {
     const text = announcementInput.value.trim();
     if (!text) return toast("❌ Please write an announcement", "error");
-    await db.collection("announcements").add({
-      text,
-      date: new Date().toISOString()
-    });
+    await db.collection("announcements").add({ text, date: new Date().toISOString() });
     announcementInput.value = "";
     toast("✅ Announcement posted!", "success");
   });
@@ -269,7 +255,7 @@ if (saveSettingsBtn) {
   });
 }
 
-// ---------------- HEADTEACHER SUMMARY STATS ----------------
+// ---------------- DASHBOARD STATS ----------------
 const statTeachers = document.getElementById("statTeachers");
 const statNotes = document.getElementById("statNotes");
 const statSummaries = document.getElementById("statSummaries");
@@ -301,7 +287,7 @@ if (statClass) {
   });
 }
 
-// ---------------- TEACHER ANNOUNCEMENTS (sync from Headteacher) ----------------
+// ---------------- TEACHER ANNOUNCEMENTS ----------------
 const teacherAnnouncements = document.getElementById("teacherAnnouncements");
 if (teacherAnnouncements) {
   db.collection("announcements").orderBy("date").onSnapshot(snapshot => {
@@ -438,3 +424,5 @@ if (downloadNotesBtn) {
     }
   });
 }
+
+    const user = auth
