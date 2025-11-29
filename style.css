@@ -125,12 +125,6 @@ body.theme-green {
 .accent-gold { border-left: 6px solid #fbc02d; }  /* Ghana gold */
 .accent-black { border-left: 6px solid #212121; } /* Ghana black */
 
-/* Example mapping for dashboards */
-#teacherAnnouncements.card { border-left: 6px solid #fbc02d; } /* Gold for Announcements */
-#notesList.card { border-left: 6px solid #43a047; }            /* Green for Lesson Notes */
-#teacherRecords.card { border-left: 6px solid #e53935; }       /* Red for Teacher Records */
-#dashboardSection.card { border-left: 6px solid #212121; }     /* Black for Stats */
-
 /* ===== BUTTONS ===== */
 .btn {
   padding: 10px 14px;
@@ -147,6 +141,8 @@ body.theme-green {
 }
 .btn.primary { background: #0e2a47; color: #fff; }
 .btn.danger { background: #b00020; color: #fff; }
+.btn.download { background: #fbc02d; color: #000; }
+.btn.download:hover { background: #ffd54f; }
 
 /* ===== FORMS ===== */
 textarea {
@@ -168,6 +164,13 @@ textarea {
   margin-top: 5px;
   border-radius: 6px;
   border: 1px solid #ccc;
+  background: #fafafa;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.form-modern input:focus, .form-modern select:focus {
+  border-color: #134b8a;
+  box-shadow: 0 0 5px rgba(19,75,138,0.5);
+  outline: none;
 }
 
 /* ===== AUTH GRID ===== */
@@ -203,6 +206,24 @@ textarea {
 .toast.show {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
+}
+.toast.hidden { display: none; }
+
+/* ===== ATTENDANCE TABLE ===== */
+.attendance-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  font-size: 0.9rem;
+}
+.attendance-table th, .attendance-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+}
+.attendance-table th {
+  background: #f0f0f0;
+  font-weight: bold;
 }
 
 /* ===== UTILITIES ===== */
