@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Teacher Dashboard | Ansuaa Ababio</title>
+  <title>Teacher Dashboard</title>
   <link rel="stylesheet" href="style.css" />
 
   <!-- Firebase SDKs -->
@@ -11,17 +10,8 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
-  <!-- Firebase config -->
   <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyAV2lyXiQKKt-fYM1weyNWXsjiHYbX2imc",
-      authDomain: "school-portal-ff2ff.firebaseapp.com",
-      projectId: "school-portal-ff2ff",
-      storageBucket: "school-portal-ff2ff.appspot.com",
-      messagingSenderId: "518827252304",
-      appId: "1:518827252304:web:723250d7c188f3e96ecf55",
-      measurementId: "G-7VSS3B0TD7"
-    };
+    const firebaseConfig = { /* same config */ };
     firebase.initializeApp(firebaseConfig);
     window.auth = firebase.auth();
     window.db = firebase.firestore();
@@ -29,106 +19,61 @@
 
   <script defer src="script.js"></script>
 </head>
-<body>
+<body class="theme-blue">
   <header class="header">
     <h1>👩‍🏫 Teacher Dashboard</h1>
     <div id="userDisplayName"></div>
     <button id="logoutBtn" class="btn danger">Logout</button>
   </header>
 
-  <!-- NAVIGATION -->
-  <aside class="sidebar">
-    <button class="nav-item active" data-target="dashboardSection">📊 Dashboard</button>
-    <button class="nav-item" data-target="summariesSection">📝 Summaries</button>
-    <button class="nav-item" data-target="classesSection">📚 Classes</button>
-    <button class="nav-item" data-target="announcementsSection">📰 Announcements</button>
-    <button class="nav-item" data-target="settingsSection">⚙️ Settings</button>
-  </aside>
+  <div class="app">
+    <aside class="sidebar">
+      <button class="nav-item active" data-target="dashboardSection">📊 Dashboard</button>
+      <button class="nav-item" data-target="summariesSection">📝 Summaries</button>
+      <button class="nav-item" data-target="classesSection">📚 Classes</button>
+      <button class="nav-item" data-target="announcementsSection">📰 Announcements</button>
+      <button class="nav-item" data-target="settingsSection">⚙️ Settings</button>
+    </aside>
 
-  <main class="main">
-    <!-- DASHBOARD -->
-    <section id="dashboardSection" class="grid">
-      <section class="card accent-teal">
-        <h3>📊 My Stats</h3>
-        <ul>
-          <li>My Summaries: <span id="mySummaries">0</span></li>
-          <li>My Lesson Notes: <span id="myNotes">0</span></li>
-          <li>Class Numbers: <span id="myClass">0 boys, 0 girls</span></li>
-        </ul>
+    <main class="main">
+      <section id="dashboardSection" class="grid">
+        <div class="card accent-green"><h3>My Summaries</h3><p id="mySummaries">0</p></div>
+        <div class="card accent-blue"><h3>My Notes</h3><p id="myNotes">0</p></div>
+        <div class="card accent-orange"><h3>My Class</h3><p id="myClass">0 boys, 0 girls</p></div>
       </section>
 
-      <section class="card accent-blue">
-        <h3>📝 Daily Summaries</h3>
-        <textarea id="summaryInput" placeholder="Write summary of today’s lesson..."></textarea>
+      <section id="summariesSection" class="hidden">
+        <textarea id="summaryInput"></textarea>
         <button id="submitSummaryBtn" class="btn primary">Submit Summary</button>
-        <!-- NEW: Download button -->
-        <button id="downloadSummariesBtn" class="btn">⬇️ Download Summaries</button>
+        <button id="downloadSummariesBtn" class="btn download">Download Summaries</button>
         <div id="summaryList"></div>
       </section>
 
-      <section class="card accent-green">
-        <h3>📰 Announcements</h3>
+      <section id="classesSection" class="hidden">
+        <input id="boysInput" type="number" placeholder="Boys" />
+        <input id="girlsInput" type="number" placeholder="Girls" />
+        <button id="updateClassBtn" class="btn primary">Update Class</button>
+        <p id="classDisplay">0 boys, 0 girls</p>
+      </section>
+
+      <section id="announcementsSection" class="hidden">
+        <h3>Announcements</h3>
         <div id="teacherAnnouncements"></div>
       </section>
 
-      <section class="card accent-orange">
-        <h3>👨‍👩‍👧 Class Numbers</h3>
-        <input id="boysInput" type="number" placeholder="Number of boys" />
-        <input id="girlsInput" type="number" placeholder="Number of girls" />
-        <button id="updateClassBtn" class="btn primary">Update Class</button>
-        <div id="classDisplay"></div>
+      <section id="settingsSection" class="hidden">
+        <label>Full Name</label><input id="updateFullName" type="text" />
+        <label>Phone</label><input id="updatePhone" type="text" />
+        <label>Email</label><input id="updateEmail" type="email" />
+        <button id="saveSettingsBtn" class="btn primary">Save Settings</button>
       </section>
-
-      <section class="card accent-purple">
-        <h3>📝 Lesson Notes</h3>
-        <textarea id="notesInput" placeholder="Submit your lesson notes"></textarea>
-        <button id="submitNotesBtn" class="btn primary">Submit Notes</button>
-        <!-- NEW: Download button -->
-        <button id="downloadNotesBtn" class="btn">⬇️ Download Notes</button>
-        <ul id="notesList"></ul>
-      </section>
-    </section>
-
-    <!-- Summaries -->
-    <section id="summariesSection" class="card hidden">
-      <h3>📝 Summaries</h3>
-      <p>View and manage your submitted summaries here.</p>
-    </section>
-
-    <!-- Classes -->
-    <section id="classesSection" class="card hidden">
-      <h3>📚 Classes</h3>
-      <p>View your class details here.</p>
-    </section>
-
-    <!-- Announcements -->
-    <section id="announcementsSection" class="card hidden">
-      <h3>📰 Announcements</h3>
-      <p>Announcements from Headteacher will appear here.</p>
-    </section>
-
-    <!-- Settings -->
-    <section id="settingsSection" class="card hidden">
-      <h3>⚙️ Teacher Settings</h3>
-      <form class="form-modern">
-        <label>Full Name</label>
-        <input type="text" id="updateFullName" placeholder="Teacher Full Name" />
-
-        <label>Email Address</label>
-        <input type="email" id="updateEmail" placeholder="teacher@school.edu.gh" />
-
-        <label>Phone Number</label>
-        <input type="tel" id="updatePhone" placeholder="+233 24 000 0000" />
-
-        <button class="btn primary" id="saveSettingsBtn" type="button">Save Changes</button>
-      </form>
-    </section>
-  </main>
+    </main>
+  </div>
 
   <footer class="footer">
-    <p>© 2025 Ansuaa Ababio Methodist Preparatory School | "NYANSA NFITIASEƐ"</p>
+    <p>© 2025 Ansuaa Ababio Methodist Preparatory School</p>
   </footer>
 
-  <div id="toast" class="toast hidden"></div>
+  <div id="toast" class="toast"></div>
 </body>
 </html>
