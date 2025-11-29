@@ -71,6 +71,22 @@ if (loginForm) {
   });
 }
 
+// ---------------- FORGOT PASSWORD ----------------
+const forgotPasswordLink = document.getElementById("forgotPasswordLink");
+if (forgotPasswordLink) {
+  forgotPasswordLink.addEventListener("click", async e => {
+    e.preventDefault();
+    const email = document.getElementById("loginUsername").value.trim();
+    if (!email) return toast("❌ Enter your email first", "error");
+    try {
+      await auth.sendPasswordResetEmail(email);
+      toast("✅ Password reset email sent!", "success");
+    } catch (err) {
+      toast("❌ " + err.message, "error");
+    }
+  });
+}
+
 // ---------------- USER GREETING ----------------
 auth.onAuthStateChanged(async user => {
   const userDisplay = document.getElementById("userDisplayName");
@@ -216,7 +232,7 @@ if (viewAttendanceBtn && attendanceReport) {
       return;
     }
 
-    let html = "<table class='attendance-table'><tr><th>Date</th><th>Boys</th><th>Girls</th></tr>";
+        let html = "<table class='attendance-table'><tr><th>Date</th><th>Boys</th><th>Girls</th></tr>";
     snapshot.forEach(doc => {
       const rec = doc.data();
       html += `<tr><td>${rec.date}</td><td>${rec.boys}</td><td>${rec.girls}</td></tr>`;
@@ -424,5 +440,3 @@ if (downloadNotesBtn) {
     }
   });
 }
-
-    const user = auth
