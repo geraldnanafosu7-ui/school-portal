@@ -363,3 +363,102 @@ if (navItems.length && sections.length) {
   const defaultDashboard = document.getElementById("dashboardSection");
   if (defaultDashboard) defaultDashboard.classList.remove("hidden");
 }
+// ---------------- NAVIGATION ----------------
+const navItems = document.querySelectorAll(".nav-item");
+const sections = document.querySelectorAll("main section, .main > .grid");
+
+if (navItems.length && sections.length) {
+  navItems.forEach(item => {
+    item.addEventListener("click", () => {
+      navItems.forEach(i => i.classList.remove("active"));
+      item.classList.add("active");
+
+      sections.forEach(sec => sec.classList.add("hidden"));
+
+      const targetId = item.dataset.target;
+      if (targetId) {
+        const targetSection = document.getElementById(targetId);
+        if (targetSection) targetSection.classList.remove("hidden");
+      } else {
+        const dashboardGrid = document.getElementById("dashboardSection");
+        if (dashboardGrid) dashboardGrid.classList.remove("hidden");
+      }
+    });
+  });
+
+  const defaultDashboard = document.getElementById("dashboardSection");
+  if (defaultDashboard) defaultDashboard.classList.remove("hidden");
+}
+
+// ---------------- DOWNLOAD SUMMARIES ----------------
+const downloadSummariesBtn = document.getElementById("downloadSummariesBtn");
+if (downloadSummariesBtn) {
+  downloadSummariesBtn.addEventListener("click", async () => {
+    const user = auth.currentUser;
+    if (!user) return toast("❌ No user logged in", "error");
+
+    try {
+      const snapshot = await db.collection("summaries")
+        .where("uid", "==", user.uid)
+        .orderBy("date")
+        .get();
+
+      if (snapshot.empty) return toast("❌ No summaries found", "error");
+
+      let content = "My Summaries:\n\n";
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        content += `- ${data.date}: ${data.text}\n`;
+      });
+
+      const blob = new Blob([content], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "summaries.txt";
+      a.click();
+      URL.revokeObjectURL(url);
+
+      toast("✅ Summaries downloaded!", "success");
+    } catch (err) {
+      toast("❌ Error: " + err.message, "error");
+    }
+  });
+}
+
+// ---------------- DOWNLOAD NOTES ----------------
+const downloadNotesBtn = document.getElementById("downloadNotesBtn");
+if (downloadNotesBtn) {
+  downloadNotesBtn.addEventListener("click", async () => {
+    const user = auth.currentUser;
+    if (!user) return toast("❌ No user logged in", "error");
+
+    try {
+      const snapshot = await db.collection("lessonNotes")
+        .where("uid", "==", user.uid)
+        .orderBy("date")
+        .get();
+
+      if (snapshot.empty) return toast("❌ No notes found", "error");
+
+      let content = "My Lesson Notes:\n\n";
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        content += `- ${data.date}: ${data.note}\n`;
+      });
+
+      const blob = new Blob([content], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "lesson_notes.txt";
+      a.click();
+      URL.revokeObjectURL(url);
+
+      toast("✅ Notes downloaded!", "success");
+    } catch (err) {
+      toast("❌ Error: " + err.message, "error");
+    }
+  });
+}
+
