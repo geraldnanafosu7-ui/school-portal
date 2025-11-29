@@ -2,11 +2,18 @@
 function toast(msg, type = "info") {
   const t = document.getElementById("toast");
   if (!t) return alert(msg);
+
   t.textContent = msg;
   t.className = "toast"; // reset
   t.classList.add(type); // add style class (info/success/error)
-  t.classList.remove("hidden");
-  setTimeout(() => t.classList.add("hidden"), 3000);
+
+  // Show toast with animation
+  t.classList.add("show");
+
+  // Hide after 3 seconds
+  setTimeout(() => {
+    t.classList.remove("show");
+  }, 3000);
 }
 
 // ---------------- SIGN UP ----------------
