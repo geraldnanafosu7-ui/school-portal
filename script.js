@@ -232,7 +232,6 @@ if (viewAttendanceBtn && attendanceReport) {
     attendanceReport.innerHTML = html;
   });
 }
-
 // ---------------- SETTINGS ----------------
 const saveSettingsBtn = document.getElementById("saveSettingsBtn");
 if (saveSettingsBtn) {
@@ -340,36 +339,6 @@ const sections = document.querySelectorAll("main section, .main > .grid");
 if (navItems.length && sections.length) {
   navItems.forEach(item => {
     item.addEventListener("click", () => {
-      // remove active highlight
-      navItems.forEach(i => i.classList.remove("active"));
-      item.classList.add("active");
-
-      // hide all sections
-      sections.forEach(sec => sec.classList.add("hidden"));
-
-      // show target section
-      const targetId = item.dataset.target;
-      if (targetId) {
-        const targetSection = document.getElementById(targetId);
-        if (targetSection) targetSection.classList.remove("hidden");
-      } else {
-        const dashboardGrid = document.getElementById("dashboardSection");
-        if (dashboardGrid) dashboardGrid.classList.remove("hidden");
-      }
-    });
-  });
-
-  // Ensure dashboard visible on initial load
-  const defaultDashboard = document.getElementById("dashboardSection");
-  if (defaultDashboard) defaultDashboard.classList.remove("hidden");
-}
-// ---------------- NAVIGATION ----------------
-const navItems = document.querySelectorAll(".nav-item");
-const sections = document.querySelectorAll("main section, .main > .grid");
-
-if (navItems.length && sections.length) {
-  navItems.forEach(item => {
-    item.addEventListener("click", () => {
       navItems.forEach(i => i.classList.remove("active"));
       item.classList.add("active");
 
@@ -408,7 +377,7 @@ if (downloadSummariesBtn) {
       let content = "My Summaries:\n\n";
       snapshot.forEach(doc => {
         const data = doc.data();
-        content += `- ${data.date}: ${data.text}\n`;
+        content += `- ${new Date(data.date).toLocaleString()}: ${data.text}\n`;
       });
 
       const blob = new Blob([content], { type: "text/plain" });
@@ -444,7 +413,7 @@ if (downloadNotesBtn) {
       let content = "My Lesson Notes:\n\n";
       snapshot.forEach(doc => {
         const data = doc.data();
-        content += `- ${data.date}: ${data.note}\n`;
+        content += `- ${new Date(data.date).toLocaleString()}: ${data.note}\n`;
       });
 
       const blob = new Blob([content], { type: "text/plain" });
