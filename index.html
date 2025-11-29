@@ -6,7 +6,7 @@
   <title>Ansuaa Ababio Portal Login</title>
   <link rel="stylesheet" href="style.css" />
 
-  <!-- ✅ Firebase compat SDKs (these work with firebase.auth() and firebase.firestore()) -->
+  <!-- ✅ Firebase compat SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -23,24 +23,18 @@
       measurementId: "G-7VSS3B0TD7"
     };
 
-    // ✅ Initialize Firebase (compat)
     firebase.initializeApp(firebaseConfig);
     window.auth = firebase.auth();
     window.db = firebase.firestore();
   </script>
 
-  <!-- ✅ Your main script -->
   <script defer src="script.js"></script>
 </head>
 <body>
-  <!-- Header -->
   <header class="header">
-    <h1 style="font-size: 2rem; text-align: center; width: 100%;">
-      🏫 Ansuaa Ababio Methodist Preparatory School
-    </h1>
+    <h1 style="font-size: 2rem; text-align: center;">🏫 Ansuaa Ababio Methodist Preparatory School</h1>
   </header>
 
-  <!-- Auth Section -->
   <main style="display: flex; justify-content: center; padding: 40px;">
     <section class="card" id="loginCard" style="max-width: 360px; width: 100%;">
       <img src="logo.png" alt="School Logo" style="width: 100px; margin: 0 auto 20px; display: block;" />
@@ -62,19 +56,18 @@
     </section>
   </main>
 
-  <!-- Sign Up (Initially Hidden) -->
   <main style="display: flex; justify-content: center;">
     <section class="card hidden" id="signupCard" style="max-width: 360px; width: 100%;">
       <h2 style="text-align: center;">Create Account</h2>
       <form id="signupForm" class="form-modern">
         <label>Username</label>
-        <input id="suUsername" type="text" placeholder="Choose a username" required />
+        <input id="suUsername" type="text" placeholder="Choose a username" required autocomplete="username" />
         <label>Full Name</label>
-        <input id="suFullName" type="text" placeholder="Your full name" required />
+        <input id="suFullName" type="text" placeholder="Your full name" required autocomplete="name" />
         <label>Password</label>
         <input id="suPassword" type="password" placeholder="Create a password" required autocomplete="new-password" />
         <label>Phone</label>
-        <input id="suPhone" type="tel" placeholder="Phone number" required />
+        <input id="suPhone" type="tel" placeholder="Phone number" required autocomplete="tel" />
         <label>Email</label>
         <input id="suEmail" type="email" placeholder="Email address" required autocomplete="email" />
         <label>Role</label>
@@ -88,12 +81,10 @@
     </section>
   </main>
 
-  <!-- Footer -->
   <footer class="footer">
     <p>© 2025 Ansuaa Ababio Methodist Preparatory School | "NYANSA NFITIASEƐ"</p>
   </footer>
 
-  <!-- Toast -->
   <div id="toast" class="toast hidden"></div>
 </body>
 </html>
