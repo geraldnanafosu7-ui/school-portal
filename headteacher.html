@@ -42,14 +42,12 @@
 
         <section class="card accent-green">
           <h3>📖 Lesson Notes</h3>
-          <p>Review and accept submitted lesson notes.</p>
-          <button class="btn primary">Accept Notes</button>
+          <ul id="headNotesList"></ul>
         </section>
 
         <section class="card accent-orange">
           <h3>👩‍🏫 Teacher Records</h3>
-          <p>Manage and delete teacher accounts.</p>
-          <button class="btn danger">Delete Teacher</button>
+          <div id="teacherRecords"></div>
         </section>
 
         <section class="card accent-purple">
@@ -82,18 +80,14 @@
         <h3>⚙️ Settings</h3>
         <label>Profile Picture</label>
         <input type="file" accept="image/*" />
-
         <label>Change Password</label>
         <input type="password" id="oldPassword" placeholder="Old password" />
         <input type="password" id="newPassword" placeholder="New password" />
         <input type="password" id="confirmPassword" placeholder="Confirm new password" />
-
         <label>Update Email</label>
         <input type="email" id="updateEmail" placeholder="New email address" />
-
         <label>Update Phone</label>
         <input type="tel" id="updatePhone" placeholder="New phone number" />
-
         <button class="btn primary" id="saveSettingsBtn">Save Changes</button>
       </section>
     </main>
