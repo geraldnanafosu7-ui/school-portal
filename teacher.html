@@ -8,12 +8,18 @@
   <script defer src="script.js"></script>
 </head>
 <body>
+  <!-- Header -->
   <header class="header">
-    <h1>🏫 Ansuaa Ababio Methodist Preparatory School</h1>
-    <div class="theme-toggle">
-      <button class="theme-btn" data-theme="blue">🔵 Blue</button>
-      <button class="theme-btn" data-theme="white">⚪ White</button>
-      <button class="theme-btn" data-theme="green">🟢 Green</button>
+    <h1 style="font-size: 2rem; text-align: center;">
+      🏫 Ansuaa Ababio Methodist Preparatory School
+    </h1>
+    <div class="theme-toggle-wrapper" style="text-align: center; margin-top: 10px;">
+      <button id="themeToggleBtn" class="btn">Theme Options ˅</button>
+      <div id="themeOptions" class="hidden" style="margin-top: 10px;">
+        <button class="theme-btn" data-theme="blue">Blue</button>
+        <button class="theme-btn" data-theme="white">White</button>
+        <button class="theme-btn" data-theme="green">Green</button>
+      </div>
     </div>
   </header>
 
@@ -29,7 +35,9 @@
     </aside>
 
     <main class="main">
-      <h2 class="welcome">Welcome, Teacher 👋</h2>
+      <h2 class="welcome">
+        Welcome, Teacher <span id="userDisplayName">👤</span> 👋
+      </h2>
 
       <!-- Dashboard Grid -->
       <div id="dashboardSection" class="grid">
@@ -73,17 +81,30 @@
       <!-- Settings Section -->
       <section id="settingsSection" class="card hidden">
         <h3>⚙️ Settings</h3>
-        <label>Profile Picture</label>
-        <input type="file" accept="image/*" />
-        <label>Change Password</label>
-        <input type="password" id="oldPassword" placeholder="Old password" />
-        <input type="password" id="newPassword" placeholder="New password" />
-        <input type="password" id="confirmPassword" placeholder="Confirm new password" />
-        <label>Update Email</label>
-        <input type="email" id="updateEmail" placeholder="New email address" />
-        <label>Update Phone</label>
-        <input type="tel" id="updatePhone" placeholder="New phone number" />
-        <button class="btn primary" id="saveSettingsBtn">Save Changes</button>
+        <form class="form-modern">
+          <label>Display Name</label>
+          <input type="text" placeholder="Teacher Name" />
+
+          <label>Preferred Theme</label>
+          <select>
+            <option value="blue">Blue</option>
+            <option value="white">White</option>
+            <option value="green">Green</option>
+          </select>
+
+          <label>Notification Email</label>
+          <input type="email" placeholder="teacher@school.edu.gh" />
+
+          <label>Phone Number</label>
+          <input type="tel" placeholder="+233 24 000 0000" />
+
+          <label>Change Password</label>
+          <input type="password" placeholder="Old password" />
+          <input type="password" placeholder="New password" />
+          <input type="password" placeholder="Confirm new password" />
+
+          <button class="btn primary" type="submit">Save Changes</button>
+        </form>
       </section>
     </main>
   </div>
