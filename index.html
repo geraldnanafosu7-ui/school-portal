@@ -6,7 +6,7 @@
   <title>Ansuaa Ababio Portal Login</title>
   <link rel="stylesheet" href="style.css" />
 
-  <!-- Firebase compat SDKs -->
+  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -30,31 +30,32 @@
 </head>
 <body class="login-page">
   <header class="header">
-    <h1 style="font-size:2rem;text-align:center;width:100%;">🏫 Ansuaa Ababio Methodist Preparatory School</h1>
+    <h1 class="school-title">🏫 Ansuaa Ababio Methodist Preparatory School</h1>
   </header>
 
   <main class="login-container">
-    <section class="card" id="loginCard">
+    <!-- LOGIN CARD -->
+    <section class="login-card" id="loginCard">
       <img src="logo.png" alt="School Logo" class="login-logo" />
-      <h2 style="text-align:center;">Login</h2>
+      <h2>Login</h2>
       <form id="loginForm" class="form-modern">
         <label>Email</label>
         <input id="loginUsername" type="email" required />
         <label>Password</label>
         <input id="loginPassword" type="password" required />
         <button type="submit" class="btn primary">Login</button>
-        <p style="margin-top:10px;text-align:center;">
+        <p class="small-text">
           <a href="#" id="forgotPasswordLink">Forgot password?</a>
         </p>
-        <p style="margin-top:10px;text-align:center;">
-          Don’t have an account? 
-          <button type="button" id="showSignupBtn" class="link-btn">Sign up</button>
+        <p class="small-text">
+          Don’t have an account? <button type="button" id="showSignupBtn" class="link-btn">Sign up</button>
         </p>
       </form>
     </section>
 
-    <section class="card hidden" id="signupCard">
-      <h2 style="text-align:center;">Create Account</h2>
+    <!-- SIGNUP CARD (hidden by default) -->
+    <section class="login-card hidden" id="signupCard">
+      <h2>Create Account</h2>
       <form id="signupForm" class="form-modern">
         <label>Username</label>
         <input id="suUsername" type="text" required />
