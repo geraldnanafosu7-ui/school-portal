@@ -10,79 +10,72 @@ function toast(msg) {
 // ---------------- SIGN UP ----------------
 const signupForm = document.getElementById("signupForm");
 if (signupForm) {
-  signupForm.addEventListener("submit", e => {
+  signupForm.addEventListener("submit", async e => {
     e.preventDefault();
-    const user = {
-      username: document.getElementById("suUsername").value.trim().toLowerCase(),
-      fullName: document.getElementById("suFullName").value.trim(),
-      password: document.getElementById("suPassword").value.trim(),
-      phone: document.getElementById("suPhone").value.trim(),
-      email: document.getElementById("suEmail").value.trim(),
-      role: document.getElementById("suRole").value
-    };
-    if (!user.username || !user.password || !user.role) return toast("Please fill all required fields");
-    let users = JSON.parse(localStorage.getItem("users")) || [];
-    if (users.find(u => u.username === user.username)) return toast("Username already exists");
-    users.push(user);
-    localStorage.setItem("users", JSON.stringify(users));
-    toast("Account created successfully! Please log in.");
-    signupForm.reset();
+    const email = document.getElementById("suEmail").value.trim();
+    const password = document.getElementById("suPassword").value.trim();
+    const fullName = document.getElementById("suFullName").value.trim();
+    const username = document.getElementById("suUsername").value.trim().toLowerCase();
+    const phone = document.getElementById("suPhone").value.trim();
+    const role = document.getElementById("suRole").value;
+
+    if (!email || !password || !role) return toast("Please fill all required fields");
+
+    try {
+      const cred = await auth.createUserWithEmailAndPassword(email, password);
+      await db.collection("users").doc(cred.user.uid).set({
+        username,
+        fullName,
+        phone,
+        email,
+        role
+      });
+      toast("Account created successfully! Please log in.");
+      signupForm.reset();
+    } catch (err) {
+      toast(err.message);
+    }
   });
 }
 
 // ---------------- LOGIN ----------------
 const loginForm = document.getElementById("loginForm");
 if (loginForm) {
-  loginForm.addEventListener("submit", e => {
+  loginForm.addEventListener("submit", async e => {
     e.preventDefault();
-    const username = document.getElementById("loginUsername").value.trim().toLowerCase();
+    const email = document.getElementById("loginUsername").value.trim();
     const password = document.getElementById("loginPassword").value.trim();
-    let users = JSON.parse(localStorage.getItem("users")) || [];
-    const user = users.find(u => u.username === username && u.password === password);
-    if (!user) return toast("Invalid login details");
-    localStorage.setItem("currentUser", JSON.stringify(user));
-    toast("Login successful!");
-    if (user.role === "headteacher") {
-      window.location.href = "headteacher.html";
-    } else if (user.role === "teacher") {
-      window.location.href = "teacher.html";
+
+    try {
+      await auth.signInWithEmailAndPassword(email, password);
+      toast("Login successful!");
+    } catch (err) {
+      toast("Invalid login details: " + err.message);
     }
   });
 }
 
-// ---------------- USER GREETING ----------------
-const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-const userDisplay = document.getElementById("userDisplayName");
-if (currentUser && userDisplay) {
-  userDisplay.textContent = currentUser.fullName || currentUser.username;
-}
+// ---------------- USER GREETING + REDIRECT ----------------
+auth.onAuthStateChanged(async user => {
+  const userDisplay = document.getElementById("userDisplayName");
+  if (user) {
+    const doc = await db.collection("users").doc(user.uid).get();
+    const data = doc.data();
+    if (userDisplay) userDisplay.textContent = data?.fullName || data?.username || user.email;
 
-// ---------------- THEMES ----------------
-const themeToggleBtn = document.getElementById("themeToggleBtn");
-const themeOptions = document.getElementById("themeOptions");
-
-if (themeToggleBtn) {
-  themeToggleBtn.addEventListener("click", () => {
-    if (!themeOptions) return;
-    themeOptions.classList.toggle("hidden");
-  });
-}
-
-document.querySelectorAll(".theme-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    document.body.className = "theme-" + btn.dataset.theme;
-    localStorage.setItem("theme", btn.dataset.theme);
-    toast(`Theme changed to ${btn.dataset.theme}`);
-  });
+    if (data?.role === "headteacher") {
+      window.location.href = "headteacher.html";
+    } else if (data?.role === "teacher") {
+      window.location.href = "teacher.html";
+    }
+  }
 });
-const savedTheme = localStorage.getItem("theme");
-if (savedTheme) document.body.className = "theme-" + savedTheme;
 
 // ---------------- LOGOUT ----------------
 const logoutBtn = document.getElementById("logoutBtn");
 if (logoutBtn) {
-  logoutBtn.addEventListener("click", () => {
-    localStorage.removeItem("currentUser");
+  logoutBtn.addEventListener("click", async () => {
+    await auth.signOut();
     toast("Logged out!");
     setTimeout(() => window.location.href = "index.html", 1500);
   });
@@ -94,86 +87,164 @@ const announcementInput = document.getElementById("announcementInput");
 const announcementList = document.getElementById("announcementList");
 
 if (postBtn && announcementInput && announcementList) {
-  postBtn.addEventListener("click", () => {
+  postBtn.addEventListener("click", async () => {
     const text = announcementInput.value.trim();
     if (!text) return toast("Please write an announcement");
-    let announcements = JSON.parse(localStorage.getItem("announcements")) || [];
-    announcements.push(text);
-    localStorage.setItem("announcements", JSON.stringify(announcements));
-    const div = document.createElement("div");
-    div.textContent = text;
-    announcementList.appendChild(div);
+    await db.collection("announcements").add({
+      text,
+      date: new Date().toISOString()
+    });
     announcementInput.value = "";
     toast("Announcement posted!");
   });
 
-  let announcements = JSON.parse(localStorage.getItem("announcements")) || [];
-  announcementList.innerHTML = "";
-  announcements.forEach(text => {
-    const div = document.createElement("div");
-    div.textContent = text;
-    announcementList.appendChild(div);
+  db.collection("announcements").orderBy("date").onSnapshot(snapshot => {
+    announcementList.innerHTML = "";
+    snapshot.forEach(doc => {
+      const div = document.createElement("div");
+      div.textContent = doc.data().text;
+      announcementList.appendChild(div);
+    });
   });
 }
 
-// ---------------- SETTINGS (Headteacher & Teacher) ----------------
-const saveSettingsBtn = document.getElementById("saveSettingsBtn");
-if (saveSettingsBtn) {
-  saveSettingsBtn.addEventListener("click", () => {
-    let user = JSON.parse(localStorage.getItem("currentUser"));
-    let users = JSON.parse(localStorage.getItem("users")) || [];
-    if (!user) return toast("No user logged in");
+// ---------------- TEACHER LESSON NOTES ----------------
+const notesInput = document.getElementById("notesInput");
+const submitNotesBtn = document.getElementById("submitNotesBtn");
+const notesList = document.getElementById("notesList");
 
-    const oldPass = document.getElementById("oldPassword")?.value.trim();
-    const newPass = document.getElementById("newPassword")?.value.trim();
-    const confirmPass = document.getElementById("confirmPassword")?.value.trim();
-    const newEmail = document.getElementById("updateEmail")?.value.trim();
-    const newPhone = document.getElementById("updatePhone")?.value.trim();
-    const newFullName = document.getElementById("updateFullName")?.value.trim();
-    const newTheme = document.getElementById("updateTheme")?.value;
+if (submitNotesBtn && notesInput && notesList) {
+  submitNotesBtn.addEventListener("click", async () => {
+    const note = notesInput.value.trim();
+    if (!note) return toast("Please enter your notes");
+    const user = auth.currentUser;
+    await db.collection("lessonNotes").add({
+      note,
+      uid: user.uid,
+      date: new Date().toISOString()
+    });
+    notesInput.value = "";
+    toast("Lesson notes submitted!");
+  });
 
-    if (newPass && newPass !== confirmPass) return toast("Passwords do not match");
-    if (newPass && oldPass !== user.password) return toast("Old password incorrect");
+  db.collection("lessonNotes").onSnapshot(snapshot => {
+    notesList.innerHTML = "";
+    snapshot.forEach(doc => {
+      const li = document.createElement("li");
+      li.textContent = doc.data().note;
+      notesList.appendChild(li);
+    });
+  });
+}
 
-    if (newPass) user.password = newPass;
-    if (newEmail) user.email = newEmail;
-    if (newPhone) user.phone = newPhone;
-    if (newFullName) user.fullName = newFullName;
-    if (newTheme) {
-      document.body.className = "theme-" + newTheme;
-      localStorage.setItem("theme", newTheme);
+// ---------------- TEACHER SUMMARIES ----------------
+const summaryInput = document.getElementById("summaryInput");
+const submitSummaryBtn = document.getElementById("submitSummaryBtn");
+const summaryList = document.getElementById("summaryList");
+
+if (submitSummaryBtn && summaryInput && summaryList) {
+  submitSummaryBtn.addEventListener("click", async () => {
+    const text = summaryInput.value.trim();
+    if (!text) return toast("Please write a summary");
+    const user = auth.currentUser;
+    await db.collection("summaries").add({
+      text,
+      uid: user.uid,
+      date: new Date().toISOString()
+    });
+    summaryInput.value = "";
+    toast("Summary submitted!");
+  });
+
+  db.collection("summaries").onSnapshot(snapshot => {
+    summaryList.innerHTML = "";
+    snapshot.forEach(doc => {
+      const div = document.createElement("div");
+      div.textContent = doc.data().text;
+      summaryList.appendChild(div);
+    });
+  });
+}
+
+// ---------------- TEACHER CLASS NUMBERS ----------------
+const boysInput = document.getElementById("boysInput");
+const girlsInput = document.getElementById("girlsInput");
+const updateClassBtn = document.getElementById("updateClassBtn");
+const classDisplay = document.getElementById("classDisplay");
+
+if (updateClassBtn && boysInput && girlsInput && classDisplay) {
+  updateClassBtn.addEventListener("click", async () => {
+    const boys = parseInt(boysInput.value.trim(), 10);
+    const girls = parseInt(girlsInput.value.trim(), 10);
+    if (isNaN(boys) || isNaN(girls)) return toast("Enter valid numbers");
+
+    const record = { boys, girls, date: new Date().toLocaleString() };
+    const user = auth.currentUser;
+    await db.collection("attendanceHistory").add({
+      ...record,
+      uid: user.uid
+    });
+
+    classDisplay.textContent = `Boys: ${boys}, Girls: ${girls}`;
+    toast("Class numbers updated!");
+  });
+
+  db.collection("attendanceHistory").orderBy("date").onSnapshot(snapshot => {
+    if (!snapshot.empty) {
+      const latest = snapshot.docs[snapshot.docs.length - 1].data();
+      classDisplay.textContent = `Boys: ${latest.boys}, Girls: ${latest.girls}`;
+    }
+  });
+}
+
+// ---------------- HEADTEACHER VIEW ATTENDANCE ----------------
+const viewAttendanceBtn = document.getElementById("viewAttendanceBtn");
+const attendanceReport = document.getElementById("attendanceReport");
+
+if (viewAttendanceBtn && attendanceReport) {
+  viewAttendanceBtn.addEventListener("click", async () => {
+    const snapshot = await db.collection("attendanceHistory").get();
+    if (snapshot.empty) {
+      attendanceReport.textContent = "No attendance data available.";
+      return;
     }
 
-    users = users.map(u => (u.username === user.username ? user : u));
-    localStorage.setItem("users", JSON.stringify(users));
-    localStorage.setItem("currentUser", JSON.stringify(user));
-    toast("Settings updated successfully!");
-
-    const nameEl = document.getElementById("userDisplayName");
-    if (nameEl) nameEl.textContent = user.fullName || user.username;
+    let html = "<table class='attendance-table'><tr><th>Date</th><th>Boys</th><th>Girls</th></tr>";
+    snapshot.forEach(doc => {
+      const rec = doc.data();
+      html += `<tr><td>${rec.date}</td><td>${rec.boys}</td><td>${rec.girls}</td></tr>`;
+    });
+    html += "</table>";
+    attendanceReport.innerHTML = html;
   });
 }
 
-// ---------------- HEADTEACHER DASHBOARD DATA ----------------
-const teacherRecords = document.getElementById("teacherRecords");
-if (teacherRecords) {
-  let users = JSON.parse(localStorage.getItem("users")) || [];
-  teacherRecords.innerHTML = "";
-  users.filter(u => u.role === "teacher").forEach(t => {
-    const div = document.createElement("div");
-    div.textContent = `${t.fullName || t.username} (${t.username}) - ${t.email || "no email"}`;
-    teacherRecords.appendChild(div);
-  });
-}
+// ---------------- SETTINGS ----------------
+const saveSettingsBtn = document.getElementById("saveSettingsBtn");
+if (saveSettingsBtn) {
+  saveSettingsBtn.addEventListener("click", async () => {
+    const user = auth.currentUser;
+    if (!user) return toast("No user logged in");
 
-const headNotesList = document.getElementById("headNotesList");
-if (headNotesList) {
-  let notes = JSON.parse(localStorage.getItem("lessonNotes")) || [];
-  headNotesList.innerHTML = "";
-  notes.forEach(note => {
-    const li = document.createElement("li");
-    li.textContent = note;
-    headNotesList.appendChild(li);
+    const newFullName = document.getElementById("updateFullName")?.value.trim();
+    const newPhone = document.getElementById("updatePhone")?.value.trim();
+    const newEmail = document.getElementById("updateEmail")?.value.trim();
+
+    try {
+      if (newEmail) await user.updateEmail(newEmail);
+
+      const updates = {};
+      if (newFullName) updates.fullName = newFullName;
+      if (newPhone) updates.phone = newPhone;
+
+      if (Object.keys(updates).length > 0) {
+        await db.collection("users").doc(user.uid).update(updates);
+      }
+
+      toast("Settings updated successfully!");
+    } catch (err) {
+      toast("Error updating settings: " + err.message);
+    }
   });
 }
 
@@ -184,166 +255,41 @@ const statSummaries = document.getElementById("statSummaries");
 const statClass = document.getElementById("statClass");
 
 if (statTeachers) {
-  let users = JSON.parse(localStorage.getItem("users")) || [];
-  statTeachers.textContent = users.filter(u => u.role === "teacher").length;
+  db.collection("users").where("role", "==", "teacher").onSnapshot(snapshot => {
+    statTeachers.textContent = snapshot.size;
+  });
 }
 if (statNotes) {
-  let notes = JSON.parse(localStorage.getItem("lessonNotes")) || [];
-  statNotes.textContent = notes.length;
+  db.collection("lessonNotes").onSnapshot(snapshot => {
+    statNotes.textContent = snapshot.size;
+  });
 }
 if (statSummaries) {
-  let summaries = JSON.parse(localStorage.getItem("summaries")) || [];
-  statSummaries.textContent = summaries.length;
+  db.collection("summaries").onSnapshot(snapshot => {
+    statSummaries.textContent = snapshot.size;
+  });
 }
 if (statClass) {
-  let classData = JSON.parse(localStorage.getItem("classNumbers"));
-  statClass.textContent = classData ? `${classData.boys} boys, ${classData.girls} girls` : "0 boys, 0 girls";
-}
-
-// ---------------- HEADTEACHER VIEW ATTENDANCE ----------------
-const viewAttendanceBtn = document.getElementById("viewAttendanceBtn");
-const attendanceReport = document.getElementById("attendanceReport");
-const downloadAttendanceBtn = document.getElementById("downloadAttendanceBtn");
-
-if (viewAttendanceBtn && attendanceReport) {
-  viewAttendanceBtn.addEventListener("click", () => {
-    let history = JSON.parse(localStorage.getItem("attendanceHistory")) || [];
-    if (!history.length) {
-      attendanceReport.textContent = "No attendance data available.";
-      return;
+  db.collection("attendanceHistory").orderBy("date").onSnapshot(snapshot => {
+    if (!snapshot.empty) {
+      const latest = snapshot.docs[snapshot.docs.length - 1].data();
+      statClass.textContent = `${latest.boys} boys, ${latest.girls} girls`;
+    } else {
+      statClass.textContent = "0 boys, 0 girls";
     }
-
-    let html = "<table class='attendance-table'><tr><th>Date</th><th>Boys</th><th>Girls</th></tr>";
-    history.forEach(rec => {
-      html += `<tr><td>${rec.date}</td><td>${rec.boys}</td><td>${rec.girls}</td></tr>`;
-    });
-    html += "</table>";
-    attendanceReport.innerHTML = html;
-  });
-}
-
-if (downloadAttendanceBtn) {
-  downloadAttendanceBtn.addEventListener("click", () => {
-    let history = JSON.parse(localStorage.getItem("attendanceHistory")) || [];
-    if (!history.length) return toast("No attendance history to download");
-
-    let csv = "Date,Boys,Girls\n";
-    history.forEach(rec => {
-      csv += `${rec.date},${rec.boys},${rec.girls}\n`;
-    });
-
-    const blob = new Blob([csv], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "attendance_history.csv";
-    a.click();
-    URL.revokeObjectURL(url);
-  });
-}
-
-// ---------------- TEACHER SUMMARIES ----------------
-const summaryInput = document.getElementById("summaryInput");
-const submitSummaryBtn = document.getElementById("submitSummaryBtn");
-const summaryList = document.getElementById("summaryList");
-
-if (submitSummaryBtn && summaryInput && summaryList) {
-  submitSummaryBtn.addEventListener("click", () => {
-    const text = summaryInput.value.trim();
-    if (!text) return toast("Please write a summary");
-    let summaries = JSON.parse(localStorage.getItem("summaries")) || [];
-    summaries.push(text);
-    localStorage.setItem("summaries", JSON.stringify(summaries));
-    const div = document.createElement("div");
-    div.textContent = text;
-    summaryList.appendChild(div);
-    summaryInput.value = "";
-    toast("Summary submitted!");
-  });
-
-  let summaries = JSON.parse(localStorage.getItem("summaries")) || [];
-  summaryList.innerHTML = "";
-  summaries.forEach(text => {
-    const div = document.createElement("div");
-    div.textContent = text;
-    summaryList.appendChild(div);
-  });
-}
-
-// ---------------- TEACHER CLASS NUMBERS (with history) ----------------
-const boysInput = document.getElementById("boysInput");
-const girlsInput = document.getElementById("girlsInput");
-const updateClassBtn = document.getElementById("updateClassBtn");
-const classDisplay = document.getElementById("classDisplay");
-
-if (updateClassBtn && boysInput && girlsInput && classDisplay) {
-  updateClassBtn.addEventListener("click", () => {
-    const boys = parseInt(boysInput.value.trim(), 10);
-    const girls = parseInt(girlsInput.value.trim(), 10);
-    if (isNaN(boys) || isNaN(girls)) return toast("Enter valid numbers");
-
-    const record = { boys, girls, date: new Date().toLocaleString() };
-    let history = JSON.parse(localStorage.getItem("attendanceHistory")) || [];
-    history.push(record);
-    localStorage.setItem("attendanceHistory", JSON.stringify(history));
-
-    classDisplay.textContent = `Boys: ${boys}, Girls: ${girls}`;
-    toast("Class numbers updated!");
-
-    const myClass = document.getElementById("myClass");
-    if (myClass) myClass.textContent = `${boys} boys, ${girls} girls`;
-  });
-
-  let history = JSON.parse(localStorage.getItem("attendanceHistory")) || [];
-  if (history.length) {
-    const latest = history[history.length - 1];
-    classDisplay.textContent = `Boys: ${latest.boys}, Girls: ${latest.girls}`;
-  }
-}
-
-// ---------------- TEACHER LESSON NOTES ----------------
-const notesInput = document.getElementById("notesInput");
-const submitNotesBtn = document.getElementById("submitNotesBtn");
-const notesList = document.getElementById("notesList");
-
-if (submitNotesBtn && notesInput && notesList) {
-  submitNotesBtn.addEventListener("click", () => {
-    const note = notesInput.value.trim();
-    if (!note) return toast("Please enter your notes");
-
-    let notes = JSON.parse(localStorage.getItem("lessonNotes")) || [];
-    notes.push(note);
-    localStorage.setItem("lessonNotes", JSON.stringify(notes));
-
-    const li = document.createElement("li");
-    li.textContent = note;
-    notesList.appendChild(li);
-
-    notesInput.value = "";
-    toast("Lesson notes submitted!");
-
-    const myNotes = document.getElementById("myNotes");
-    if (myNotes) myNotes.textContent = notes.length;
-  });
-
-  let notes = JSON.parse(localStorage.getItem("lessonNotes")) || [];
-  notesList.innerHTML = "";
-  notes.forEach(note => {
-    const li = document.createElement("li");
-    li.textContent = note;
-    notesList.appendChild(li);
   });
 }
 
 // ---------------- TEACHER ANNOUNCEMENTS (sync from Headteacher) ----------------
 const teacherAnnouncements = document.getElementById("teacherAnnouncements");
 if (teacherAnnouncements) {
-  let announcements = JSON.parse(localStorage.getItem("announcements")) || [];
-  teacherAnnouncements.innerHTML = "";
-  announcements.forEach(text => {
-    const div = document.createElement("div");
-    div.textContent = text;
-    teacherAnnouncements.appendChild(div);
+  db.collection("announcements").orderBy("date").onSnapshot(snapshot => {
+    teacherAnnouncements.innerHTML = "";
+    snapshot.forEach(doc => {
+      const div = document.createElement("div");
+      div.textContent = doc.data().text;
+      teacherAnnouncements.appendChild(div);
+    });
   });
 }
 
@@ -353,63 +299,23 @@ const myNotes = document.getElementById("myNotes");
 const myClass = document.getElementById("myClass");
 
 if (mySummaries) {
-  let summaries = JSON.parse(localStorage.getItem("summaries")) || [];
-  mySummaries.textContent = summaries.length;
-}
-if (myNotes) {
-  let notes = JSON.parse(localStorage.getItem("lessonNotes")) || [];
-  myNotes.textContent = notes.length;
-}
-if (myClass) {
-  let history = JSON.parse(localStorage.getItem("attendanceHistory")) || [];
-  if (history.length) {
-    const latest = history[history.length - 1];
-    myClass.textContent = `${latest.boys} boys, ${latest.girls} girls`;
-  } else {
-    myClass.textContent = "0 boys, 0 girls";
-  }
-}
-
-// ---------------- DOWNLOAD BUTTONS ----------------
-const downloadSummariesBtn = document.getElementById("downloadSummariesBtn");
-if (downloadSummariesBtn) {
-  downloadSummariesBtn.addEventListener("click", () => {
-    let summaries = JSON.parse(localStorage.getItem("summaries")) || [];
-    if (!summaries.length) return toast("No summaries to download");
-
-    let csv = "Summary\n";
-    summaries.forEach(text => {
-      csv += `"${text.replace(/"/g, '""')}"\n`;
-    });
-
-    const blob = new Blob([csv], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "summaries.csv";
-    a.click();
-    URL.revokeObjectURL(url);
+  db.collection("summaries").onSnapshot(snapshot => {
+    mySummaries.textContent = snapshot.size;
   });
 }
-
-const downloadNotesBtn = document.getElementById("downloadNotesBtn");
-if (downloadNotesBtn) {
-  downloadNotesBtn.addEventListener("click", () => {
-    let notes = JSON.parse(localStorage.getItem("lessonNotes")) || [];
-    if (!notes.length) return toast("No notes to download");
-
-    let csv = "Note\n";
-    notes.forEach(text => {
-      csv += `"${text.replace(/"/g, '""')}"\n`;
-    });
-
-    const blob = new Blob([csv], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "lesson_notes.csv";
-    a.click();
-    URL.revokeObjectURL(url);
+if (myNotes) {
+  db.collection("lessonNotes").onSnapshot(snapshot => {
+    myNotes.textContent = snapshot.size;
+  });
+}
+if (myClass) {
+  db.collection("attendanceHistory").orderBy("date").onSnapshot(snapshot => {
+    if (!snapshot.empty) {
+      const latest = snapshot.docs[snapshot.docs.length - 1].data();
+      myClass.textContent = `${latest.boys} boys, ${latest.girls} girls`;
+    } else {
+      myClass.textContent = "0 boys, 0 girls";
+    }
   });
 }
 
