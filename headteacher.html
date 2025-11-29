@@ -3,131 +3,89 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Headteacher Dashboard</title>
+  <title>Headteacher Dashboard | Ansuaa Ababio</title>
   <link rel="stylesheet" href="style.css" />
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+  <!-- Firebase config -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAV2lyXiQKKt-fYM1weyNWXsjiHYbX2imc",
+      authDomain: "school-portal-ff2ff.firebaseapp.com",
+      projectId: "school-portal-ff2ff",
+      storageBucket: "school-portal-ff2ff.appspot.com",
+      messagingSenderId: "518827252304",
+      appId: "1:518827252304:web:723250d7c188f3e96ecf55",
+      measurementId: "G-7VSS3B0TD7"
+    };
+    firebase.initializeApp(firebaseConfig);
+    window.auth = firebase.auth();
+    window.db = firebase.firestore();
+  </script>
+
   <script defer src="script.js"></script>
 </head>
 <body>
   <header class="header">
-    <h1>🏫 Ansuaa Ababio Methodist Preparatory School</h1>
-    <div class="theme-toggle-wrapper">
-      <button id="themeToggleBtn" class="btn">Theme Options ˅</button>
-      <div id="themeOptions" class="hidden">
-        <button class="theme-btn" data-theme="blue">Blue</button>
-        <button class="theme-btn" data-theme="white">White</button>
-        <button class="theme-btn" data-theme="green">Green</button>
-        <button class="theme-btn" data-theme="dark">Dark</button>
-      </div>
-    </div>
+    <h1>🏫 Headteacher Dashboard</h1>
+    <div id="userDisplayName"></div>
+    <button id="logoutBtn" class="btn danger">Logout</button>
   </header>
 
-  <div class="app">
-    <aside class="sidebar">
-      <div class="sidebar-title">👑 Headteacher Panel</div>
-      <button class="nav-item active" data-target="dashboardSection">📊 Dashboard</button>
-      <button class="nav-item" data-target="teachersSection">👩‍🏫 Teachers</button>
-      <button class="nav-item" data-target="classesSection">📚 Classes</button>
-      <button class="nav-item" data-target="announcementsSection">📰 Announcements</button>
-      <button class="nav-item" data-target="settingsSection">⚙️ Settings</button>
-      <button id="logoutBtn" class="nav-item danger">🚪 Logout</button>
-    </aside>
+  <!-- NAVIGATION -->
+  <nav>
+    <button class="nav-item active" data-target="dashboardSection">Dashboard</button>
+    <button class="nav-item" data-target="announcementsSection">Announcements</button>
+    <button class="nav-item" data-target="attendanceSection">Attendance</button>
+    <button class="nav-item" data-target="settingsSection">Settings</button>
+  </nav>
 
-    <main class="main">
-      <h2 class="welcome">Welcome, Headteacher <span id="userDisplayName">👤</span> 👋</h2>
+  <main>
+    <!-- DASHBOARD -->
+    <section id="dashboardSection">
+      <h2>Summary Stats</h2>
+      <p>Teachers: <span id="statTeachers">0</span></p>
+      <p>Lesson Notes: <span id="statNotes">0</span></p>
+      <p>Summaries: <span id="statSummaries">0</span></p>
+      <p>Class Numbers: <span id="statClass">0 boys, 0 girls</span></p>
+    </section>
 
-      <!-- Dashboard -->
-      <section id="dashboardSection" class="grid">
-        <section class="card accent-black">
-          <h3>📊 Quick Stats</h3>
-          <ul>
-            <li>Total Teachers: <span id="statTeachers">0</span></li>
-            <li>Total Lesson Notes: <span id="statNotes">0</span></li>
-            <li>Total Summaries: <span id="statSummaries">0</span></li>
-            <li>Class Numbers: <span id="statClass">0 boys, 0 girls</span></li>
-          </ul>
-        </section>
+    <!-- ANNOUNCEMENTS -->
+    <section id="announcementsSection" class="hidden">
+      <h2>Post Announcement</h2>
+      <textarea id="announcementInput" placeholder="Write announcement..."></textarea>
+      <button id="postAnnouncementBtn" class="btn primary">Post</button>
+      <h3>All Announcements</h3>
+      <div id="announcementList"></div>
+    </section>
 
-        <section class="card accent-gold">
-          <h3>📢 Announcements</h3>
-          <textarea id="announcementInput" placeholder="Write announcement here..."></textarea>
-          <button id="postAnnouncementBtn" class="btn primary">Post Announcement</button>
-          <div id="announcementList"></div>
-        </section>
+    <!-- ATTENDANCE -->
+    <section id="attendanceSection" class="hidden">
+      <h2>View Attendance</h2>
+      <button id="viewAttendanceBtn" class="btn primary">Load Attendance Report</button>
+      <div id="attendanceReport"></div>
+    </section>
 
-        <section class="card accent-green">
-          <h3>📖 Lesson Notes</h3>
-          <ul id="headNotesList"></ul>
-        </section>
+    <!-- SETTINGS -->
+    <section id="settingsSection" class="hidden">
+      <h2>Update Settings</h2>
+      <label>Full Name</label>
+      <input id="updateFullName" type="text" placeholder="Update full name" />
+      <label>Phone</label>
+      <input id="updatePhone" type="tel" placeholder="Update phone" />
+      <label>Email</label>
+      <input id="updateEmail" type="email" placeholder="Update email" />
+      <button id="saveSettingsBtn" class="btn primary">Save Settings</button>
+    </section>
+  </main>
 
-        <section class="card accent-red">
-          <h3>👩‍🏫 Teacher Records</h3>
-          <div id="teacherRecords"></div>
-        </section>
-
-        <section class="card accent-blue">
-          <h3>📚 Class Attendance</h3>
-          <button id="viewAttendanceBtn" class="btn primary">View Attendance</button>
-          <button id="downloadAttendanceBtn" class="btn download">⬇️ Download Attendance History</button>
-          <div id="attendanceReport"></div>
-        </section>
-      </section>
-
-      <!-- Teachers -->
-      <section id="teachersSection" class="card hidden">
-        <h3>👩‍🏫 Teachers</h3>
-        <p>Manage teacher accounts here.</p>
-      </section>
-
-      <!-- Classes -->
-      <section id="classesSection" class="card hidden">
-        <h3>📚 Classes</h3>
-        <p>View and manage classes here.</p>
-      </section>
-
-      <!-- Announcements -->
-      <section id="announcementsSection" class="card hidden">
-        <h3>📰 Announcements</h3>
-        <p>Announcements posted will appear here.</p>
-      </section>
-
-      <!-- Settings -->
-      <section id="settingsSection" class="card hidden">
-        <h3>⚙️ Headteacher Settings</h3>
-        <form class="form-modern">
-          <label>Full Name</label>
-          <input type="text" id="updateFullName" placeholder="Headteacher Full Name" />
-
-          <label>Username</label>
-          <input type="text" id="updateUsername" placeholder="Headteacher Username" disabled />
-
-          <label>Email Address</label>
-          <input type="email" id="updateEmail" placeholder="headteacher@school.edu.gh" />
-
-          <label>Phone Number</label>
-          <input type="tel" id="updatePhone" placeholder="+233 24 000 0000" />
-
-          <label>Preferred Theme</label>
-          <select id="updateTheme">
-            <option value="blue">Blue</option>
-            <option value="white">White</option>
-            <option value="green">Green</option>
-            <option value="dark">Dark</option>
-          </select>
-
-          <label>Old Password</label>
-          <input type="password" id="oldPassword" placeholder="Enter old password" />
-
-          <label>New Password</label>
-          <input type="password" id="newPassword" placeholder="Enter new password" />
-
-          <label>Confirm New Password</label>
-          <input type="password" id="confirmPassword" placeholder="Confirm new password" />
-
-          <button class="btn primary" id="saveSettingsBtn" type="button">Save Changes</button>
-        </form>
-      </section>
-    </main>
-  </div>
+  <footer class="footer">
+    <p>© 2025 Ansuaa Ababio Methodist Preparatory School | "NYANSA NFITIASEƐ"</p>
+  </footer>
 
   <div id="toast" class="toast hidden"></div>
 </body>
