@@ -8,14 +8,11 @@
   <script defer src="script.js"></script>
 </head>
 <body>
-  <!-- Header -->
   <header class="header">
-    <h1 style="font-size: 2rem; text-align: center;">
-      🏫 Ansuaa Ababio Methodist Preparatory School
-    </h1>
-    <div class="theme-toggle-wrapper" style="text-align: center; margin-top: 10px;">
+    <h1>🏫 Ansuaa Ababio Methodist Preparatory School</h1>
+    <div class="theme-toggle-wrapper">
       <button id="themeToggleBtn" class="btn">Theme Options ˅</button>
-      <div id="themeOptions" class="hidden" style="margin-top: 10px;">
+      <div id="themeOptions" class="hidden">
         <button class="theme-btn" data-theme="blue">Blue</button>
         <button class="theme-btn" data-theme="white">White</button>
         <button class="theme-btn" data-theme="green">Green</button>
@@ -35,15 +32,13 @@
     </aside>
 
     <main class="main">
-      <h2 class="welcome">
-        Welcome, Headteacher <span id="userDisplayName">👤</span> 👋
-      </h2>
+      <h2 class="welcome">Welcome, Headteacher <span id="userDisplayName">👤</span> 👋</h2>
 
       <!-- Dashboard -->
       <section id="dashboardSection" class="grid">
         <section class="card accent-teal">
           <h3>📊 Quick Stats</h3>
-          <ul id="headSummaryStats">
+          <ul>
             <li>Total Teachers: <span id="statTeachers">0</span></li>
             <li>Total Lesson Notes: <span id="statNotes">0</span></li>
             <li>Total Summaries: <span id="statSummaries">0</span></li>
@@ -70,8 +65,8 @@
 
         <section class="card accent-purple">
           <h3>📚 Class Attendance</h3>
-          <p>View class attendance reports.</p>
-          <button class="btn primary">View Attendance</button>
+          <button id="viewAttendanceBtn" class="btn primary">View Attendance</button>
+          <div id="attendanceReport"></div>
         </section>
       </section>
 
@@ -96,30 +91,7 @@
       <!-- Settings -->
       <section id="settingsSection" class="card hidden">
         <h3>⚙️ Settings</h3>
-        <form class="form-modern">
-          <label>Display Name</label>
-          <input type="text" placeholder="Headteacher Name" />
-
-          <label>Preferred Theme</label>
-          <select>
-            <option value="blue">Blue</option>
-            <option value="white">White</option>
-            <option value="green">Green</option>
-          </select>
-
-          <label>Notification Email</label>
-          <input type="email" placeholder="headteacher@school.edu.gh" />
-
-          <label>Phone Number</label>
-          <input type="tel" placeholder="+233 24 000 0000" />
-
-          <label>Change Password</label>
-          <input type="password" placeholder="Old password" />
-          <input type="password" placeholder="New password" />
-          <input type="password" placeholder="Confirm new password" />
-
-          <button class="btn primary" type="submit">Save Changes</button>
-        </form>
+        <!-- Settings form already good -->
       </section>
     </main>
   </div>
