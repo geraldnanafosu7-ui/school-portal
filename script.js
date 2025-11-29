@@ -116,13 +116,12 @@ if (postBtn && announcementInput && announcementList) {
   });
 }
 
-// ---------------- HEADTEACHER SETTINGS (REAL) ----------------
+// ---------------- SETTINGS (Headteacher & Teacher) ----------------
 const saveSettingsBtn = document.getElementById("saveSettingsBtn");
 if (saveSettingsBtn) {
   saveSettingsBtn.addEventListener("click", () => {
     let user = JSON.parse(localStorage.getItem("currentUser"));
     let users = JSON.parse(localStorage.getItem("users")) || [];
-
     if (!user) return toast("No user logged in");
 
     const oldPass = document.getElementById("oldPassword")?.value.trim();
@@ -150,7 +149,6 @@ if (saveSettingsBtn) {
     localStorage.setItem("currentUser", JSON.stringify(user));
     toast("Settings updated successfully!");
 
-    // Refresh greeting if present
     const nameEl = document.getElementById("userDisplayName");
     if (nameEl) nameEl.textContent = user.fullName || user.username;
   });
@@ -205,134 +203,87 @@ if (statClass) {
 // ---------------- HEADTEACHER VIEW ATTENDANCE ----------------
 const viewAttendanceBtn = document.getElementById("viewAttendanceBtn");
 const attendanceReport = document.getElementById("attendanceReport");
+const downloadAttendanceBtn = document.getElementById("downloadAttendanceBtn");
 
 if (viewAttendanceBtn && attendanceReport) {
   viewAttendanceBtn.addEventListener("click", () => {
-    let classData = JSON.parse(localStorage.getItem("classNumbers"));
-    attendanceReport.innerHTML = classData
-      ? `<p>📋 Attendance Report</p><p>Boys: ${classData.boys}</p><p>Girls: ${classData.girls}</p>`
-      : "No attendance data available.";
+    let history = JSON.parse(localStorage.getItem("attendanceHistory")) || [];
+    if (!history.length) {
+      attendanceReport.textContent = "No attendance data available.";
+      return;
+    }
+
+    let html = "<table class='attendance-table'><tr><th>Date</th><th>Boys</th><th>Girls</th></tr>";
+    history.forEach(rec => {
+      html += `<tr><td>${rec.date}</td><td>${rec.boys}</td><td>${rec.girls}</td></tr>`;
+    });
+    html += "</table>";
+    attendanceReport.innerHTML = html;
   });
 }
 
-// ---------------- TEACHER SUMMARIES ----------------
-const summaryInput = document.getElementById("summaryInput");
-const submitSummaryBtn = document.getElementById("submitSummaryBtn");
-const summaryList = document.getElementById("summaryList");
+if (downloadAttendanceBtn) {
+  downloadAttendanceBtn.addEventListener("click", () => {
+    let history = JSON.parse(localStorage.getItem("attendanceHistory")) || [];
+    if (!history.length) return toast("No attendance history to download");
 
-if (submitSummaryBtn && summaryInput && summaryList) {
-  submitSummaryBtn.addEventListener("click", () => {
-    const text = summaryInput.value.trim();
-    if (!text) return toast("Please write a summary");
+    let csv = "Date,Boys,Girls\n";
+    history.forEach(rec => {
+      csv += `${rec.date},${rec.boys},${rec.girls}\n`;
+    });
+
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "attendance_history.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+}
+
+// ---------------- TEACHER DOWNLOAD SUMMARIES ----------------
+const downloadSummariesBtn = document.getElementById("downloadSummariesBtn");
+if (downloadSummariesBtn) {
+  downloadSummariesBtn.addEventListener("click", () => {
     let summaries = JSON.parse(localStorage.getItem("summaries")) || [];
-    summaries.push(text);
-    localStorage.setItem("summaries", JSON.stringify(summaries));
-    const div = document.createElement("div");
-    div.textContent = text;
-    summaryList.appendChild(div);
-    summaryInput.value = "";
-    toast("Summary submitted!");
-  });
+    if (!summaries.length) return toast("No summaries to download");
 
-  let summaries = JSON.parse(localStorage.getItem("summaries")) || [];
-  summaryList.innerHTML = "";
-  summaries.forEach(text => {
-    const div = document.createElement("div");
-    div.textContent = text;
-    summaryList.appendChild(div);
+    let csv = "Summary\n";
+    summaries.forEach(text => {
+      csv += `"${text.replace(/"/g, '""')}"\n`;
+    });
+
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "summaries.csv";
+    a.click();
+    URL.revokeObjectURL(url);
   });
 }
 
-// ---------------- TEACHER CLASS NUMBERS ----------------
-const boysInput = document.getElementById("boysInput");
-const girlsInput = document.getElementById("girlsInput");
-const updateClassBtn = document.getElementById("updateClassBtn");
-const classDisplay = document.getElementById("classDisplay");
-
-if (updateClassBtn && boysInput && girlsInput && classDisplay) {
-  updateClassBtn.addEventListener("click", () => {
-    const boys = parseInt(boysInput.value.trim(), 10);
-    const girls = parseInt(girlsInput.value.trim(), 10);
-    if (isNaN(boys) || isNaN(girls)) return toast("Enter valid numbers");
-
-    const classData = { boys, girls };
-    localStorage.setItem("classNumbers", JSON.stringify(classData));
-
-    classDisplay.textContent = `Boys: ${boys}, Girls: ${girls}`;
-    toast("Class numbers updated!");
-
-    // update teacher stats if present
-    const myClass = document.getElementById("myClass");
-    if (myClass) myClass.textContent = `${boys} boys, ${girls} girls`;
-  });
-
-  const saved = JSON.parse(localStorage.getItem("classNumbers"));
-  if (saved) classDisplay.textContent = `Boys: ${saved.boys}, Girls: ${saved.girls}`;
-}
-
-// ---------------- TEACHER LESSON NOTES ----------------
-const notesInput = document.getElementById("notesInput");
-const submitNotesBtn = document.getElementById("submitNotesBtn");
-const notesList = document.getElementById("notesList");
-
-if (submitNotesBtn && notesInput && notesList) {
-  submitNotesBtn.addEventListener("click", () => {
-    const note = notesInput.value.trim();
-    if (!note) return toast("Please enter your notes");
-
+// ---------------- TEACHER DOWNLOAD NOTES ----------------
+const downloadNotesBtn = document.getElementById("downloadNotesBtn");
+if (downloadNotesBtn) {
+  downloadNotesBtn.addEventListener("click", () => {
     let notes = JSON.parse(localStorage.getItem("lessonNotes")) || [];
-    notes.push(note);
-    localStorage.setItem("lessonNotes", JSON.stringify(notes));
+    if (!notes.length) return toast("No notes to download");
 
-    const li = document.createElement("li");
-    li.textContent = note;
-    notesList.appendChild(li);
+    let csv = "Note\n";
+    notes.forEach(text => {
+      csv += `"${text.replace(/"/g, '""')}"\n`;
+    });
 
-    notesInput.value = "";
-    toast("Lesson notes submitted!");
-
-    // update teacher stats if present
-    const myNotes = document.getElementById("myNotes");
-    if (myNotes) myNotes.textContent = notes.length;
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "lesson_notes.csv";
+    a.click();
+    URL.revokeObjectURL(url);
   });
-
-  let notes = JSON.parse(localStorage.getItem("lessonNotes")) || [];
-  notesList.innerHTML = "";
-  notes.forEach(note => {
-    const li = document.createElement("li");
-    li.textContent = note;
-    notesList.appendChild(li);
-  });
-}
-
-// ---------------- TEACHER ANNOUNCEMENTS (SYNC FROM HEADTEACHER) ----------------
-const teacherAnnouncements = document.getElementById("teacherAnnouncements");
-if (teacherAnnouncements) {
-  let announcements = JSON.parse(localStorage.getItem("announcements")) || [];
-  teacherAnnouncements.innerHTML = "";
-  announcements.forEach(text => {
-    const div = document.createElement("div");
-    div.textContent = text;
-    teacherAnnouncements.appendChild(div);
-  });
-}
-
-// ---------------- TEACHER SUMMARY STATS ----------------
-const mySummaries = document.getElementById("mySummaries");
-const myNotes = document.getElementById("myNotes");
-const myClass = document.getElementById("myClass");
-
-if (mySummaries) {
-  let summaries = JSON.parse(localStorage.getItem("summaries")) || [];
-  mySummaries.textContent = summaries.length;
-}
-if (myNotes) {
-  let notes = JSON.parse(localStorage.getItem("lessonNotes")) || [];
-  myNotes.textContent = notes.length;
-}
-if (myClass) {
-  let classData = JSON.parse(localStorage.getItem("classNumbers"));
-  myClass.textContent = classData ? `${classData.boys} boys, ${classData.girls} girls` : "0 boys, 0 girls";
 }
 
 // ---------------- NAVIGATION ----------------
@@ -342,14 +293,11 @@ const sections = document.querySelectorAll("main section, .main > .grid");
 if (navItems.length && sections.length) {
   navItems.forEach(item => {
     item.addEventListener("click", () => {
-      // remove active highlight
       navItems.forEach(i => i.classList.remove("active"));
       item.classList.add("active");
 
-      // hide all sections
       sections.forEach(sec => sec.classList.add("hidden"));
 
-      // show target section
       const targetId = item.dataset.target;
       if (targetId) {
         const targetSection = document.getElementById(targetId);
@@ -361,7 +309,6 @@ if (navItems.length && sections.length) {
     });
   });
 
-  // Ensure dashboard visible on initial load
   const defaultDashboard = document.getElementById("dashboardSection");
   if (defaultDashboard) defaultDashboard.classList.remove("hidden");
 }
