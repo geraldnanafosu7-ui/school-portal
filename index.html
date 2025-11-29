@@ -6,35 +6,31 @@
   <title>Ansuaa Ababio Portal Login</title>
   <link rel="stylesheet" href="style.css" />
 
-  <!-- ✅ Firebase compat SDKs -->
+  <!-- Firebase compat SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
-  <!-- ✅ Firebase config and initialization -->
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyAV2lyXiQKKt-fYM1weyNWXsjiHYbX2imc",
       authDomain: "school-portal-ff2ff.firebaseapp.com",
       projectId: "school-portal-ff2ff",
-      storageBucket: "school-portal-ff2ff.appspot.com",   // ✅ fixed
+      storageBucket: "school-portal-ff2ff.appspot.com",
       messagingSenderId: "518827252304",
       appId: "1:518827252304:web:723250d7c188f3e96ecf55",
       measurementId: "G-7VSS3B0TD7"
     };
-
-    // Initialize Firebase (compat)
     firebase.initializeApp(firebaseConfig);
     window.auth = firebase.auth();
     window.db = firebase.firestore();
   </script>
 
-  <!-- Load your main logic -->
   <script defer src="script.js"></script>
 </head>
 <body>
   <header class="header">
-    <h1 style="text-align:center;">🏫 Ansuaa Ababio Methodist Preparatory School</h1>
+    <h1>🏫 Ansuaa Ababio Methodist Preparatory School</h1>
   </header>
 
   <main style="display:flex;justify-content:center;padding:40px;">
@@ -43,9 +39,9 @@
       <h2 style="text-align:center;">Login</h2>
       <form id="loginForm" class="form-modern">
         <label>Email</label>
-        <input id="loginUsername" type="email" placeholder="Enter email" required autocomplete="email" />
+        <input id="loginUsername" type="email" required />
         <label>Password</label>
-        <input id="loginPassword" type="password" placeholder="Enter password" required autocomplete="current-password" />
+        <input id="loginPassword" type="password" required />
         <button type="submit" class="btn primary">Login</button>
       </form>
       <p style="margin-top:15px;text-align:center;">
@@ -56,22 +52,20 @@
         </button>
       </p>
     </section>
-  </main>
 
-  <main style="display:flex;justify-content:center;">
     <section class="card hidden" id="signupCard" style="max-width:360px;width:100%;">
       <h2 style="text-align:center;">Create Account</h2>
       <form id="signupForm" class="form-modern">
         <label>Username</label>
-        <input id="suUsername" type="text" placeholder="Choose a username" required autocomplete="username" />
+        <input id="suUsername" type="text" required />
         <label>Full Name</label>
-        <input id="suFullName" type="text" placeholder="Your full name" required autocomplete="name" />
+        <input id="suFullName" type="text" required />
         <label>Password</label>
-        <input id="suPassword" type="password" placeholder="Create a password" required autocomplete="new-password" />
+        <input id="suPassword" type="password" required />
         <label>Phone</label>
-        <input id="suPhone" type="tel" placeholder="Phone number" required autocomplete="tel" />
+        <input id="suPhone" type="tel" required />
         <label>Email</label>
-        <input id="suEmail" type="email" placeholder="Email address" required autocomplete="email" />
+        <input id="suEmail" type="email" required />
         <label>Role</label>
         <select id="suRole" required>
           <option value="">Select role</option>
@@ -87,6 +81,6 @@
     <p>© 2025 Ansuaa Ababio Methodist Preparatory School | "NYANSA NFITIASEƐ"</p>
   </footer>
 
-  <div id="toast" class="toast hidden"></div>
+  <div id="toast" class="toast"></div>
 </body>
 </html>
