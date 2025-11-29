@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Headteacher Dashboard | Ansuaa Ababio</title>
+  <title>Headteacher Dashboard</title>
   <link rel="stylesheet" href="style.css" />
 
   <!-- Firebase SDKs -->
@@ -11,7 +10,6 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
-  <!-- Firebase config -->
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyAV2lyXiQKKt-fYM1weyNWXsjiHYbX2imc",
@@ -29,64 +27,57 @@
 
   <script defer src="script.js"></script>
 </head>
-<body>
+<body class="theme-blue">
   <header class="header">
-    <h1>🏫 Headteacher Dashboard</h1>
+    <h1>👨‍🏫 Headteacher Dashboard</h1>
     <div id="userDisplayName"></div>
     <button id="logoutBtn" class="btn danger">Logout</button>
   </header>
 
-  <!-- NAVIGATION -->
-  <nav>
-    <button class="nav-item active" data-target="dashboardSection">Dashboard</button>
-    <button class="nav-item" data-target="announcementsSection">Announcements</button>
-    <button class="nav-item" data-target="attendanceSection">Attendance</button>
-    <button class="nav-item" data-target="settingsSection">Settings</button>
-  </nav>
+  <div class="app">
+    <aside class="sidebar">
+      <button class="nav-item active" data-target="dashboardSection">📊 Dashboard</button>
+      <button class="nav-item" data-target="announcementsSection">📰 Announcements</button>
+      <button class="nav-item" data-target="attendanceSection">📋 Attendance</button>
+      <button class="nav-item" data-target="settingsSection">⚙️ Settings</button>
+    </aside>
 
-  <main>
-    <!-- DASHBOARD -->
-    <section id="dashboardSection">
-      <h2>Summary Stats</h2>
-      <p>Teachers: <span id="statTeachers">0</span></p>
-      <p>Lesson Notes: <span id="statNotes">0</span></p>
-      <p>Summaries: <span id="statSummaries">0</span></p>
-      <p>Class Numbers: <span id="statClass">0 boys, 0 girls</span></p>
-    </section>
+    <main class="main">
+      <!-- Dashboard Stats -->
+      <section id="dashboardSection" class="grid">
+        <div class="card accent-green"><h3>Teachers</h3><p id="statTeachers">0</p></div>
+        <div class="card accent-blue"><h3>Lesson Notes</h3><p id="statNotes">0</p></div>
+        <div class="card accent-orange"><h3>Summaries</h3><p id="statSummaries">0</p></div>
+        <div class="card accent-red"><h3>Class Numbers</h3><p id="statClass">0 boys, 0 girls</p></div>
+      </section>
 
-    <!-- ANNOUNCEMENTS -->
-    <section id="announcementsSection" class="hidden">
-      <h2>Post Announcement</h2>
-      <textarea id="announcementInput" placeholder="Write announcement..."></textarea>
-      <button id="postAnnouncementBtn" class="btn primary">Post</button>
-      <h3>All Announcements</h3>
-      <div id="announcementList"></div>
-    </section>
+      <!-- Announcements -->
+      <section id="announcementsSection" class="hidden">
+        <textarea id="announcementInput" placeholder="Write announcement..."></textarea>
+        <button id="postAnnouncementBtn" class="btn primary">Post Announcement</button>
+        <div id="announcementList"></div>
+      </section>
 
-    <!-- ATTENDANCE -->
-    <section id="attendanceSection" class="hidden">
-      <h2>View Attendance</h2>
-      <button id="viewAttendanceBtn" class="btn primary">Load Attendance Report</button>
-      <div id="attendanceReport"></div>
-    </section>
+      <!-- Attendance -->
+      <section id="attendanceSection" class="hidden">
+        <button id="viewAttendanceBtn" class="btn primary">View Attendance Report</button>
+        <div id="attendanceReport"></div>
+      </section>
 
-    <!-- SETTINGS -->
-    <section id="settingsSection" class="hidden">
-      <h2>Update Settings</h2>
-      <label>Full Name</label>
-      <input id="updateFullName" type="text" placeholder="Update full name" />
-      <label>Phone</label>
-      <input id="updatePhone" type="tel" placeholder="Update phone" />
-      <label>Email</label>
-      <input id="updateEmail" type="email" placeholder="Update email" />
-      <button id="saveSettingsBtn" class="btn primary">Save Settings</button>
-    </section>
-  </main>
+      <!-- Settings -->
+      <section id="settingsSection" class="hidden">
+        <label>Full Name</label><input id="updateFullName" type="text" />
+        <label>Phone</label><input id="updatePhone" type="text" />
+        <label>Email</label><input id="updateEmail" type="email" />
+        <button id="saveSettingsBtn" class="btn primary">Save Settings</button>
+      </section>
+    </main>
+  </div>
 
   <footer class="footer">
-    <p>© 2025 Ansuaa Ababio Methodist Preparatory School | "NYANSA NFITIASEƐ"</p>
+    <p>© 2025 Ansuaa Ababio Methodist Preparatory School</p>
   </footer>
 
-  <div id="toast" class="toast hidden"></div>
+  <div id="toast" class="toast"></div>
 </body>
 </html>
