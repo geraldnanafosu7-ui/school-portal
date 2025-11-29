@@ -242,7 +242,135 @@ if (downloadAttendanceBtn) {
   });
 }
 
-// ---------------- TEACHER DOWNLOAD SUMMARIES ----------------
+// ---------------- TEACHER SUMMARIES ----------------
+const summaryInput = document.getElementById("summaryInput");
+const submitSummaryBtn = document.getElementById("submitSummaryBtn");
+const summaryList = document.getElementById("summaryList");
+
+if (submitSummaryBtn && summaryInput && summaryList) {
+  submitSummaryBtn.addEventListener("click", () => {
+    const text = summaryInput.value.trim();
+    if (!text) return toast("Please write a summary");
+    let summaries = JSON.parse(localStorage.getItem("summaries")) || [];
+    summaries.push(text);
+    localStorage.setItem("summaries", JSON.stringify(summaries));
+    const div = document.createElement("div");
+    div.textContent = text;
+    summaryList.appendChild(div);
+    summaryInput.value = "";
+    toast("Summary submitted!");
+  });
+
+  let summaries = JSON.parse(localStorage.getItem("summaries")) || [];
+  summaryList.innerHTML = "";
+  summaries.forEach(text => {
+    const div = document.createElement("div");
+    div.textContent = text;
+    summaryList.appendChild(div);
+  });
+}
+
+// ---------------- TEACHER CLASS NUMBERS (with history) ----------------
+const boysInput = document.getElementById("boysInput");
+const girlsInput = document.getElementById("girlsInput");
+const updateClassBtn = document.getElementById("updateClassBtn");
+const classDisplay = document.getElementById("classDisplay");
+
+if (updateClassBtn && boysInput && girlsInput && classDisplay) {
+  updateClassBtn.addEventListener("click", () => {
+    const boys = parseInt(boysInput.value.trim(), 10);
+    const girls = parseInt(girlsInput.value.trim(), 10);
+    if (isNaN(boys) || isNaN(girls)) return toast("Enter valid numbers");
+
+    const record = { boys, girls, date: new Date().toLocaleString() };
+    let history = JSON.parse(localStorage.getItem("attendanceHistory")) || [];
+    history.push(record);
+    localStorage.setItem("attendanceHistory", JSON.stringify(history));
+
+    classDisplay.textContent = `Boys: ${boys}, Girls: ${girls}`;
+    toast("Class numbers updated!");
+
+    const myClass = document.getElementById("myClass");
+    if (myClass) myClass.textContent = `${boys} boys, ${girls} girls`;
+  });
+
+  let history = JSON.parse(localStorage.getItem("attendanceHistory")) || [];
+  if (history.length) {
+    const latest = history[history.length - 1];
+    classDisplay.textContent = `Boys: ${latest.boys}, Girls: ${latest.girls}`;
+  }
+}
+
+// ---------------- TEACHER LESSON NOTES ----------------
+const notesInput = document.getElementById("notesInput");
+const submitNotesBtn = document.getElementById("submitNotesBtn");
+const notesList = document.getElementById("notesList");
+
+if (submitNotesBtn && notesInput && notesList) {
+  submitNotesBtn.addEventListener("click", () => {
+    const note = notesInput.value.trim();
+    if (!note) return toast("Please enter your notes");
+
+    let notes = JSON.parse(localStorage.getItem("lessonNotes")) || [];
+    notes.push(note);
+    localStorage.setItem("lessonNotes", JSON.stringify(notes));
+
+    const li = document.createElement("li");
+    li.textContent = note;
+    notesList.appendChild(li);
+
+    notesInput.value = "";
+    toast("Lesson notes submitted!");
+
+    const myNotes = document.getElementById("myNotes");
+    if (myNotes) myNotes.textContent = notes.length;
+  });
+
+  let notes = JSON.parse(localStorage.getItem("lessonNotes")) || [];
+  notesList.innerHTML = "";
+  notes.forEach(note => {
+    const li = document.createElement("li");
+    li.textContent = note;
+    notesList.appendChild(li);
+  });
+}
+
+// ---------------- TEACHER ANNOUNCEMENTS (sync from Headteacher) ----------------
+const teacherAnnouncements = document.getElementById("teacherAnnouncements");
+if (teacherAnnouncements) {
+  let announcements = JSON.parse(localStorage.getItem("announcements")) || [];
+  teacherAnnouncements.innerHTML = "";
+  announcements.forEach(text => {
+    const div = document.createElement("div");
+    div.textContent = text;
+    teacherAnnouncements.appendChild(div);
+  });
+}
+
+// ---------------- TEACHER SUMMARY STATS ----------------
+const mySummaries = document.getElementById("mySummaries");
+const myNotes = document.getElementById("myNotes");
+const myClass = document.getElementById("myClass");
+
+if (mySummaries) {
+  let summaries = JSON.parse(localStorage.getItem("summaries")) || [];
+  mySummaries.textContent = summaries.length;
+}
+if (myNotes) {
+  let notes = JSON.parse(localStorage.getItem("lessonNotes")) || [];
+  myNotes.textContent = notes.length;
+}
+if (myClass) {
+  let history = JSON.parse(localStorage.getItem("attendanceHistory")) || [];
+  if (history.length) {
+    const latest = history[history.length - 1];
+    myClass.textContent = `${latest.boys} boys, ${latest.girls} girls`;
+  } else {
+    myClass.textContent = "0 boys, 0 girls";
+  }
+}
+
+// ---------------- DOWNLOAD BUTTONS ----------------
 const downloadSummariesBtn = document.getElementById("downloadSummariesBtn");
 if (downloadSummariesBtn) {
   downloadSummariesBtn.addEventListener("click", () => {
@@ -264,7 +392,6 @@ if (downloadSummariesBtn) {
   });
 }
 
-// ---------------- TEACHER DOWNLOAD NOTES ----------------
 const downloadNotesBtn = document.getElementById("downloadNotesBtn");
 if (downloadNotesBtn) {
   downloadNotesBtn.addEventListener("click", () => {
@@ -293,11 +420,14 @@ const sections = document.querySelectorAll("main section, .main > .grid");
 if (navItems.length && sections.length) {
   navItems.forEach(item => {
     item.addEventListener("click", () => {
+      // remove active highlight
       navItems.forEach(i => i.classList.remove("active"));
       item.classList.add("active");
 
+      // hide all sections
       sections.forEach(sec => sec.classList.add("hidden"));
 
+      // show target section
       const targetId = item.dataset.target;
       if (targetId) {
         const targetSection = document.getElementById(targetId);
@@ -309,6 +439,7 @@ if (navItems.length && sections.length) {
     });
   });
 
+  // Ensure dashboard visible on initial load
   const defaultDashboard = document.getElementById("dashboardSection");
   if (defaultDashboard) defaultDashboard.classList.remove("hidden");
 }
