@@ -10,17 +10,17 @@
 <body>
   <div class="app">
     <!-- Sidebar -->
-    <aside class="sidebar full">
+    <aside class="sidebar full" role="navigation" aria-label="Headteacher dashboard navigation">
       <div class="nav-top">
         <h2 class="sidebar-title">🏫 Headteacher</h2>
-        <button class="nav-item active" data-target="dashboardSection">📊 Overview</button>
-        <button class="nav-item" data-target="announcementsSection">📢 Announcements</button>
-        <button class="nav-item" data-target="attendanceSection">👥 Attendance</button>
-        <button class="nav-item" data-target="manageTeachersSection">👩‍🏫 Manage Teachers</button>
-        <button class="nav-item" data-target="settingsSection">⚙️ Settings</button>
+        <button type="button" class="nav-item active" data-target="dashboardSection">📊 Overview</button>
+        <button type="button" class="nav-item" data-target="announcementsSection">📢 Announcements</button>
+        <button type="button" class="nav-item" data-target="attendanceSection">👥 Attendance</button>
+        <button type="button" class="nav-item" data-target="manageTeachersSection">👩‍🏫 Manage Teachers</button>
+        <button type="button" class="nav-item" data-target="settingsSection">⚙️ Settings</button>
       </div>
       <div class="nav-bottom">
-        <button id="logoutBtn" class="btn danger">Logout</button>
+        <button type="button" id="logoutBtn" class="btn danger">Logout</button>
       </div>
     </aside>
 
@@ -60,14 +60,17 @@
       <!-- Settings -->
       <section id="settingsSection" class="card modern hidden">
         <h3>⚙️ Settings</h3>
-        <form id="settingsForm">
+        <form id="settingsForm" class="form-modern">
           <input id="updateFullName" type="text" placeholder="Full Name" />
-          <input id="updatePhone" type="tel" placeholder="Phone" />
-          <input id="updateEmail" type="email" placeholder="Email" />
+          <input id="updatePhone" type="tel" placeholder="Phone Number" />
+          <input id="updateEmail" type="email" placeholder="Email Address" />
           <button type="button" id="saveSettingsBtn" class="btn primary">Save</button>
         </form>
       </section>
     </main>
   </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast"></div>
 </body>
 </html>
