@@ -6,7 +6,7 @@ html, body {
   padding: 0;
   font-family: Arial, sans-serif;
   background: #f4f6f9;
-  color: #333;
+  color: #2b2b2b;
   height: 100%;
 }
 
@@ -15,365 +15,20 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
 }
 
-p {
-  margin: 0 0 10px;
-}
-
-a {
-  color: #134b8a;
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
+p { margin: 0 0 10px; }
 
 /* =========================
-   LOGIN & SIGNUP CARDS
-   ========================= */
-.main.center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background: #f4f6f9;
-  flex-direction: column;
-}
-
-.login-card {
-  width: 350px;
-  background: #fff;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  text-align: center;
-  margin: 15px;
-}
-
-.login-logo {
-  height: 60px;
-  margin-bottom: 15px;
-}
-
-.signup-line {
-  margin-top: 10px;
-  font-size: 14px;
-}
-
-/* =========================
-   DASHBOARD HEADER
-   ========================= */
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px;
-  background: linear-gradient(90deg, #0e2a47, #134b8a);
-  color: #fff;
-}
-
-/* =========================
-   LAYOUT
+   APP LAYOUT
    ========================= */
 .app {
   display: flex;
-  min-height: 90vh;
-}
-
-.sidebar {
-  width: 220px;
-  background: #1c2b3a;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-}
-
-.nav-item {
-  padding: 12px;
-  border: none;
-  background: none;
-  color: #fff;
-  text-align: left;
-  cursor: pointer;
-}
-
-.nav-item.active {
-  background: #134b8a;
-}
-
-.main {
-  flex: 1;
-  padding: 20px;
-}
-
-.grid {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-/* =========================
-   CARDS
-   ========================= */
-.card {
-  background: #fff;
-  padding: 20px;
-  margin-bottom: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-.accent-blue { border-top: 4px solid #134b8a; }
-.accent-green { border-top: 4px solid #2e8b57; }
-.accent-orange { border-top: 4px solid #ff8c00; }
-.accent-purple { border-top: 4px solid #800080; }
-
-/* =========================
-   BUTTONS
-   ========================= */
-.btn {
-  padding: 10px 15px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.btn.primary { background: #134b8a; color: #fff; }
-.btn.danger { background: #c0392b; color: #fff; }
-.btn.download { background: #2e8b57; color: #fff; }
-
-.btn.square {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.btn-logo {
-  height: 20px;
-  width: 20px;
-}
-
-/* =========================
-   FORMS
-   ========================= */
-.form-modern input,
-.form-modern textarea,
-.form-modern select {
-  width: 100%;
-  padding: 8px;
-  margin: 6px 0 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-/* =========================
-   TOAST
-   ========================= */
-.toast {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #333;
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 4px;
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-.toast.show { opacity: 1; }
-
-/* =========================
-   UTILITIES
-   ========================= */
-.hidden { display: none; }
-
-/* =========================
-   THEMES
-   ========================= */
-.theme-dark { background: #222; color: #eee; }
-.theme-blue { background: #e6f0ff; }
-.theme-green { background: #e6ffe6; }
-.theme-white { background: #fff; }
-
-/* =========================
-   SCHOOL BRANDING BARS
-   ========================= */
-.brand-bar {
-  width: 100%;
-  background: #134b8a;
-  padding: 18px 16px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.brand-bar .school-name {
-  color: #fff; /* force white text inside brand bar */
-  font-weight: 800;
-  font-size: 1.8rem;
-  margin: 0;
-  text-align: center;
-}
-
-.footer-bar {
-  width: 100%;
-  background: #134b8a;
-  padding: 14px 16px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 24px;
-}
-
-.footer-bar .school-footer {
-  color: #fff;
-  font-size: 1rem;
-  font-weight: 600;
-  text-align: center;
-  margin: 0;
-}
-
-.footer-bar .school-footer em {
-  font-style: italic;
-  font-weight: 700;
-}
-/* Modern top nav */
-.top-nav {
-  background: #fff;
-  border-bottom: 1px solid #ddd;
-  padding: 12px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  animation: slideDown 0.6s ease;
-}
-
-.top-nav h2 {
-  margin: 0;
-  font-weight: 600;
-  color: #134b8a;
-}
-
-/* Modern sidebar */
-.sidebar.modern {
-  background: #fff;
-  border-right: 1px solid #ddd;
-  animation: slideIn 0.6s ease;
-}
-
-.sidebar.modern .nav-item {
-  color: #134b8a;
-  font-weight: 500;
-  border-bottom: 1px solid #eee;
-  text-align: left;
-  transition: background 0.3s ease;
-}
-
-.sidebar.modern .nav-item:hover {
-  background: #f0f6ff;
-}
-
-.sidebar.modern .nav-item.active {
-  background: #e6f0ff;
-  font-weight: 600;
-}
-
-/* Modern cards */
-.card.modern {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  animation: fadeInUp 0.6s ease;
-}
-
-.card.modern:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
-}
-
-/* Animations */
-@keyframes slideIn {
-  from { transform: translateX(-100%); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
-}
-
-@keyframes slideDown {
-  from { transform: translateY(-100%); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-@keyframes fadeInUp {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-.fade-in {
-  animation: fadeInUp 0.6s ease;
-}
-/* =========================
-   SIDEBAR FULL WIDTH
-   ========================= */
-.sidebar.full {
-  width: 220px;
-  background: #134b8a;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 20px 0;
-  animation: slideIn 0.6s ease;
-}
-
-.sidebar-title {
-  font-size: 1.4rem;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.nav-top {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.nav-bottom {
-  padding: 0 16px;
-  margin-top: auto;
-}
-
-.sidebar.full .nav-item {
-  background: none;
-  border: none;
-  color: #fff;
-  text-align: left;
-  padding: 10px 20px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.sidebar.full .nav-item:hover {
-  background: #0e2a47;
-}
-
-.sidebar.full .nav-item.active {
-  background: #0e2a47;
-  font-weight: bold;
-}
-
-/* =========================
-   MAIN CONTENT
-   ========================= */
-.main {
-  flex: 1;
-  padding: 30px;
-  background: #f4f6f9;
   min-height: 100vh;
+}
+
+.main {
+  flex: 1;
+  padding: 32px;
+  background: #f4f6f9;
 }
 
 .welcome-text {
@@ -384,92 +39,18 @@ a:hover {
 }
 
 /* =========================
-   MODERN CARDS
+   SIDEBAR
    ========================= */
-.card.modern {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  animation: fadeInUp 0.6s ease;
-}
-
-.card.modern:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
-}
-
-/* =========================
-   ANNOUNCEMENT CARD
-   ========================= */
-.announcement-card {
-  background: #fff;
-  border-left: 4px solid #134b8a;
-  padding: 12px 16px;
-  margin: 10px 0;
-  border-radius: 6px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-}
-
-/* =========================
-   TABLE STYLING
-   ========================= */
-.attendance-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-}
-
-.attendance-table th,
-.attendance-table td {
-  border: 1px solid #ccc;
-  padding: 8px 12px;
-  text-align: left;
-}
-
-.attendance-table th {
-  background: #134b8a;
-  color: #fff;
-}
-
-/* =========================
-   ANIMATIONS
-   ========================= */
-@keyframes slideIn {
-  from { transform: translateX(-100%); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
-}
-
-@keyframes fadeInUp {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-.fade-in {
-  animation: fadeInUp 0.6s ease;
-}
-
-/* Typography & spacing */
-:root {
-  --blue: #134b8a;
-  --blue-dark: #0e2a47;
-  --bg: #f4f6f9;
-  --text: #2b2b2b;
-}
-
-html, body { color: var(--text); background: var(--bg); }
-.main { padding: 32px; }
-
-/* Sidebar improvements */
 .sidebar.full {
   width: 240px;
-  background: var(--blue);
+  background: #134b8a;
   color: #fff;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 16px 0;
   box-shadow: 2px 0 10px rgba(0,0,0,0.08);
+  animation: sidebarEnter 0.5s ease-out forwards;
 }
 
 .sidebar-title {
@@ -479,6 +60,17 @@ html, body { color: var(--text); background: var(--bg); }
   margin: 0 16px 12px;
   padding-bottom: 10px;
   border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+.nav-top {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nav-bottom {
+  padding: 0 16px;
+  margin-top: auto;
 }
 
 .sidebar.full .nav-item {
@@ -494,10 +86,10 @@ html, body { color: var(--text); background: var(--bg); }
   margin: 2px 12px;
 }
 
-.sidebar.full .nav-item:hover { background: var(--blue-dark); padding-left: 24px; }
-.sidebar.full .nav-item.active { background: var(--blue-dark); font-weight: 600; }
+.sidebar.full .nav-item:hover { background: #0e2a47; padding-left: 24px; }
+.sidebar.full .nav-item.active { background: #0e2a47; font-weight: 600; }
 
-/* Logout button styling */
+/* Logout button */
 .nav-bottom .btn.danger {
   width: 100%;
   display: block;
@@ -506,7 +98,9 @@ html, body { color: var(--text); background: var(--bg); }
   font-weight: 600;
 }
 
-/* Cards grid */
+/* =========================
+   CARDS
+   ========================= */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -521,15 +115,17 @@ html, body { color: var(--text); background: var(--bg); }
   transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
-.card.modern h3 { margin-bottom: 6px; font-size: 1rem; color: var(--blue); }
-.card.modern p { font-size: 1.1rem; font-weight: 700; color: var(--text); }
+.card.modern h3 { margin-bottom: 6px; font-size: 1rem; color: #134b8a; }
+.card.modern p { font-size: 1.1rem; font-weight: 700; color: #2b2b2b; }
 
 .card.modern:hover {
   transform: translateY(-3px);
   box-shadow: 0 10px 24px rgba(0,0,0,0.12);
 }
 
-/* Form fields */
+/* =========================
+   FORMS
+   ========================= */
 .form-modern input,
 .form-modern textarea,
 .form-modern select,
@@ -549,11 +145,13 @@ html, body { color: var(--text); background: var(--bg); }
 #notesInput:focus, #summaryInput:focus,
 #boysInput:focus, #girlsInput:focus {
   outline: none;
-  border-color: var(--blue);
+  border-color: #134b8a;
   box-shadow: 0 0 0 3px rgba(19,75,138,0.15);
 }
 
-/* Buttons */
+/* =========================
+   BUTTONS
+   ========================= */
 .btn {
   padding: 10px 14px;
   border: none;
@@ -563,24 +161,25 @@ html, body { color: var(--text); background: var(--bg); }
   transition: transform 0.08s ease, box-shadow 0.18s ease, background 0.18s ease;
 }
 
-.btn.primary { background: var(--blue); color: #fff; }
+.btn.primary { background: #134b8a; color: #fff; }
 .btn.primary:hover { background: #155aa8; }
 .btn.danger { background: #c0392b; color: #fff; }
 .btn.danger:hover { background: #a83225; }
 
 .btn:active { transform: translateY(1px); }
 
-/* Announcement card */
+/* =========================
+   ANNOUNCEMENTS & TABLES
+   ========================= */
 .announcement-card {
   background: #fff;
-  border-left: 4px solid var(--blue);
+  border-left: 4px solid #134b8a;
   padding: 12px 16px;
   margin: 10px 0;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 
-/* Attendance table */
 .attendance-table {
   width: 100%;
   border-collapse: collapse;
@@ -596,17 +195,44 @@ html, body { color: var(--text); background: var(--bg); }
   text-align: left;
 }
 
-.attendance-table th { background: var(--blue); color: #fff; }
+.attendance-table th { background: #134b8a; color: #fff; }
 
-/* Subtle animations */
-@keyframes slideIn { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-@keyframes fadeInUp { from { transform: translateY(14px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-.fade-in { animation: fadeInUp 0.45s ease; }
+/* =========================
+   TOAST
+   ========================= */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.toast.show { opacity: 1; }
 
-/* Responsive */
+/* =========================
+   ANIMATIONS
+   ========================= */
+@keyframes sidebarEnter {
+  from { transform: translateX(-100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes sectionFade {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in { animation: sectionFade 0.4s ease-out; }
+
+/* =========================
+   RESPONSIVE
+   ========================= */
 @media (max-width: 768px) {
   .sidebar.full { width: 200px; }
   .main { padding: 20px; }
 }
-
-
