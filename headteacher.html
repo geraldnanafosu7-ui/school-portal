@@ -1,79 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Headteacher Dashboard</title>
-  <link rel="stylesheet" href="style.css" />
-
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyAV2lyXiQKKt-fYM1weyNWXsjiHYbX2imc",
-      authDomain: "school-portal-ff2ff.firebaseapp.com",
-      projectId: "school-portal-ff2ff",
-      storageBucket: "school-portal-ff2ff.appspot.com",
-      messagingSenderId: "518827252304",
-      appId: "1:518827252304:web:723250d7c188f3e96ecf55",
-      measurementId: "G-7VSS3B0TD7"
-    };
-    firebase.initializeApp(firebaseConfig);
-    window.auth = firebase.auth();
-    window.db = firebase.firestore();
-  </script>
-
-  <script defer src="script.js"></script>
-</head>
 <body>
-  <header class="header">
-    <h1>🏫 Headteacher Dashboard</h1>
+  <!-- Top Nav -->
+  <nav class="top-nav">
+    <h2 id="welcomeMessage">Welcome, Headteacher 👋</h2>
     <button id="logoutBtn" class="btn danger">Logout</button>
-  </header>
+  </nav>
 
   <div class="app">
-    <aside class="sidebar">
-      <button class="nav-item active" data-target="dashboardSection">Dashboard</button>
-      <button class="nav-item" data-target="announcementsSection">Announcements</button>
-      <button class="nav-item" data-target="attendanceSection">Attendance</button>
-      <button class="nav-item" data-target="manageTeachersSection">Manage Teachers</button>
-      <button class="nav-item" data-target="settingsSection">Settings</button>
+    <!-- Sidebar -->
+    <aside class="sidebar modern">
+      <button class="nav-item active" data-target="dashboardSection">📊 Dashboard</button>
+      <button class="nav-item" data-target="announcementsSection">📢 Announcements</button>
+      <button class="nav-item" data-target="attendanceSection">👥 Attendance</button>
+      <button class="nav-item" data-target="manageTeachersSection">👩‍🏫 Manage Teachers</button>
+      <button class="nav-item" data-target="settingsSection">⚙️ Settings</button>
     </aside>
 
-    <main class="main">
-      <!-- Dashboard stats -->
+    <!-- Main Content -->
+    <main class="main fade-in">
+      <!-- Dashboard Cards -->
       <section id="dashboardSection" class="grid">
-        <div class="card accent-blue"><h3>Teachers</h3><p id="statTeachers">0</p></div>
-        <div class="card accent-green"><h3>Lesson Notes</h3><p id="statNotes">0</p></div>
-        <div class="card accent-orange"><h3>Summaries</h3><p id="statSummaries">0</p></div>
-        <div class="card accent-purple"><h3>Latest Class Numbers</h3><p id="statClass">0 boys, 0 girls</p></div>
+        <div class="card modern"><h3>Teachers</h3><p id="statTeachers">0</p></div>
+        <div class="card modern"><h3>Lesson Notes</h3><p id="statNotes">0</p></div>
+        <div class="card modern"><h3>Summaries</h3><p id="statSummaries">0</p></div>
+        <div class="card modern"><h3>Attendance</h3><p id="statClass">0 boys, 0 girls</p></div>
       </section>
 
       <!-- Announcements -->
-      <section id="announcementsSection" class="card hidden accent-orange">
+      <section id="announcementsSection" class="card modern hidden">
         <h3>📢 Announcements</h3>
         <textarea id="announcementInput" placeholder="Write an announcement..."></textarea>
-        <button id="postAnnouncementBtn" class="btn primary">Post Announcement</button>
-        <div id="announcementList" style="margin-top: 12px;"></div>
+        <button id="postAnnouncementBtn" class="btn primary">Post</button>
+        <div id="announcementList"></div>
       </section>
 
       <!-- Attendance -->
-      <section id="attendanceSection" class="card hidden accent-purple">
+      <section id="attendanceSection" class="card modern hidden">
         <h3>👥 Attendance Report</h3>
         <button id="viewAttendanceBtn" class="btn primary">View Attendance</button>
-        <div id="attendanceReport" style="margin-top: 12px;"></div>
+        <div id="attendanceReport"></div>
       </section>
 
       <!-- Manage Teachers -->
-      <section id="manageTeachersSection" class="card hidden accent-blue">
+      <section id="manageTeachersSection" class="card modern hidden">
         <h3>👩‍🏫 Teachers</h3>
         <div id="teacherList">Loading teachers...</div>
       </section>
 
       <!-- Settings -->
-      <section id="settingsSection" class="card hidden accent-green">
+      <section id="settingsSection" class="card modern hidden">
         <h3>⚙️ Settings</h3>
         <form id="settingsForm">
           <input id="updateFullName" type="text" placeholder="Full Name" />
@@ -81,27 +55,7 @@
           <input id="updateEmail" type="email" placeholder="Email" />
           <button type="button" id="saveSettingsBtn" class="btn primary">Save</button>
         </form>
-
-        <h4 style="margin-top:16px;">Change Password</h4>
-        <form id="passwordForm">
-          <input id="newPassword" type="password" placeholder="New Password (≥ 6 chars)" autocomplete="new-password" />
-          <button type="button" id="changePasswordBtn" class="btn danger">Change Password</button>
-        </form>
-
-        <div class="theme-switcher" style="margin-top:16px;">
-          <button class="btn">Dark</button>
-          <button class="btn">Blue</button>
-          <button class="btn">Green</button>
-          <button class="btn">White</button>
-        </div>
       </section>
     </main>
   </div>
-
-  <footer class="footer">
-    <p>© 2025 Ansuaa Ababio Methodist Preparatory School</p>
-  </footer>
-
-  <div id="toast" class="toast"></div>
 </body>
-</html>
