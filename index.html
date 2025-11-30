@@ -11,21 +11,21 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
-  <script>
-    // ✅ Your real Firebase config
-    const firebaseConfig = {
-      apiKey: "AIzaSyAV2lyXiQKKt-fYM1weyNWXsjiHYbX2imc",
-      authDomain: "school-portal-ff2ff.firebaseapp.com",
-      projectId: "school-portal-ff2ff",
-      storageBucket: "school-portal-ff2ff.appspot.com",   // fixed
-      messagingSenderId: "518827252304",
-      appId: "1:518827252304:web:723250d7c188f3e96ecf55",
-      measurementId: "G-7VSS3B0TD7"
-    };
-    firebase.initializeApp(firebaseConfig);
-    window.auth = firebase.auth();
-    window.db = firebase.firestore();
-  </script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyAV2lyXiQKKt-fYM1weyNWXsjiHYbX2imc",
+    authDomain: "school-portal-ff2ff.firebaseapp.com",
+    projectId: "school-portal-ff2ff",
+    storageBucket: "school-portal-ff2ff.appspot.com",   //
+    messagingSenderId: "518827252304",
+    appId: "1:518827252304:web:723250d7c188f3e96ecf55",
+    measurementId: "G-7VSS3B0TD7"
+  };
+  firebase.initializeApp(firebaseConfig);
+  window.auth = firebase.auth();
+  window.db = firebase.firestore();
+</script>
+
 
   <script defer src="script.js"></script>
 </head>
@@ -81,3 +81,4 @@
   <div id="toast" class="toast"></div>
 </body>
 </html>
+
