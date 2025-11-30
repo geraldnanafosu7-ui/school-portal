@@ -3,83 +3,75 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ansuaa Ababio Portal Login</title>
+  <title>School Portal | Ansuaa Ababio</title>
   <link rel="stylesheet" href="style.css" />
-
   <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
   <script>
     const firebaseConfig = {
-      apiKey: "AIzaSyAV2lyXiQKKt-fYM1weyNWXsjiHYbX2imc",
-      authDomain: "school-portal-ff2ff.firebaseapp.com",
-      projectId: "school-portal-ff2ff",
-      storageBucket: "school-portal-ff2ff.appspot.com",
-      messagingSenderId: "518827252304",
-      appId: "1:518827252304:web:723250d7c188f3e96ecf55",
-      measurementId: "G-7VSS3B0TD7"
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
     };
     firebase.initializeApp(firebaseConfig);
     window.auth = firebase.auth();
     window.db = firebase.firestore();
   </script>
-
   <script defer src="script.js"></script>
 </head>
-<body class="login-page">
-  <header class="header">
-    <h1 class="school-title">🏫 Ansuaa Ababio Methodist Preparatory School</h1>
-  </header>
-
-  <main class="login-container">
-    <!-- LOGIN CARD -->
-    <section class="login-card" id="loginCard">
-      <img src="logo.png" alt="School Logo" class="login-logo" />
+<body>
+  <main class="main center">
+    <!-- LOGIN -->
+    <div class="card accent-blue">
       <h2>Login</h2>
       <form id="loginForm" class="form-modern">
         <label>Email</label>
         <input id="loginUsername" type="email" required />
         <label>Password</label>
         <input id="loginPassword" type="password" required />
-        <button type="submit" class="btn primary">Login</button>
-        <p class="small-text">
-          <a href="#" id="forgotPasswordLink">Forgot password?</a>
-        </p>
-        <p class="small-text">
-          Don’t have an account? <button type="button" id="showSignupBtn" class="link-btn">Sign up</button>
-        </p>
+        <button type="submit" class="btn square primary">
+          <img src="logo.png" alt="School Logo" class="btn-logo" />
+          Login
+        </button>
       </form>
-    </section>
+      <a href="#" id="forgotPasswordLink">Forgot Password?</a>
+      <p class="signup-line">Don’t have an account? 
+        <a href="#" onclick="document.getElementById('signupCard').classList.remove('hidden')">Sign up</a>
+      </p>
+    </div>
 
-    <!-- SIGNUP CARD (hidden by default) -->
-    <section class="login-card hidden" id="signupCard">
-      <h2>Create Account</h2>
+    <!-- SIGNUP -->
+    <div id="signupCard" class="card hidden accent-green">
+      <h2>Sign Up</h2>
       <form id="signupForm" class="form-modern">
-        <label>Username</label>
-        <input id="suUsername" type="text" required />
         <label>Full Name</label>
         <input id="suFullName" type="text" required />
-        <label>Password</label>
-        <input id="suPassword" type="password" required />
+        <label>Username</label>
+        <input id="suUsername" type="text" required />
         <label>Phone</label>
-        <input id="suPhone" type="tel" required />
+        <input id="suPhone" type="tel" />
         <label>Email</label>
         <input id="suEmail" type="email" required />
+        <label>Password</label>
+        <input id="suPassword" type="password" required />
         <label>Role</label>
         <select id="suRole" required>
           <option value="">Select role</option>
-          <option value="headteacher">Headteacher</option>
           <option value="teacher">Teacher</option>
+          <option value="headteacher">Headteacher</option>
         </select>
-        <button type="submit" class="btn primary">Sign Up</button>
+        <button type="submit" class="btn primary">Create Account</button>
       </form>
-    </section>
+    </div>
   </main>
 
   <footer class="footer">
-    <p>© 2025 Ansuaa Ababio Methodist Preparatory School | "NYANSA NFITIASEƐ"</p>
+    <p>© 2025 Ansuaa Ababio Methodist Preparatory School</p>
   </footer>
 
   <div id="toast" class="toast"></div>
