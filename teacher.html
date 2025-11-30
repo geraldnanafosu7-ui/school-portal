@@ -2,76 +2,103 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Teacher Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Teacher Dashboard | Ansuaa Ababio</title>
   <link rel="stylesheet" href="style.css" />
-
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-
-  <script>
-    const firebaseConfig = { /* same config */ };
-    firebase.initializeApp(firebaseConfig);
-    window.auth = firebase.auth();
-    window.db = firebase.firestore();
-  </script>
-
   <script defer src="script.js"></script>
 </head>
-<body class="theme-blue">
+<body>
   <header class="header">
     <h1>👩‍🏫 Teacher Dashboard</h1>
-    <div id="userDisplayName"></div>
     <button id="logoutBtn" class="btn danger">Logout</button>
   </header>
 
   <div class="app">
     <aside class="sidebar">
-      <button class="nav-item active" data-target="dashboardSection">📊 Dashboard</button>
-      <button class="nav-item" data-target="summariesSection">📝 Summaries</button>
-      <button class="nav-item" data-target="classesSection">📚 Classes</button>
-      <button class="nav-item" data-target="announcementsSection">📰 Announcements</button>
-      <button class="nav-item" data-target="settingsSection">⚙️ Settings</button>
+      <button class="nav-item active" data-target="dashboardSection">Dashboard</button>
+      <button class="nav-item" data-target="notesSection">Lesson Notes</button>
+      <button class="nav-item" data-target="summariesSection">Summaries</button>
+      <button class="nav-item" data-target="announcementsSection">Announcements</button>
+      <button class="nav-item" data-target="attendanceSection">Attendance</button>
+      <button class="nav-item" data-target="settingsSection">Settings</button>
     </aside>
 
     <main class="main">
+      <!-- Dashboard -->
       <section id="dashboardSection" class="grid">
-        <div class="card accent-green"><h3>My Summaries</h3><p id="mySummaries">0</p></div>
         <div class="card accent-blue"><h3>My Notes</h3><p id="myNotes">0</p></div>
-        <div class="card accent-orange"><h3>My Class</h3><p id="myClass">0 boys, 0 girls</p></div>
+        <div class="card accent-green"><h3>My Summaries</h3><p id="mySummaries">0</p></div>
+        <div class="card accent-orange"><h3>Class Numbers</h3><p id="myClass">0 boys, 0 girls</p></div>
       </section>
 
-      <section id="summariesSection" class="hidden">
-        <textarea id="summaryInput"></textarea>
+      <!-- Lesson Notes -->
+      <section id="notesSection" class="card hidden accent-green">
+        <h3>📘 Lesson Notes</h3>
+        <textarea id="notesInput" placeholder="Write your lesson notes..."></textarea>
+        <button id="submitNotesBtn" class="btn primary">Submit Notes</button>
+        <ul id="notesList"></ul>
+        <button id="downloadNotesBtn" class="btn download">Download Notes</button>
+      </section>
+
+      <!-- Summaries -->
+      <section id="summariesSection" class="card hidden accent-blue">
+        <h3>📝 Summaries</h3>
+        <textarea id="summaryInput" placeholder="Write your summary..."></textarea>
         <button id="submitSummaryBtn" class="btn primary">Submit Summary</button>
-        <button id="downloadSummariesBtn" class="btn download">Download Summaries</button>
         <div id="summaryList"></div>
+        <button id="downloadSummariesBtn" class="btn download">Download Summaries</button>
       </section>
 
-      <section id="classesSection" class="hidden">
-        <input id="boysInput" type="number" placeholder="Boys" />
-        <input id="girlsInput" type="number" placeholder="Girls" />
-        <button id="updateClassBtn" class="btn primary">Update Class</button>
-        <p id="classDisplay">0 boys, 0 girls</p>
-      </section>
-
-      <section id="announcementsSection" class="hidden">
-        <h3>Announcements</h3>
+      <!-- Announcements -->
+      <section id="announcementsSection" class="card hidden accent-orange">
+        <h3>📢 Announcements from Headteacher</h3>
         <div id="teacherAnnouncements"></div>
       </section>
 
-      <section id="settingsSection" class="hidden">
-        <label>Full Name</label><input id="updateFullName" type="text" />
-        <label>Phone</label><input id="updatePhone" type="text" />
-        <label>Email</label><input id="updateEmail" type="email" />
-        <button id="saveSettingsBtn" class="btn primary">Save Settings</button>
+      <!-- Attendance -->
+      <section id="attendanceSection" class="card hidden accent-purple">
+        <h3>👥 Class Attendance</h3>
+        <label>Boys</label>
+        <input id="boysInput" type="number" />
+        <label>Girls</label>
+        <input id="girlsInput" type="number" />
+        <button id="updateClassBtn" class="btn primary">Update</button>
+        <p id="classDisplay">No data yet</p>
+      </section>
+
+      <!-- Settings -->
+      <section id="settingsSection" class="card hidden accent-blue">
+        <h3>⚙️ Account Settings</h3>
+        <form id="settingsForm" class="form-modern">
+          <label>Full Name</label>
+          <input id="updateFullName" type="text" />
+          <label>Phone</label>
+          <input id="updatePhone" type="tel" />
+          <label>Email</label>
+          <input id="updateEmail" type="email" />
+          <button type="button" id="saveSettingsBtn" class="btn primary">Save Changes</button>
+        </form>
+
+        <h4 style="margin-top:20px;">Change Password</h4>
+        <form id="passwordForm" class="form-modern">
+          <label>New Password</label>
+          <input id="newPassword" type="password" required />
+          <button type="button" id="changePasswordBtn" class="btn danger">Change Password</button>
+        </form>
+
+        <h4 style="margin-top:20px;">Theme</h4>
+        <div class="theme-switcher">
+          <button onclick="document.body.className='theme-dark'" class="btn">Dark</button>
+          <button onclick="document.body.className='theme-blue'" class="btn">Blue</button>
+          <button onclick="document.body.className='theme-green'" class="btn">Green</button>
+          <button onclick="document.body.className='theme-white'" class="btn">White</button>
+        </div>
       </section>
     </main>
   </div>
 
   <footer class="footer">
-    <p>© 2025 Ansuaa Ababio Methodist Preparatory School</p>
+    <p>© 2025 Ansuaa Ababio Methodist Preparatory School | "NYANSA NFITIASEƐ"</p>
   </footer>
 
   <div id="toast" class="toast"></div>
