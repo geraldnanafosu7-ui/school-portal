@@ -10,26 +10,28 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyAV2lyXiQKKt-fYM1weyNWXsjiHYbX2imc",
-    authDomain: "school-portal-ff2ff.firebaseapp.com",
-    projectId: "school-portal-ff2ff",
-    storageBucket: "school-portal-ff2ff.appspot.com",   //
-    messagingSenderId: "518827252304",
-    appId: "1:518827252304:web:723250d7c188f3e96ecf55",
-    measurementId: "G-7VSS3B0TD7"
-  };
-  firebase.initializeApp(firebaseConfig);
-  window.auth = firebase.auth();
-  window.db = firebase.firestore();
-</script>
-
-
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAV2lyXiQKKt-fYM1weyNWXsjiHYbX2imc",
+      authDomain: "school-portal-ff2ff.firebaseapp.com",
+      projectId: "school-portal-ff2ff",
+      storageBucket: "school-portal-ff2ff.appspot.com",
+      messagingSenderId: "518827252304",
+      appId: "1:518827252304:web:723250d7c188f3e96ecf55",
+      measurementId: "G-7VSS3B0TD7"
+    };
+    firebase.initializeApp(firebaseConfig);
+    window.auth = firebase.auth();
+    window.db = firebase.firestore();
+  </script>
   <script defer src="script.js"></script>
 </head>
 <body>
+  <!-- School Header -->
+  <header class="header center">
+    <h1 style="font-weight:bold; font-size:2rem;">Ansuaa Ababio Methodist Preparatory School</h1>
+  </header>
+
   <main class="main center">
     <!-- LOGIN CARD -->
     <div class="login-card">
@@ -74,11 +76,11 @@
     </div>
   </main>
 
-  <footer class="footer">
-    <p>© 2025 Ansuaa Ababio Methodist Preparatory School</p>
+  <!-- Footer with Motto -->
+  <footer class="footer center">
+    <p>© 2025 Ansuaa Ababio Methodist Preparatory School | <em>NYANSA MFITIASEƐ</em></p>
   </footer>
 
   <div id="toast" class="toast"></div>
 </body>
 </html>
-
