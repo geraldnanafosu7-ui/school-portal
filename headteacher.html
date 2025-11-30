@@ -18,47 +18,35 @@
       <button class="nav-item active" data-target="dashboardSection">Dashboard</button>
       <button class="nav-item" data-target="announcementsSection">Announcements</button>
       <button class="nav-item" data-target="attendanceSection">Attendance</button>
-      <button class="nav-item" data-target="manageTeachersSection">Manage teachers</button>
+      <button class="nav-item" data-target="manageTeachersSection">Manage Teachers</button>
       <button class="nav-item" data-target="settingsSection">Settings</button>
     </aside>
 
     <main class="main">
       <!-- Dashboard stats -->
       <section id="dashboardSection" class="grid">
-        <div class="card accent-blue">
-          <h3>Teachers</h3>
-          <p id="statTeachers">0</p>
-        </div>
-        <div class="card accent-green">
-          <h3>Lesson notes</h3>
-          <p id="statNotes">0</p>
-        </div>
-        <div class="card accent-orange">
-          <h3>Summaries</h3>
-          <p id="statSummaries">0</p>
-        </div>
-        <div class="card accent-purple">
-          <h3>Latest class numbers</h3>
-          <p id="statClass">0 boys, 0 girls</p>
-        </div>
+        <div class="card accent-blue"><h3>Teachers</h3><p id="statTeachers">0</p></div>
+        <div class="card accent-green"><h3>Lesson Notes</h3><p id="statNotes">0</p></div>
+        <div class="card accent-orange"><h3>Summaries</h3><p id="statSummaries">0</p></div>
+        <div class="card accent-purple"><h3>Latest Class Numbers</h3><p id="statClass">0 boys, 0 girls</p></div>
       </section>
 
-      <!-- Announcements (create + list) -->
+      <!-- Announcements -->
       <section id="announcementsSection" class="card hidden accent-orange">
         <h3>📢 Announcements</h3>
         <textarea id="announcementInput" placeholder="Write an announcement..."></textarea>
-        <button id="postAnnouncementBtn" class="btn primary">Post announcement</button>
+        <button id="postAnnouncementBtn" class="btn primary">Post Announcement</button>
         <div id="announcementList" style="margin-top: 12px;"></div>
       </section>
 
-      <!-- Attendance reports -->
+      <!-- Attendance -->
       <section id="attendanceSection" class="card hidden accent-purple">
-        <h3>👥 Attendance report</h3>
-        <button id="viewAttendanceBtn" class="btn primary">View attendance</button>
+        <h3>👥 Attendance Report</h3>
+        <button id="viewAttendanceBtn" class="btn primary">View Attendance</button>
         <div id="attendanceReport" style="margin-top: 12px;"></div>
       </section>
 
-      <!-- Manage teachers -->
+      <!-- Manage Teachers -->
       <section id="manageTeachersSection" class="card hidden accent-blue">
         <h3>👩‍🏫 Teachers</h3>
         <div id="teacherList">Loading teachers...</div>
@@ -74,7 +62,7 @@
           <button type="button" id="saveSettingsBtn" class="btn primary">Save</button>
         </form>
 
-        <h4 style="margin-top:16px;">Change password</h4>
+        <h4 style="margin-top:16px;">Change Password</h4>
         <form id="passwordForm">
           <input id="newPassword" type="password" placeholder="New Password (≥ 6 chars)" />
           <button type="button" id="changePasswordBtn" class="btn danger">Change Password</button>
