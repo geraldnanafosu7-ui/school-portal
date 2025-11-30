@@ -213,4 +213,47 @@ a:hover {
   line-height: 1.5;
   color: #134b8a;
 }
+/* =========================
+   SCHOOL BRANDING BARS
+   ========================= */
+.brand-bar {
+  width: 100%;
+  background: #134b8a;
+  padding: 18px 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.brand-bar .school-name {
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.8rem;
+  margin: 0;
+  text-align: center;
+}
+
+.footer-bar {
+  width: 100%;
+  background: #134b8a;
+  padding: 14px 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 24px;
+}
+
+.footer-bar .school-footer {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  margin: 0;
+}
+
+.footer-bar .school-footer em {
+  font-style: italic;
+  font-weight: 700;
+}
+
 
