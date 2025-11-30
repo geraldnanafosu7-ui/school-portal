@@ -10,18 +10,18 @@
 <body>
   <div class="app">
     <!-- Sidebar -->
-    <aside class="sidebar full">
+    <aside class="sidebar full" role="navigation" aria-label="Teacher dashboard navigation">
       <div class="nav-top">
         <h2 class="sidebar-title">📘 Dashboard</h2>
-        <button class="nav-item active" data-target="dashboardSection">📊 Overview</button>
-        <button class="nav-item" data-target="notesSection">📘 Notes</button>
-        <button class="nav-item" data-target="summariesSection">📝 Summaries</button>
-        <button class="nav-item" data-target="announcementsSection">📢 Announcements</button>
-        <button class="nav-item" data-target="attendanceSection">👥 Attendance</button>
-        <button class="nav-item" data-target="settingsSection">⚙️ Settings</button>
+        <button type="button" class="nav-item active" data-target="dashboardSection">📊 Overview</button>
+        <button type="button" class="nav-item" data-target="notesSection">📘 Notes</button>
+        <button type="button" class="nav-item" data-target="summariesSection">📝 Summaries</button>
+        <button type="button" class="nav-item" data-target="announcementsSection">📢 Announcements</button>
+        <button type="button" class="nav-item" data-target="attendanceSection">👥 Attendance</button>
+        <button type="button" class="nav-item" data-target="settingsSection">⚙️ Settings</button>
       </div>
       <div class="nav-bottom">
-        <button id="logoutBtn" class="btn danger">Logout</button>
+        <button type="button" id="logoutBtn" class="btn danger">Logout</button>
       </div>
     </aside>
 
@@ -39,7 +39,7 @@
       <!-- Notes -->
       <section id="notesSection" class="card modern hidden">
         <h3>📘 Lesson Notes</h3>
-        <textarea id="notesInput"></textarea>
+        <textarea id="notesInput" placeholder="Write your lesson note..."></textarea>
         <button id="submitNotesBtn" class="btn primary">Submit</button>
         <ul id="notesList"></ul>
       </section>
@@ -47,7 +47,7 @@
       <!-- Summaries -->
       <section id="summariesSection" class="card modern hidden">
         <h3>📝 Summaries</h3>
-        <textarea id="summaryInput"></textarea>
+        <textarea id="summaryInput" placeholder="Write your summary..."></textarea>
         <button id="submitSummaryBtn" class="btn primary">Submit</button>
         <div id="summaryList"></div>
       </section>
@@ -61,8 +61,8 @@
       <!-- Attendance -->
       <section id="attendanceSection" class="card modern hidden">
         <h3>👥 Attendance</h3>
-        <input id="boysInput" type="number" placeholder="Boys" />
-        <input id="girlsInput" type="number" placeholder="Girls" />
+        <input id="boysInput" type="number" placeholder="Number of boys" />
+        <input id="girlsInput" type="number" placeholder="Number of girls" />
         <button id="updateClassBtn" class="btn primary">Update</button>
         <p id="classDisplay">No data yet</p>
       </section>
@@ -70,14 +70,17 @@
       <!-- Settings -->
       <section id="settingsSection" class="card modern hidden">
         <h3>⚙️ Settings</h3>
-        <form id="settingsForm">
+        <form id="settingsForm" class="form-modern">
           <input id="updateFullName" type="text" placeholder="Full Name" />
-          <input id="updatePhone" type="tel" placeholder="Phone" />
-          <input id="updateEmail" type="email" placeholder="Email" />
+          <input id="updatePhone" type="tel" placeholder="Phone Number" />
+          <input id="updateEmail" type="email" placeholder="Email Address" />
           <button type="button" id="saveSettingsBtn" class="btn primary">Save</button>
         </form>
       </section>
     </main>
   </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast"></div>
 </body>
 </html>
