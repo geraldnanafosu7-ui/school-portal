@@ -95,6 +95,20 @@ if (logoutBtn) {
 }
 
 // =========================
+// WELCOME MESSAGE
+// =========================
+auth.onAuthStateChanged(async (user) => {
+  if (user) {
+    const doc = await db.collection("users").doc(user.uid).get();
+    const welcomeEl = document.getElementById("welcomeMessage");
+    if (welcomeEl && doc.exists) {
+      const data = doc.data();
+      welcomeEl.textContent = `Welcome, ${data.username || data.fullName || user.email.split('@')[0]} 👋`;
+    }
+  }
+});
+
+// =========================
 // TEACHER: NOTES
 // =========================
 const submitNotesBtn = document.getElementById("submitNotesBtn");
@@ -154,6 +168,7 @@ if (submitSummaryBtn) {
     summaryList.innerHTML = "";
     snapshot.forEach(doc => {
       const div = document.createElement("div");
+      div.className = "announcement-card fade-in";
       div.textContent = doc.data().text;
       summaryList.appendChild(div);
     });
@@ -185,6 +200,7 @@ if (postAnnouncementBtn) {
     if (list) list.innerHTML = "";
     snapshot.forEach(doc => {
       const div = document.createElement("div");
+      div.className = "announcement-card fade-in";
       div.textContent = doc.data().text;
       if (list) list.appendChild(div);
     });
@@ -192,7 +208,7 @@ if (postAnnouncementBtn) {
 }
 
 // =========================
-// TEACHER: ATTENDANCE
+// ATTENDANCE (Teacher + Headteacher)
 // =========================
 const updateClassBtn = document.getElementById("updateClassBtn");
 if (updateClassBtn) {
@@ -236,7 +252,7 @@ if (viewAttendanceBtn) {
       report.textContent = "No attendance data available.";
       return;
     }
-    let html = "<table class='attendance-table'><tr><th>Date</th><th>Boys</th><th>Girls</th></tr>";
+    let html = "<table class='attendance-table fade-in'><tr><th>Date</th><th>Boys</th><th>Girls</th></tr>";
     snapshot.forEach(doc => {
       const rec = doc.data();
       html += `<tr><td>${new Date(rec.date).toLocaleString()}</td><td>${rec.boys}</td><td>${rec.girls}</td></tr>`;
@@ -366,7 +382,7 @@ if (teacherList) {
     teacherList.innerHTML = "";
     snapshot.forEach(doc => {
       const data = doc.data();
-      teacherList.innerHTML += `<p>${data.fullName} (${data.email})</p>`;
+      teacherList.innerHTML += `<div class="announcement-card fade-in">${data.fullName} (${data.email})</div>`;
     });
   });
 }
@@ -472,22 +488,34 @@ const sections = document.querySelectorAll("main section, .main > .grid");
 if (navItems.length && sections.length) {
   navItems.forEach(item => {
     item.addEventListener("click", () => {
+      // remove active state from all nav items
       navItems.forEach(i => i.classList.remove("active"));
       item.classList.add("active");
 
+      // hide all sections
       sections.forEach(sec => sec.classList.add("hidden"));
 
+      // show the target section with fade-in animation
       const targetId = item.dataset.target;
       if (targetId) {
         const targetSection = document.getElementById(targetId);
-        if (targetSection) targetSection.classList.remove("hidden");
+        if (targetSection) {
+          targetSection.classList.remove("hidden");
+          targetSection.classList.add("fade-in");
+          setTimeout(() => targetSection.classList.remove("fade-in"), 600);
+        }
       } else {
         const dashboardGrid = document.getElementById("dashboardSection");
-        if (dashboardGrid) dashboardGrid.classList.remove("hidden");
+        if (dashboardGrid) {
+          dashboardGrid.classList.remove("hidden");
+          dashboardGrid.classList.add("fade-in");
+          setTimeout(() => dashboardGrid.classList.remove("fade-in"), 600);
+        }
       }
     });
   });
 
+  // show dashboard by default
   const defaultDashboard = document.getElementById("dashboardSection");
   if (defaultDashboard) defaultDashboard.classList.remove("hidden");
 }
