@@ -1,23 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Teacher Dashboard | Ansuaa Ababio</title>
+  <link rel="stylesheet" href="style.css" />
+  <script defer src="script.js"></script>
+</head>
 <body>
-  <!-- Top Nav -->
-  <nav class="top-nav">
-    <h2 id="welcomeMessage">Welcome, Teacher 👋</h2>
-    <button id="logoutBtn" class="btn danger">Logout</button>
-  </nav>
-
   <div class="app">
     <!-- Sidebar -->
-    <aside class="sidebar modern">
-      <button class="nav-item active" data-target="dashboardSection">📊 Dashboard</button>
-      <button class="nav-item" data-target="notesSection">📘 Notes</button>
-      <button class="nav-item" data-target="summariesSection">📝 Summaries</button>
-      <button class="nav-item" data-target="announcementsSection">📢 Announcements</button>
-      <button class="nav-item" data-target="attendanceSection">👥 Attendance</button>
-      <button class="nav-item" data-target="settingsSection">⚙️ Settings</button>
+    <aside class="sidebar full">
+      <div class="nav-top">
+        <h2 class="sidebar-title">📘 Dashboard</h2>
+        <button class="nav-item active" data-target="dashboardSection">📊 Overview</button>
+        <button class="nav-item" data-target="notesSection">📘 Notes</button>
+        <button class="nav-item" data-target="summariesSection">📝 Summaries</button>
+        <button class="nav-item" data-target="announcementsSection">📢 Announcements</button>
+        <button class="nav-item" data-target="attendanceSection">👥 Attendance</button>
+        <button class="nav-item" data-target="settingsSection">⚙️ Settings</button>
+      </div>
+      <div class="nav-bottom">
+        <button id="logoutBtn" class="btn danger">Logout</button>
+      </div>
     </aside>
 
     <!-- Main Content -->
     <main class="main fade-in">
+      <h2 id="welcomeMessage" class="welcome-text">Welcome, Teacher 👋</h2>
+
       <!-- Dashboard Cards -->
       <section id="dashboardSection" class="grid">
         <div class="card modern"><h3>My Notes</h3><p id="myNotes">0</p></div>
@@ -69,3 +80,4 @@
     </main>
   </div>
 </body>
+</html>
