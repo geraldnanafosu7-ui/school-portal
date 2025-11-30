@@ -61,7 +61,7 @@ a:hover {
 }
 
 /* =========================
-   HEADER
+   DASHBOARD HEADER
    ========================= */
 .header {
   display: flex;
@@ -197,22 +197,7 @@ a:hover {
 .theme-blue { background: #e6f0ff; }
 .theme-green { background: #e6ffe6; }
 .theme-white { background: #fff; }
-.school-name {
-  text-align: center;
-  font-weight: bold;
-  font-size: 2rem;
-  margin: 20px 0;
-  color: #0e2a47;
-}
 
-.school-footer {
-  text-align: center;
-  font-size: 1rem;
-  font-weight: 500;
-  margin-top: 20px;
-  line-height: 1.5;
-  color: #134b8a;
-}
 /* =========================
    SCHOOL BRANDING BARS
    ========================= */
@@ -226,7 +211,7 @@ a:hover {
 }
 
 .brand-bar .school-name {
-  color: #fff;
+  color: #fff; /* force white text inside brand bar */
   font-weight: 800;
   font-size: 1.8rem;
   margin: 0;
@@ -255,5 +240,3 @@ a:hover {
   font-style: italic;
   font-weight: 700;
 }
-
-
