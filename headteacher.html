@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Headteacher Dashboard | Ansuaa Ababio</title>
+  <title>Headteacher Dashboard</title>
   <link rel="stylesheet" href="style.css" />
   <script defer src="script.js"></script>
 </head>
@@ -18,58 +18,82 @@
       <button class="nav-item active" data-target="dashboardSection">Dashboard</button>
       <button class="nav-item" data-target="announcementsSection">Announcements</button>
       <button class="nav-item" data-target="attendanceSection">Attendance</button>
-      <button class="nav-item" data-target="manageTeachersSection">Manage Teachers</button>
+      <button class="nav-item" data-target="manageTeachersSection">Manage teachers</button>
       <button class="nav-item" data-target="settingsSection">Settings</button>
     </aside>
 
     <main class="main">
-      <!-- Dashboard -->
+      <!-- Dashboard stats -->
       <section id="dashboardSection" class="grid">
-        <div class="card accent-blue"><h3>Total Teachers</h3><p id="statTeachers">0</p></div>
-        <div class="card accent-green"><h3>Total Notes</h3><p id="statNotes">0</p></div>
-        <div class="card accent-orange"><h3>Total Summaries</h3><p id="statSummaries">0</p></div>
-        <div class="card accent-purple"><h3>Class Numbers</h3><p id="statClass">0 boys, 0 girls</p></div>
+        <div class="card accent-blue">
+          <h3>Teachers</h3>
+          <p id="statTeachers">0</p>
+        </div>
+        <div class="card accent-green">
+          <h3>Lesson notes</h3>
+          <p id="statNotes">0</p>
+        </div>
+        <div class="card accent-orange">
+          <h3>Summaries</h3>
+          <p id="statSummaries">0</p>
+        </div>
+        <div class="card accent-purple">
+          <h3>Latest class numbers</h3>
+          <p id="statClass">0 boys, 0 girls</p>
+        </div>
       </section>
 
-      <!-- Announcements -->
+      <!-- Announcements (create + list) -->
       <section id="announcementsSection" class="card hidden accent-orange">
-        <h3>📢 Post Announcement</h3>
-        <textarea id="announcementInput" placeholder="Write announcement..."></textarea>
-        <button id="postAnnouncementBtn" class="btn primary">Post</button>
-        <div id="announcementList"></div>
+        <h3>📢 Announcements</h3>
+        <textarea id="announcementInput" placeholder="Write an announcement..."></textarea>
+        <button id="postAnnouncementBtn" class="btn primary">Post announcement</button>
+        <div id="announcementList" style="margin-top: 12px;"></div>
       </section>
 
-      <!-- Attendance -->
+      <!-- Attendance reports -->
       <section id="attendanceSection" class="card hidden accent-purple">
-        <h3>👥 Attendance Reports</h3>
-        <button id="viewAttendanceBtn" class="btn primary">View Attendance</button>
-        <div id="attendanceReport"></div>
+        <h3>👥 Attendance report</h3>
+        <button id="viewAttendanceBtn" class="btn primary">View attendance</button>
+        <div id="attendanceReport" style="margin-top: 12px;"></div>
       </section>
 
-      <!-- Manage Teachers -->
+      <!-- Manage teachers -->
       <section id="manageTeachersSection" class="card hidden accent-blue">
-        <h3>👩‍🏫 Manage Teachers</h3>
-        <div id="teacherList"></div>
+        <h3>👩‍🏫 Teachers</h3>
+        <div id="teacherList">Loading teachers...</div>
       </section>
 
       <!-- Settings -->
-      <section id="settingsSection" class="card hidden accent-blue">
-        <h3>⚙️ Account Settings</h3>
-        <form id="settingsForm" class="form-modern">
-          <label>Full Name</label>
-          <input id="updateFullName" type="text" />
-          <label>Phone</label>
-          <input id="updatePhone" type="tel" />
-          <label>Email</label>
-          <input id="updateEmail" type="email" />
-          <button type="button" id="saveSettingsBtn" class="btn primary">Save Changes</button>
+      <section id="settingsSection" class="card hidden accent-green">
+        <h3>⚙️ Settings</h3>
+        <form id="settingsForm">
+          <input id="updateFullName" type="text" placeholder="Full Name" />
+          <input id="updatePhone" type="tel" placeholder="Phone" />
+          <input id="updateEmail" type="email" placeholder="Email" />
+          <button type="button" id="saveSettingsBtn" class="btn primary">Save</button>
         </form>
 
-        <h4 style="margin-top:20px;">Change Password</h4>
-        <form id="passwordForm" class="form-modern">
-          <label>New Password</label>
-          <input id="newPassword" type="password" required />
+        <h4 style="margin-top:16px;">Change password</h4>
+        <form id="passwordForm">
+          <input id="newPassword" type="password" placeholder="New Password (≥ 6 chars)" />
           <button type="button" id="changePasswordBtn" class="btn danger">Change Password</button>
         </form>
 
-        <h4 style="margin
+        <div class="theme-switcher" style="margin-top:16px;">
+          <button class="btn">Dark</button>
+          <button class="btn">Blue</button>
+          <button class="btn">Green</button>
+          <button class="btn">White</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="footer">
+    <p>© 2025 Ansuaa Ababio Methodist Preparatory School</p>
+  </footer>
+
+  <div id="toast" class="toast"></div>
+</body>
+</html>
