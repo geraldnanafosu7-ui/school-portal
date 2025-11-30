@@ -29,6 +29,38 @@ a:hover {
 }
 
 /* =========================
+   LOGIN & SIGNUP CARDS
+   ========================= */
+.main.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #f4f6f9;
+  flex-direction: column;
+}
+
+.login-card {
+  width: 350px;
+  background: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  text-align: center;
+  margin: 15px;
+}
+
+.login-logo {
+  height: 60px;
+  margin-bottom: 15px;
+}
+
+.signup-line {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+/* =========================
    HEADER
    ========================= */
 .header {
@@ -77,6 +109,7 @@ a:hover {
 .grid {
   display: flex;
   gap: 20px;
+  flex-wrap: wrap;
 }
 
 /* =========================
