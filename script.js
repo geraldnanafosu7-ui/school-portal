@@ -80,7 +80,7 @@ if (forgotPasswordLink) {
     if (!email) return toast("❌ Enter your email first", "error");
     try {
       await auth.sendPasswordResetEmail(email);
-      toast("✅ Password reset email sent!", "success");
+      toast("✅ Password reset email sent! Check your inbox.", "success");
     } catch (err) {
       toast("❌ " + err.message, "error");
     }
@@ -116,7 +116,9 @@ if (postBtn && announcementInput && announcementList) {
   postBtn.addEventListener("click", async () => {
     const text = announcementInput.value.trim();
     if (!text) return toast("❌ Please write an announcement", "error");
-    await db.collection("announcements").add({ text, date: new Date().toISOString() });
+    const user = auth.currentUser;
+    if (!user) return toast("❌ Not logged in", "error");
+    await db.collection("announcements").add({ text, uid: user.uid, date: new Date().toISOString() });
     announcementInput.value = "";
     toast("✅ Announcement posted!", "success");
   });
@@ -141,6 +143,7 @@ if (submitNotesBtn && notesInput && notesList) {
     const note = notesInput.value.trim();
     if (!note) return toast("❌ Please enter your notes", "error");
     const user = auth.currentUser;
+    if (!user) return toast("❌ Not logged in", "error");
     await db.collection("lessonNotes").add({
       note,
       uid: user.uid,
@@ -170,6 +173,7 @@ if (submitSummaryBtn && summaryInput && summaryList) {
     const text = summaryInput.value.trim();
     if (!text) return toast("❌ Please write a summary", "error");
     const user = auth.currentUser;
+    if (!user) return toast("❌ Not logged in", "error");
     await db.collection("summaries").add({
       text,
       uid: user.uid,
@@ -201,8 +205,10 @@ if (updateClassBtn && boysInput && girlsInput && classDisplay) {
     const girls = parseInt(girlsInput.value.trim(), 10);
     if (isNaN(boys) || isNaN(girls)) return toast("❌ Enter valid numbers", "error");
 
-    const record = { boys, girls, date: new Date().toLocaleString() };
     const user = auth.currentUser;
+    if (!user) return toast("❌ Not logged in", "error");
+
+    const record = { boys, girls, date: new Date().toLocaleString() };
     await db.collection("attendanceHistory").add({
       ...record,
       uid: user.uid
@@ -232,7 +238,7 @@ if (viewAttendanceBtn && attendanceReport) {
       return;
     }
 
-        let html = "<table class='attendance-table'><tr><th>Date</th><th>Boys</th><th>Girls</th></tr>";
+    let html = "<table class='attendance-table'><tr><th>Date</th><th>Boys</th><th>Girls</th></tr>";
     snapshot.forEach(doc => {
       const rec = doc.data();
       html += `<tr><td>${rec.date}</td><td>${rec.boys}</td><td>${rec.girls}</td></tr>`;
@@ -271,74 +277,34 @@ if (saveSettingsBtn) {
   });
 }
 
-// ---------------- DASHBOARD STATS ----------------
-const statTeachers = document.getElementById("statTeachers");
-const statNotes = document.getElementById("statNotes");
-const statSummaries = document.getElementById("statSummaries");
-const statClass = document.getElementById("statClass");
+// ---------------- CHANGE PASSWORD ----------------
+const changePasswordBtn = document.getElementById("changePasswordBtn");
+if (changePasswordBtn) {
+  changePasswordBtn.addEventListener("click", async () => {
+    const user = auth.currentUser;
+    const newPass = document.getElementById("newPassword").value.trim();
+    if (!user) return toast("❌ No user logged in", "error");
+    if (!newPass || newPass.length < 6) return toast("❌ Password must be at least 6 characters", "error");
 
-if (statTeachers) {
+    try {
+      await user.updatePassword(newPass);
+      toast("✅ Password updated successfully!", "success");
+      document.getElementById("passwordForm").reset();
+    } catch (err) {
+      toast("❌ Error: " + err.message, "error");
+    }
+  });
+}
+
+// ---------------- MANAGE TEACHERS (Headteacher) ----------------
+const teacherList = document.getElementById("teacherList");
+if (teacherList) {
   db.collection("users").where("role", "==", "teacher").onSnapshot(snapshot => {
-    statTeachers.textContent = snapshot.size;
-  });
-}
-if (statNotes) {
-  db.collection("lessonNotes").onSnapshot(snapshot => {
-    statNotes.textContent = snapshot.size;
-  });
-}
-if (statSummaries) {
-  db.collection("summaries").onSnapshot(snapshot => {
-    statSummaries.textContent = snapshot.size;
-  });
-}
-if (statClass) {
-  db.collection("attendanceHistory").orderBy("date").onSnapshot(snapshot => {
-    if (!snapshot.empty) {
-      const latest = snapshot.docs[snapshot.docs.length - 1].data();
-      statClass.textContent = `${latest.boys} boys, ${latest.girls} girls`;
-    } else {
-      statClass.textContent = "0 boys, 0 girls";
-    }
-  });
-}
-
-// ---------------- TEACHER ANNOUNCEMENTS ----------------
-const teacherAnnouncements = document.getElementById("teacherAnnouncements");
-if (teacherAnnouncements) {
-  db.collection("announcements").orderBy("date").onSnapshot(snapshot => {
-    teacherAnnouncements.innerHTML = "";
+    teacherList.innerHTML = "";
     snapshot.forEach(doc => {
-      const div = document.createElement("div");
-      div.textContent = doc.data().text;
-      teacherAnnouncements.appendChild(div);
+      const data = doc.data();
+      teacherList.innerHTML += `<p>${data.fullName} (${data.email})</p>`;
     });
-  });
-}
-
-// ---------------- TEACHER SUMMARY STATS ----------------
-const mySummaries = document.getElementById("mySummaries");
-const myNotes = document.getElementById("myNotes");
-const myClass = document.getElementById("myClass");
-
-if (mySummaries) {
-  db.collection("summaries").onSnapshot(snapshot => {
-    mySummaries.textContent = snapshot.size;
-  });
-}
-if (myNotes) {
-  db.collection("lessonNotes").onSnapshot(snapshot => {
-    myNotes.textContent = snapshot.size;
-  });
-}
-if (myClass) {
-  db.collection("attendanceHistory").orderBy("date").onSnapshot(snapshot => {
-    if (!snapshot.empty) {
-      const latest = snapshot.docs[snapshot.docs.length - 1].data();
-      myClass.textContent = `${latest.boys} boys, ${latest.girls} girls`;
-    } else {
-      myClass.textContent = "0 boys, 0 girls";
-    }
   });
 }
 
@@ -438,5 +404,19 @@ if (downloadNotesBtn) {
     } catch (err) {
       toast("❌ Error: " + err.message, "error");
     }
+  });
+}
+
+// ---------------- THEME TOGGLES ----------------
+const themeButtons = document.querySelectorAll(".theme-switcher button");
+if (themeButtons.length) {
+  themeButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const label = btn.textContent.toLowerCase();
+      if (label.includes("dark")) document.body.className = "theme-dark";
+      else if (label.includes("blue")) document.body.className = "theme-blue";
+      else if (label.includes("green")) document.body.className = "theme-green";
+      else document.body.className = "theme-white";
+    });
   });
 }
