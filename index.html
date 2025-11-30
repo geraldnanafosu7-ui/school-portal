@@ -25,48 +25,6 @@
     window.db = firebase.firestore();
   </script>
   <script defer src="script.js"></script>
-  <style>
-    .centered-page {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 90vh;
-      padding: 20px;
-    }
-    .login-card {
-      width: 100%;
-      max-width: 400px;
-      background: #fff;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
-      animation: fadeInUp 0.6s ease;
-    }
-    .login-card h2 {
-      text-align: center;
-      color: #134b8a;
-      margin-bottom: 20px;
-    }
-    .login-logo {
-      display: block;
-      margin: 0 auto 20px;
-      height: 60px;
-    }
-    .signup-line {
-      margin-top: 12px;
-      font-size: 14px;
-      text-align: center;
-    }
-    .signup-line a {
-      color: #134b8a;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .hidden {
-      display: none;
-    }
-  </style>
 </head>
 <body>
   <!-- Top Branding Bar -->
@@ -74,6 +32,7 @@
     <h1 class="school-name">Ansuaa Ababio Methodist Preparatory School</h1>
   </header>
 
+  <!-- Main Content -->
   <main class="centered-page">
     <!-- LOGIN CARD -->
     <div class="login-card">
@@ -90,6 +49,9 @@
       <p class="signup-line">Don’t have an account? 
         <a onclick="document.getElementById('signupCard').classList.remove('hidden')">Sign up</a>
       </p>
+
+      <!-- Motto directly under login -->
+      <p class="school-motto"><em>NYANSA MFITIASEƐ</em></p>
     </div>
 
     <!-- SIGNUP CARD (hidden by default) -->
@@ -114,17 +76,21 @@
         </select>
         <button type="submit" class="btn primary">Create Account</button>
       </form>
+      <p class="signup-line">
+        Already have an account? 
+        <a onclick="document.getElementById('signupCard').classList.add('hidden')">Back to Login</a>
+      </p>
     </div>
   </main>
 
-  <!-- Footer Motto Bar -->
+  <!-- Footer Bar -->
   <footer class="footer-bar">
     <p class="school-footer">
-      © 2025 Ansuaa Ababio Methodist Preparatory School &nbsp;•&nbsp;
-      <em>NYANSA MFITIASEƐ</em>
+      © 2025 Ansuaa Ababio Methodist Preparatory School
     </p>
   </footer>
 
+  <!-- Toast Notification -->
   <div id="toast" class="toast"></div>
 </body>
 </html>
