@@ -515,7 +515,42 @@ if (navItems.length && sections.length) {
     });
   });
 
+// =========================
+// NAVIGATION (robust)
+// =========================
+document.addEventListener("DOMContentLoaded", () => {
+  const navItems = document.querySelectorAll(".nav-item");
+  const sections = document.querySelectorAll("main section, .main > .grid");
+
+  function showSection(id) {
+    sections.forEach(sec => sec.classList.add("hidden"));
+    const target = document.getElementById(id);
+    if (target) {
+      target.classList.remove("hidden");
+      target.classList.add("fade-in");
+      setTimeout(() => target.classList.remove("fade-in"), 500);
+    }
+  }
+
+  if (navItems.length) {
+    navItems.forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        navItems.forEach(i => i.classList.remove("active"));
+        btn.classList.add("active");
+        const targetId = btn.dataset.target || "dashboardSection";
+        showSection(targetId);
+      });
+    });
+  }
+
+  // Default view
+  showSection("dashboardSection");
+});
+
+
   // show dashboard by default
   const defaultDashboard = document.getElementById("dashboardSection");
   if (defaultDashboard) defaultDashboard.classList.remove("hidden");
 }
+
