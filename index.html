@@ -11,7 +11,7 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
   <script>
     const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
+      apiKey: "YOUR_REAL_API_KEY",
       authDomain: "YOUR_PROJECT.firebaseapp.com",
       projectId: "YOUR_PROJECT_ID",
       storageBucket: "YOUR_PROJECT.appspot.com",
@@ -26,18 +26,16 @@
 </head>
 <body>
   <main class="main center">
-    <!-- LOGIN -->
-    <div class="card accent-blue">
+    <!-- LOGIN CARD -->
+    <div class="login-card">
+      <img src="logo.png" alt="School Logo" class="login-logo" />
       <h2>Login</h2>
       <form id="loginForm" class="form-modern">
         <label>Email</label>
-        <input id="loginUsername" type="email" required />
+        <input id="loginUsername" type="email" autocomplete="username" required />
         <label>Password</label>
-        <input id="loginPassword" type="password" required />
-        <button type="submit" class="btn square primary">
-          <img src="logo.png" alt="School Logo" class="btn-logo" />
-          Login
-        </button>
+        <input id="loginPassword" type="password" autocomplete="current-password" required />
+        <button type="submit" class="btn primary">Login</button>
       </form>
       <a href="#" id="forgotPasswordLink">Forgot Password?</a>
       <p class="signup-line">Don’t have an account? 
@@ -45,20 +43,21 @@
       </p>
     </div>
 
-    <!-- SIGNUP -->
-    <div id="signupCard" class="card hidden accent-green">
+    <!-- SIGNUP CARD -->
+    <div id="signupCard" class="login-card hidden">
+      <img src="logo.png" alt="School Logo" class="login-logo" />
       <h2>Sign Up</h2>
       <form id="signupForm" class="form-modern">
         <label>Full Name</label>
-        <input id="suFullName" type="text" required />
+        <input id="suFullName" type="text" autocomplete="name" required />
         <label>Username</label>
-        <input id="suUsername" type="text" required />
+        <input id="suUsername" type="text" autocomplete="username" required />
         <label>Phone</label>
-        <input id="suPhone" type="tel" />
+        <input id="suPhone" type="tel" autocomplete="tel" />
         <label>Email</label>
-        <input id="suEmail" type="email" required />
+        <input id="suEmail" type="email" autocomplete="email" required />
         <label>Password</label>
-        <input id="suPassword" type="password" required />
+        <input id="suPassword" type="password" autocomplete="new-password" required />
         <label>Role</label>
         <select id="suRole" required>
           <option value="">Select role</option>
