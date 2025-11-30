@@ -240,3 +240,78 @@ a:hover {
   font-style: italic;
   font-weight: 700;
 }
+/* Modern top nav */
+.top-nav {
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  animation: slideDown 0.6s ease;
+}
+
+.top-nav h2 {
+  margin: 0;
+  font-weight: 600;
+  color: #134b8a;
+}
+
+/* Modern sidebar */
+.sidebar.modern {
+  background: #fff;
+  border-right: 1px solid #ddd;
+  animation: slideIn 0.6s ease;
+}
+
+.sidebar.modern .nav-item {
+  color: #134b8a;
+  font-weight: 500;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+  transition: background 0.3s ease;
+}
+
+.sidebar.modern .nav-item:hover {
+  background: #f0f6ff;
+}
+
+.sidebar.modern .nav-item.active {
+  background: #e6f0ff;
+  font-weight: 600;
+}
+
+/* Modern cards */
+.card.modern {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  animation: fadeInUp 0.6s ease;
+}
+
+.card.modern:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+/* Animations */
+@keyframes slideIn {
+  from { transform: translateX(-100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.fade-in {
+  animation: fadeInUp 0.6s ease;
+}
+
