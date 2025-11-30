@@ -1,159 +1,123 @@
-// ---------------- TOAST ----------------
-function toast(msg, type = "info") {
-  const t = document.getElementById("toast");
-  if (!t) return alert(msg);
-
-  t.textContent = msg;
-  t.className = "toast"; // reset
-  t.classList.add(type);
-  t.classList.add("show");
-
-  setTimeout(() => t.classList.remove("show"), 3000);
+// =========================
+// TOAST NOTIFICATIONS
+// =========================
+function toast(message, type = "info") {
+  const toastEl = document.getElementById("toast");
+  if (!toastEl) return;
+  toastEl.textContent = message;
+  toastEl.className = "toast show " + type;
+  setTimeout(() => {
+    toastEl.className = "toast";
+  }, 3000);
 }
 
-// ---------------- SIGN UP ----------------
+// =========================
+// SIGNUP
+// =========================
 const signupForm = document.getElementById("signupForm");
 if (signupForm) {
-  signupForm.addEventListener("submit", async e => {
+  signupForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const email = document.getElementById("suEmail").value.trim();
     const password = document.getElementById("suPassword").value.trim();
     const fullName = document.getElementById("suFullName").value.trim();
-    const username = document.getElementById("suUsername").value.trim().toLowerCase();
+    const username = document.getElementById("suUsername").value.trim();
     const phone = document.getElementById("suPhone").value.trim();
     const role = document.getElementById("suRole").value;
-
-    if (!email || !password || password.length < 6 || !role) {
-      return toast("❌ Please fill all required fields (password ≥ 6 chars)", "error");
-    }
 
     try {
       const cred = await auth.createUserWithEmailAndPassword(email, password);
       await db.collection("users").doc(cred.user.uid).set({
-        username, fullName, phone, email, role
+        fullName,
+        username,
+        phone,
+        email,
+        role,
+        uid: cred.user.uid,
+        createdAt: new Date().toISOString()
       });
-      toast("✅ Account created successfully! Please log in.", "success");
-      signupForm.reset();
-      document.getElementById("signupCard").classList.add("hidden");
+      toast("✅ Account created successfully!", "success");
+      window.location.href = role === "headteacher" ? "headteacher.html" : "teacher.html";
     } catch (err) {
-      toast("❌ " + err.message, "error");
+      toast("❌ Signup failed: " + err.message, "error");
     }
   });
 }
 
-// ---------------- LOGIN ----------------
+// =========================
+// LOGIN
+// =========================
 const loginForm = document.getElementById("loginForm");
 if (loginForm) {
-  loginForm.addEventListener("submit", async e => {
+  loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const email = document.getElementById("loginUsername").value.trim();
     const password = document.getElementById("loginPassword").value.trim();
-
-    if (!email || !password) return toast("❌ Enter both email and password", "error");
-
     try {
       const cred = await auth.signInWithEmailAndPassword(email, password);
       const doc = await db.collection("users").doc(cred.user.uid).get();
-      const data = doc.data();
-      if (!data) return toast("❌ No profile found. Contact admin.", "error");
-
+      if (!doc.exists) return toast("❌ No user profile found", "error");
+      const role = doc.data().role;
       toast("✅ Login successful!", "success");
-      if (data.role === "headteacher") {
-        window.location.href = "headteacher.html";
-      } else if (data.role === "teacher") {
-        window.location.href = "teacher.html";
-      } else {
-        toast("❌ Unknown role. Contact admin.", "error");
-      }
+      window.location.href = role === "headteacher" ? "headteacher.html" : "teacher.html";
     } catch (err) {
-      toast("❌ " + err.message, "error");
+      toast("❌ Login failed: " + err.message, "error");
     }
   });
 }
 
-// ---------------- FORGOT PASSWORD ----------------
+// =========================
+// FORGOT PASSWORD
+// =========================
 const forgotPasswordLink = document.getElementById("forgotPasswordLink");
 if (forgotPasswordLink) {
-  forgotPasswordLink.addEventListener("click", async e => {
-    e.preventDefault();
+  forgotPasswordLink.addEventListener("click", async () => {
     const email = document.getElementById("loginUsername").value.trim();
     if (!email) return toast("❌ Enter your email first", "error");
     try {
       await auth.sendPasswordResetEmail(email);
-      toast("✅ Password reset email sent! Check your inbox.", "success");
+      toast("📧 Password reset email sent!", "success");
     } catch (err) {
-      toast("❌ " + err.message, "error");
+      toast("❌ Error: " + err.message, "error");
     }
   });
 }
 
-// ---------------- USER GREETING ----------------
-auth.onAuthStateChanged(async user => {
-  const userDisplay = document.getElementById("userDisplayName");
-  if (user) {
-    const doc = await db.collection("users").doc(user.uid).get();
-    const data = doc.data();
-    if (userDisplay) userDisplay.textContent = data?.fullName || data?.username || user.email;
-  }
-});
-
-// ---------------- LOGOUT ----------------
+// =========================
+// LOGOUT
+// =========================
 const logoutBtn = document.getElementById("logoutBtn");
 if (logoutBtn) {
   logoutBtn.addEventListener("click", async () => {
     await auth.signOut();
-    toast("✅ Logged out!", "success");
-    setTimeout(() => window.location.href = "index.html", 1500);
+    window.location.href = "index.html";
   });
 }
 
-// ---------------- ANNOUNCEMENTS ----------------
-const postBtn = document.getElementById("postAnnouncementBtn");
-const announcementInput = document.getElementById("announcementInput");
-const announcementList = document.getElementById("announcementList");
-
-if (postBtn && announcementInput && announcementList) {
-  postBtn.addEventListener("click", async () => {
-    const text = announcementInput.value.trim();
-    if (!text) return toast("❌ Please write an announcement", "error");
-    const user = auth.currentUser;
-    if (!user) return toast("❌ Not logged in", "error");
-    await db.collection("announcements").add({ text, uid: user.uid, date: new Date().toISOString() });
-    announcementInput.value = "";
-    toast("✅ Announcement posted!", "success");
-  });
-
-  db.collection("announcements").orderBy("date").onSnapshot(snapshot => {
-    announcementList.innerHTML = "";
-    snapshot.forEach(doc => {
-      const div = document.createElement("div");
-      div.textContent = doc.data().text;
-      announcementList.appendChild(div);
-    });
-  });
-}
-
-// ---------------- TEACHER LESSON NOTES ----------------
-const notesInput = document.getElementById("notesInput");
+// =========================
+// TEACHER: NOTES
+// =========================
 const submitNotesBtn = document.getElementById("submitNotesBtn");
-const notesList = document.getElementById("notesList");
-
-if (submitNotesBtn && notesInput && notesList) {
+if (submitNotesBtn) {
   submitNotesBtn.addEventListener("click", async () => {
-    const note = notesInput.value.trim();
-    if (!note) return toast("❌ Please enter your notes", "error");
+    const note = document.getElementById("notesInput").value.trim();
     const user = auth.currentUser;
-    if (!user) return toast("❌ Not logged in", "error");
-    await db.collection("lessonNotes").add({
-      note,
-      uid: user.uid,
-      date: new Date().toISOString()
-    });
-    notesInput.value = "";
-    toast("✅ Lesson notes submitted!", "success");
+    if (!note) return toast("❌ Note cannot be empty", "error");
+    try {
+      await db.collection("lessonNotes").add({
+        note,
+        uid: user.uid,
+        date: new Date().toISOString()
+      });
+      toast("✅ Note saved!", "success");
+      document.getElementById("notesInput").value = "";
+    } catch (err) {
+      toast("❌ Error: " + err.message, "error");
+    }
   });
 
   db.collection("lessonNotes").onSnapshot(snapshot => {
+    const notesList = document.getElementById("notesList");
     notesList.innerHTML = "";
     snapshot.forEach(doc => {
       const li = document.createElement("li");
@@ -163,27 +127,30 @@ if (submitNotesBtn && notesInput && notesList) {
   });
 }
 
-// ---------------- TEACHER SUMMARIES ----------------
-const summaryInput = document.getElementById("summaryInput");
+// =========================
+// TEACHER: SUMMARIES
+// =========================
 const submitSummaryBtn = document.getElementById("submitSummaryBtn");
-const summaryList = document.getElementById("summaryList");
-
-if (submitSummaryBtn && summaryInput && summaryList) {
+if (submitSummaryBtn) {
   submitSummaryBtn.addEventListener("click", async () => {
-    const text = summaryInput.value.trim();
-    if (!text) return toast("❌ Please write a summary", "error");
+    const summary = document.getElementById("summaryInput").value.trim();
     const user = auth.currentUser;
-    if (!user) return toast("❌ Not logged in", "error");
-    await db.collection("summaries").add({
-      text,
-      uid: user.uid,
-      date: new Date().toISOString()
-    });
-    summaryInput.value = "";
-    toast("✅ Summary submitted!", "success");
+    if (!summary) return toast("❌ Summary cannot be empty", "error");
+    try {
+      await db.collection("summaries").add({
+        text: summary,
+        uid: user.uid,
+        date: new Date().toISOString()
+      });
+      toast("✅ Summary saved!", "success");
+      document.getElementById("summaryInput").value = "";
+    } catch (err) {
+      toast("❌ Error: " + err.message, "error");
+    }
   });
 
   db.collection("summaries").onSnapshot(snapshot => {
+    const summaryList = document.getElementById("summaryList");
     summaryList.innerHTML = "";
     snapshot.forEach(doc => {
       const div = document.createElement("div");
@@ -193,62 +160,95 @@ if (submitSummaryBtn && summaryInput && summaryList) {
   });
 }
 
-// ---------------- ATTENDANCE ----------------
-const boysInput = document.getElementById("boysInput");
-const girlsInput = document.getElementById("girlsInput");
-const updateClassBtn = document.getElementById("updateClassBtn");
-const classDisplay = document.getElementById("classDisplay");
+// =========================
+// ANNOUNCEMENTS
+// =========================
+const postAnnouncementBtn = document.getElementById("postAnnouncementBtn");
+if (postAnnouncementBtn) {
+  postAnnouncementBtn.addEventListener("click", async () => {
+    const text = document.getElementById("announcementInput").value.trim();
+    if (!text) return toast("❌ Announcement cannot be empty", "error");
+    try {
+      await db.collection("announcements").add({
+        text,
+        date: new Date().toISOString()
+      });
+      toast("✅ Announcement posted!", "success");
+      document.getElementById("announcementInput").value = "";
+    } catch (err) {
+      toast("❌ Error: " + err.message, "error");
+    }
+  });
 
-if (updateClassBtn && boysInput && girlsInput && classDisplay) {
-  updateClassBtn.addEventListener("click", async () => {
-    const boys = parseInt(boysInput.value.trim(), 10);
-    const girls = parseInt(girlsInput.value.trim(), 10);
-    if (isNaN(boys) || isNaN(girls)) return toast("❌ Enter valid numbers", "error");
-
-    const user = auth.currentUser;
-    if (!user) return toast("❌ Not logged in", "error");
-
-    const record = { boys, girls, date: new Date().toLocaleString() };
-    await db.collection("attendanceHistory").add({
-      ...record,
-      uid: user.uid
+  db.collection("announcements").orderBy("date").onSnapshot(snapshot => {
+    const list = document.getElementById("announcementList");
+    if (list) list.innerHTML = "";
+    snapshot.forEach(doc => {
+      const div = document.createElement("div");
+      div.textContent = doc.data().text;
+      if (list) list.appendChild(div);
     });
+  });
+}
 
-    classDisplay.textContent = `Boys: ${boys}, Girls: ${girls}`;
-    toast("✅ Class numbers updated!", "success");
+// =========================
+// TEACHER: ATTENDANCE
+// =========================
+const updateClassBtn = document.getElementById("updateClassBtn");
+if (updateClassBtn) {
+  updateClassBtn.addEventListener("click", async () => {
+    const boys = parseInt(document.getElementById("boysInput").value) || 0;
+    const girls = parseInt(document.getElementById("girlsInput").value) || 0;
+    try {
+      await db.collection("attendanceHistory").add({
+        boys,
+        girls,
+        date: new Date().toISOString()
+      });
+      toast("✅ Attendance updated!", "success");
+    } catch (err) {
+      toast("❌ Error: " + err.message, "error");
+    }
   });
 
   db.collection("attendanceHistory").orderBy("date").onSnapshot(snapshot => {
+    const classDisplay = document.getElementById("classDisplay");
+    if (!classDisplay) return;
     if (!snapshot.empty) {
       const latest = snapshot.docs[snapshot.docs.length - 1].data();
-      classDisplay.textContent = `Boys: ${latest.boys}, Girls: ${latest.girls}`;
+      classDisplay.textContent = `${latest.boys} boys, ${latest.girls} girls`;
+    } else {
+      classDisplay.textContent = "No data yet";
     }
   });
 }
 
-// ---------------- HEADTEACHER VIEW ATTENDANCE ----------------
+// =========================
+// HEADTEACHER: VIEW ATTENDANCE REPORT
+// =========================
 const viewAttendanceBtn = document.getElementById("viewAttendanceBtn");
-const attendanceReport = document.getElementById("attendanceReport");
-
-if (viewAttendanceBtn && attendanceReport) {
+if (viewAttendanceBtn) {
   viewAttendanceBtn.addEventListener("click", async () => {
     const snapshot = await db.collection("attendanceHistory").get();
+    const report = document.getElementById("attendanceReport");
+    if (!report) return;
     if (snapshot.empty) {
-      attendanceReport.textContent = "No attendance data available.";
+      report.textContent = "No attendance data available.";
       return;
     }
-
     let html = "<table class='attendance-table'><tr><th>Date</th><th>Boys</th><th>Girls</th></tr>";
     snapshot.forEach(doc => {
       const rec = doc.data();
-      html += `<tr><td>${rec.date}</td><td>${rec.boys}</td><td>${rec.girls}</td></tr>`;
+      html += `<tr><td>${new Date(rec.date).toLocaleString()}</td><td>${rec.boys}</td><td>${rec.girls}</td></tr>`;
     });
     html += "</table>";
-    attendanceReport.innerHTML = html;
+    report.innerHTML = html;
   });
 }
 
-// ---------------- SETTINGS ----------------
+// =========================
+// SETTINGS + PASSWORD CHANGE
+// =========================
 const saveSettingsBtn = document.getElementById("saveSettingsBtn");
 if (saveSettingsBtn) {
   saveSettingsBtn.addEventListener("click", async () => {
@@ -277,7 +277,6 @@ if (saveSettingsBtn) {
   });
 }
 
-// ---------------- CHANGE PASSWORD ----------------
 const changePasswordBtn = document.getElementById("changePasswordBtn");
 if (changePasswordBtn) {
   changePasswordBtn.addEventListener("click", async () => {
@@ -296,7 +295,71 @@ if (changePasswordBtn) {
   });
 }
 
-// ---------------- MANAGE TEACHERS (Headteacher) ----------------
+// =========================
+// DASHBOARD STATS (Headteacher)
+// =========================
+const statTeachers = document.getElementById("statTeachers");
+const statNotes = document.getElementById("statNotes");
+const statSummaries = document.getElementById("statSummaries");
+const statClass = document.getElementById("statClass");
+
+if (statTeachers) {
+  db.collection("users").where("role", "==", "teacher").onSnapshot(snapshot => {
+    statTeachers.textContent = snapshot.size;
+  });
+}
+if (statNotes) {
+  db.collection("lessonNotes").onSnapshot(snapshot => {
+    statNotes.textContent = snapshot.size;
+  });
+}
+if (statSummaries) {
+  db.collection("summaries").onSnapshot(snapshot => {
+    statSummaries.textContent = snapshot.size;
+  });
+}
+if (statClass) {
+  db.collection("attendanceHistory").orderBy("date").onSnapshot(snapshot => {
+    if (!snapshot.empty) {
+      const latest = snapshot.docs[snapshot.docs.length - 1].data();
+      statClass.textContent = `${latest.boys} boys, ${latest.girls} girls`;
+    } else {
+      statClass.textContent = "0 boys, 0 girls";
+    }
+  });
+}
+
+// =========================
+// TEACHER DASHBOARD STATS
+// =========================
+const mySummaries = document.getElementById("mySummaries");
+const myNotes = document.getElementById("myNotes");
+const myClass = document.getElementById("myClass");
+
+if (mySummaries) {
+  db.collection("summaries").onSnapshot(snapshot => {
+    mySummaries.textContent = snapshot.size;
+  });
+}
+if (myNotes) {
+  db.collection("lessonNotes").onSnapshot(snapshot => {
+    myNotes.textContent = snapshot.size;
+  });
+}
+if (myClass) {
+  db.collection("attendanceHistory").orderBy("date").onSnapshot(snapshot => {
+    if (!snapshot.empty) {
+      const latest = snapshot.docs[snapshot.docs.length - 1].data();
+      myClass.textContent = `${latest.boys} boys, ${latest.girls} girls`;
+    } else {
+      myClass.textContent = "0 boys, 0 girls";
+    }
+  });
+}
+
+// =========================
+// MANAGE TEACHERS (Headteacher)
+// =========================
 const teacherList = document.getElementById("teacherList");
 if (teacherList) {
   db.collection("users").where("role", "==", "teacher").onSnapshot(snapshot => {
@@ -308,34 +371,9 @@ if (teacherList) {
   });
 }
 
-// ---------------- NAVIGATION ----------------
-const navItems = document.querySelectorAll(".nav-item");
-const sections = document.querySelectorAll("main section, .main > .grid");
-
-if (navItems.length && sections.length) {
-  navItems.forEach(item => {
-    item.addEventListener("click", () => {
-      navItems.forEach(i => i.classList.remove("active"));
-      item.classList.add("active");
-
-      sections.forEach(sec => sec.classList.add("hidden"));
-
-      const targetId = item.dataset.target;
-      if (targetId) {
-        const targetSection = document.getElementById(targetId);
-        if (targetSection) targetSection.classList.remove("hidden");
-      } else {
-        const dashboardGrid = document.getElementById("dashboardSection");
-        if (dashboardGrid) dashboardGrid.classList.remove("hidden");
-      }
-    });
-  });
-
-  const defaultDashboard = document.getElementById("dashboardSection");
-  if (defaultDashboard) defaultDashboard.classList.remove("hidden");
-}
-
-// ---------------- DOWNLOAD SUMMARIES ----------------
+// =========================
+// DOWNLOAD SUMMARIES
+// =========================
 const downloadSummariesBtn = document.getElementById("downloadSummariesBtn");
 if (downloadSummariesBtn) {
   downloadSummariesBtn.addEventListener("click", async () => {
@@ -371,7 +409,9 @@ if (downloadSummariesBtn) {
   });
 }
 
-// ---------------- DOWNLOAD NOTES ----------------
+// =========================
+// DOWNLOAD NOTES
+// =========================
 const downloadNotesBtn = document.getElementById("downloadNotesBtn");
 if (downloadNotesBtn) {
   downloadNotesBtn.addEventListener("click", async () => {
@@ -407,7 +447,9 @@ if (downloadNotesBtn) {
   });
 }
 
-// ---------------- THEME TOGGLES ----------------
+// =========================
+// THEME TOGGLES
+// =========================
 const themeButtons = document.querySelectorAll(".theme-switcher button");
 if (themeButtons.length) {
   themeButtons.forEach(btn => {
@@ -419,4 +461,33 @@ if (themeButtons.length) {
       else document.body.className = "theme-white";
     });
   });
+}
+
+// =========================
+// NAVIGATION
+// =========================
+const navItems = document.querySelectorAll(".nav-item");
+const sections = document.querySelectorAll("main section, .main > .grid");
+
+if (navItems.length && sections.length) {
+  navItems.forEach(item => {
+    item.addEventListener("click", () => {
+      navItems.forEach(i => i.classList.remove("active"));
+      item.classList.add("active");
+
+      sections.forEach(sec => sec.classList.add("hidden"));
+
+      const targetId = item.dataset.target;
+      if (targetId) {
+        const targetSection = document.getElementById(targetId);
+        if (targetSection) targetSection.classList.remove("hidden");
+      } else {
+        const dashboardGrid = document.getElementById("dashboardSection");
+        if (dashboardGrid) dashboardGrid.classList.remove("hidden");
+      }
+    });
+  });
+
+  const defaultDashboard = document.getElementById("dashboardSection");
+  if (defaultDashboard) defaultDashboard.classList.remove("hidden");
 }
